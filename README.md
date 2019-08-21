@@ -15,3 +15,7 @@ la tu prend l'écran en screen
 sauf que l'image y'aura pas de substrator
 
 ben tout refaire pour que les detections marchent 
+
+https://synergo.herokuapp.com/ 
+
+wsh calme chui pas synergologue atta jcrois que brune 1 fais un pouce a rouge et que blonde lui montre ce qu'il faut faire !!
