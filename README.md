@@ -1,6 +1,6 @@
 # synergo-le-site
 
-j'ai envie de regarder superman en méchant mais je sais pas si c'est une bonne idée...
+si t'as vu discord me juge pas ^^
 
 et puis nik l'important c la video et les detecteurs
 
