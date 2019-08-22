@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -87,63 +88,28 @@
 		<div class="feedback_text">
 		    <h3>Télécharge ta video</h3>
 		    <p>
-                        Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderitin.
+                        Pour information nous garderons votre
+                        vidéo confidentiellements.
+                        Mais nous la conserverons pour quand
+                        on fera de l'ia ! ptetre ca servira
 		    </p>
 		</div>
 	    </div>
-	    <div class="col-lg-7">
-                <div class="testi_slider_inner">
-                    <div class="testi_slider owl-carousel">
-                        <div class="item">
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="/static/img/testimonials/testi-1.jpg" alt="">
-                                </div>
-                            <div class="media-body">
-                                <p>
-                                    “Accessories Here you can
-                                    find the best computer accessory
-                                    for your laptop, monitor, printer,
-                                    scanner, speaker, projector, hardware”.
-                                </p>
-                                <h4>Mark Alviro Wiens</h4>
-                                <h5>CEO at Google</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="media">
-                            <div class="d-flex">
-                                <img src="/static/img/testimonials/testi-1.jpg" alt="">
-                            </div>
-                            <div class="media-body">
-                                <p>
-                                    “Accessories Here you can find the best computer accessory for your laptop, monitor, printer, scanner, speaker, projector, hardware”.
-                                </p>
-                                <h4>Mark Alviro Wiens</h4>
-                                <h5>CEO at Google</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="media">
-                            <div class="d-flex">
-                                <img src="/static/img/testimonials/testi-1.jpg" alt="">
-                            </div>
-                        <div class="media-body">
-                            <p>
-                                “Accessories Here you can find the best computer accessory for your laptop, monitor, printer, scanner, speaker, projector, hardware”.
-                            </p>
-                            <h4>Mark Alviro Wiens</h4>
-                            <h5>CEO at Google</h5>
-                        </div>
-                    </div>
-                </div>
+	    
+            <div class="col-lg-5">
+            
+            <form method="POST" action="/video/telechargement_video/"
+                enctype="multipart/form-data">
+                
+                {% csrf_token %}
+                {{form.docfile}}
+                <input type="submit" value="Upload" />
+            </form>
+            
             </div>
-        </div>
+            
+	</div>
     </div>
-</div>
-</div>
 </div>
 </section>
 
