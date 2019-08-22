@@ -20,6 +20,33 @@ from .forms import UserLoginForm, UserRegisterForm
 from .models import *
 
 
+
+def login_view(request):
+    """Here we define the login view"""
+
+    next = request.GET.get('next')
+    form = UserLoginForm(request.POST or None)
+
+
+    if form.is_valid():
+        
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+
+        
+        if next:
+            return redirect(next)
+        return redirect('../../')
+
+    context = {
+        'form':form
+    }
+
+    return render(request, 'login.html', context)
+            
+
 def register(request):
     """Here we define the register view"""
 
@@ -45,7 +72,7 @@ def register(request):
 
         if next:
             return redirect(next)
-        return redirect('/account/register2')
+        return redirect('../../')
 
     context = {
         'form':form
@@ -55,34 +82,11 @@ def register(request):
 
 
 
-def login_views(request):
-    """Here we define the login view"""
 
-    next = request.GET.get('next')
-    form = UserLoginForm(request.POST or None)
-
-
-    if form.is_valid():
-        
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        login(request, user)
-
-        
-        if next:
-            return redirect(next)
-        return redirect('../../')
-
-    context = {
-        'form':form
-    }
-
-    return render(request, 'login.html', context)
-
-
-def logout(request):
+login_required
+def logout_view(request):
     """Here we define logout session"""
 
     logout(request)
+    print("déconnexion")
     return redirect('/')
