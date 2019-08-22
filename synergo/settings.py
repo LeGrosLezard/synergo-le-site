@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+from os import path as os_path
+PROJECT_PATH = os_path.abspath(os_path.split(__file__)[0])
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,8 +26,8 @@ SECRET_KEY = '&$+a=w!s8rvc8j-nydf+-+g#c)1(w=c*ra+#(^3=6c#+ksy^$7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ["synergo.herokuapp.com"]
+ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ["synergo.herokuapp.com"]
 
 
 # Application definition
@@ -38,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    "video",
+    "compte"
 ]
 
 MIDDLEWARE = [
@@ -78,8 +82,12 @@ WSGI_APPLICATION = 'synergo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'd35jd8n8qm4v01',
+            'USER': "lfsoxpjsmoilqs",
+            'PASSWORD': '03d548b643b3b0b7569c6f8e1767c1608edbf5769761e987f29e30ebc95994c7',
+            'HOST': 'ec2-54-247-96-169.eu-west-1.compute.amazonaws.com',
+            'PORT': '5432'
     }
 }
 
@@ -127,4 +135,5 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
-
+MEDIA_ROOT = os_path.join(PROJECT_PATH, 'media')
+MEDIA_URL = '/video/video_user/'
