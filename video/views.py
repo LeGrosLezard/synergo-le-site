@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import cv2
+from django.http import HttpResponseRedirect
 
 #We importing form and model from
 #models.py and forms.py
@@ -11,7 +12,6 @@ import cv2
 
 from .forms import video_upload_form
 from .models import video_upload
-from .views_function import search_video_name
 def telechargement_video(request):
     """Here we recup post method
     from user. We recup the download file"""
@@ -30,22 +30,17 @@ def telechargement_video(request):
             
             #recup the file
             name_video = request.FILES['docfile']
-            
-            #Here we see if the video name already exists or not
-            present_video = search_video_name(name_video)
-            
-            #If name exists so we ask user to changes it
+            #Clean it
+            form.cleaned_data['docfile'].name
+            # we save it on media folder.
             #and register it into database
-            if present_video is None:
-                return HttpResponse("rename")
+            newdoc = video_upload(docfile = request.FILES['docfile'])
+            newdoc.save()
             
-            #If not exists we save it on media folder.
-            #and register it into database
-            else:
-                newdoc = video_upload(docfile = request.FILES['docfile'])
-                newdoc.save()
-
-
+            #And now we insert it into database
+            file = newdoc.docfile
+            #And we return to video watch template
+            return HttpResponseRedirect('/video/video_capture/')
     
     return render(request, 'telechargement_video.html', {"form":form})
 
