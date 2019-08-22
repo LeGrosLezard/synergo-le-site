@@ -1,5 +1,6 @@
 from django.shortcuts import render
-
+from django.http import HttpResponse
+import cv2
 
 #We importing form and model from
 #models.py and forms.py
@@ -19,12 +20,50 @@ def telechargement_video(request):
     if request.method == "POST":
 
         if form.is_valid():
-            print("ouiiiiiiiiiii")
 
             newdoc = video_upload(docfile = request.FILES['docfile'])
             newdoc.save()
-           
-            print("coucou")
-
         
     return render(request, 'telechargement_video.html', {"form":form})
+
+
+
+def video_capture(request):
+    
+    video = cv2.VideoCapture(0)
+    while(True):
+        ret, frame = video.read()
+        cv2.imshow('FACE', frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+
+    video.release()
+    cv2.destroyAllWindows()
+        
+    return HttpResponse("OK")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
