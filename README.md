@@ -1,6 +1,6 @@
 # synergo-le-site
 
-si t'as vu discord me juge pas ^^
+
 
 et puis nik l'important c la video et les detecteurs
 
