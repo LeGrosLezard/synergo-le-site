@@ -1,19 +1,38 @@
-import os
+import cv2
 
-def search_video_name(name_video):
-    """Here when user upload his video
-    we search if video name is present.
-    If this name exists we ask user to change the
-    name"""
+PATH_VIDEO = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\synergo\media\{0}"
 
-    #Create folder to list
-    liste = os.listdir(r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\synergo\media\video_upload")
-    #Define out (if out is None so we ask user to changes name)
-    out = True
-    #We try to see if the current video name
-    #is already present
-    for i in liste:
-        if i == str(name_video):
-            out = None
+
+def displaying_video_user(video_name):
+
+    #Create video object with path video of click of user
+    video = cv2.VideoCapture(PATH_VIDEO.format(video_name))
+
+    ok = True
+    
+    #Loop while True read this:
+    while(True):
         
-    return out
+        #If key push (but it don't serve here)
+        if cv2.waitKey(1) & 0xFF == ord('a'):
+            ok = False
+        
+        if cv2.waitKey(1) & 0xFF == ord('b'):
+            ok = True
+            
+        if cv2.waitKey(1) & 0xFF == ord('s'):
+            break
+
+        if ok is True:
+            #Picture by picture reading
+            ret, frame = video.read()
+            frame = cv2.resize(frame, (600, 400))
+        
+            #Displaying it
+            cv2.imshow('VIDEO', frame)
+            
+    #I don't know
+    video.release()
+    #Destroy all windowd
+    cv2.destroyAllWindows()
+
