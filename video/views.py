@@ -2,6 +2,8 @@ import cv2 #for database
 from django.shortcuts import render #for render
 from django.http import HttpResponse #for response
 from django.http import HttpResponseRedirect #for redirecting
+import threading
+
 
 #We importing form for uploading
 from .forms import video_upload_form
@@ -50,6 +52,8 @@ def telechargement_video(request):
 from database.video.users_video import recup_video_user
 #We call this function, it displaying video !
 from .views_function import displaying_video_user
+#We call this function for reading the current video analysis
+from .views_function import displaying_video_user
 def video_capture(request):
     """Here we displaying video"""
 
@@ -66,14 +70,33 @@ def video_capture(request):
         
         #First we ask the video name.
         video_name = request.POST.get('video_name')
-        #Pause video
+        #Here we have 30 seconds timeout... so we
+        #document.click from html ajax and we read a file
+        #and return it
+        analysa = request.POST.get('analysa')
+        
+        if analysa:
+            text = recup_analysis(video_name)
+            return HttpResponse(str(text))
 
-        #Stop video
+
 
         if video_name:
             #we displaying this video.
-            displaying_video_user(video_name)
-            return HttpResponse("OK")
+            a = displaying_video_user(video_name)
+            print(a)
+
+                #return HttpResponse("OK")
+
+
+
+
+
+
+
+
+            
+            
 
     return render(request, 'video_capture.html', {"user":pseudo,
                                                   "liste":video})
