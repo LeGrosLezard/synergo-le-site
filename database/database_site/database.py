@@ -18,24 +18,13 @@ def creation_database():
 
     cur = conn.cursor()
 
-    #TABLE User with only pseudo
-    cur.execute("""
-                CREATE TABLE USERS(
-                    id serial PRIMARY KEY,
-                    pseudo VARCHAR(100)
-                );
-                """)
 
-    conn.commit() 
-
-
-
-    #TABLE VIDEO who's reference to user
+    #TABLE VIDEO
     cur.execute("""
                 CREATE TABLE VIDEO(
                     id serial PRIMARY KEY,
-                    id_user integer REFERENCES users (id),
-                    video_name VARCHAR(100)
+                    video_name VARCHAR(100),
+                    pseudo VARCHAR(100)
                 );
                 """)
 
