@@ -2,7 +2,7 @@
 
 
 
-et puis nik l'important c la video et les detecteurs
+
 
 soit tu fais télécharger la video
 
