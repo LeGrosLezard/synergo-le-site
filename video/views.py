@@ -1,17 +1,19 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-import cv2
-from django.http import HttpResponseRedirect
-
-#We importing form and model from
-#models.py and forms.py
-#We return the form,
-#We recup the post and if it's valid we uploading it
-#on the MEDIA folder.
+import cv2 #for database
+from django.shortcuts import render #for render
+from django.http import HttpResponse #for response
+from django.http import HttpResponseRedirect #for redirecting
 
 
+
+
+#We importing form for uploading
 from .forms import video_upload_form
+#We importing models for uploading
 from .models import video_upload
+#We importing database for insert (video <-> user) uploading
+from database.video.users_video import current_user_video
+
+
 def telechargement_video(request):
     """Here we recup post method
     from user. We recup the download file"""
@@ -39,18 +41,21 @@ def telechargement_video(request):
             
             #And now we insert it into database
             file = newdoc.docfile
+            current_user_video(pseudo, file)
+            
             #And we return to video watch template
             return HttpResponseRedirect('/video/video_capture/')
     
     return render(request, 'telechargement_video.html', {"form":form})
 
 
-
+#We call function user_video from database for recup names of video
+from database.video.users_video import recup_video_user
 def video_capture(request):
 
     pseudo = request.user
-
-
+    video = recup_video_user(pseudo)
+    video = list(video)
 
 
 
@@ -69,7 +74,8 @@ def video_capture(request):
             
         return HttpResponse("OK")
 
-    return render(request, 'video_capture.html', )
+    return render(request, 'video_capture.html', {"user":pseudo,
+                                                  "liste":video})
 
 
 
