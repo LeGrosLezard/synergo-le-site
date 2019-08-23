@@ -30,15 +30,29 @@ def current_user_video(pseudo, video_name):
 
 
 
+def recup_video_user(pseudo):
+    
+    #We call psycopg2 (database from heroku serveur)
+    conn = psycopg2.connect(database=DATABASE,
+                            user=USER,
+                            host=HOST,
+                            password=PASSWORD) 
 
+    cur = conn.cursor()
 
+    cur.execute("""select * from VIDEO where pseudo='{}'""".format(pseudo))
 
+    conn.commit() 
 
-##    rows = cur.fetchall()
-##    liste = [i for i in rows]
-##
-##    print(liste)
+    rows = cur.fetchall()
+    liste = [i for i in rows]
+    liste_video = []
+    for i in liste:
+        liste_video.append(liste[0][1])
 
+    return liste_video
+    #In real word -> give me from the video table from
+    #database the lign where current user nmae is present ty
 
 
 
