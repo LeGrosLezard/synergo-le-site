@@ -3,9 +3,6 @@ from django.shortcuts import render #for render
 from django.http import HttpResponse #for response
 from django.http import HttpResponseRedirect #for redirecting
 
-
-
-
 #We importing form for uploading
 from .forms import video_upload_form
 #We importing models for uploading
@@ -51,28 +48,32 @@ def telechargement_video(request):
 
 #We call function user_video from database for recup names of video
 from database.video.users_video import recup_video_user
+#We call this function, it displaying video !
+from .views_function import displaying_video_user
 def video_capture(request):
+    """Here we displaying video"""
 
+    #Current user
     pseudo = request.user
+
+    #We recup from database videos names
+    #of users (In big we ask database what video from media is to user)
     video = recup_video_user(pseudo)
     video = list(video)
 
-
-
+    #Here we recup POST method.
     if request.method == "POST":
-        video = cv2.VideoCapture(0)
-        while(True):
-            ret, frame = video.read()
-            cv2.imshow('FACE', frame)
+        
+        #First we ask the video name.
+        video_name = request.POST.get('video_name')
+        #Pause video
 
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+        #Stop video
 
-
-        video.release()
-        cv2.destroyAllWindows()
-            
-        return HttpResponse("OK")
+        if video_name:
+            #we displaying this video.
+            displaying_video_user(video_name)
+            return HttpResponse("OK")
 
     return render(request, 'video_capture.html', {"user":pseudo,
                                                   "liste":video})
