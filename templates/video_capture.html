@@ -18,6 +18,8 @@
         <!-- main css -->
         <link rel="stylesheet" href="/static/css/style.css">
         <link rel="stylesheet" href="/static/css/responsive.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        
     </head>
 <body>
 
@@ -94,34 +96,112 @@
         </div>
 
 
+
+
+        <!-- Here we stock information on display:none. -->
+        <!-- Here we did it for ajax call. Indeed, we recup list of video of users.
+        After one click, we put the video name to a div ID.
+        After that we doing automatic click on clique id div. This last div make the ajax call.-->
+
+        <div id="name_video_stock" value=""></div>
+        <input type="button" id="clique" style="display:none;" />
+
+
+        <br><br>
+        <h3>Attention la vidéo se lancer derriere la page.</h3>
+            
+        <br><br><br>
+        <ul>
+            <h4>
+            <li>Appuie sur a pour pause</li><br>
+            <li>Appuie acharne toi sur b pour reprise</li><br>
+            <li>Appuie acharne toi sur s Pour quitter</li><br></h4>
+        <ul>
+        <br><br><br>
+
         <!-- Here we make appear video of the dude. -->
-        
-            {% for i in liste %}
-            
-            <div class="row m0 service_inner">
-            
-                <div class="col-lg-3 col-md-6 p0">
-                    <div class="service_img">
-                        <img class="img-fluid" src="/static/img/service/service-1.jpg" alt="">
+
+
+            <div class="container">
+              <div class="row">
+                {% for i in liste %}
+
+                    <div class="col-sm-12 col-md-5 col-lg-4" style="background:;border:1px solid black;">
+                        <h4><strong style='color:white;'>Video :</strong> <br/><p style='color:black;'>{{i}}</p></h4>
+                        <p>
+                            <input type="button" value="Voir l'analyse" onclick="play_video('{{i}}')">
+                        </p>
                     </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 p0">
-                    <div class="service_text">
-                        <h4>Spreading <br/>{{i}}</h4>
-                            <p>
-                                <input type="button" value="Voir l'analyse">
-                            </p>
-                    </div>
-                </div>
+                    <div style='width:20px;'></div>
 
 
+                {% endfor %}
 
-            {% endfor %}
 
+            </div>
         </div>
-    </div>
+
+        
 </section>
+
+
+<script>
+    function play_video(name_video){
+        document.getElementById("name_video_stock").value =  name_video;
+        document.getElementById("clique").click();
+        
+    }
+
+
+
+
+
+//-----------------------------------------------------------------1
+jQuery("#clique").on("click", function(e){
+    
+ video_name = document.getElementById("name_video_stock").value
+ 
+ e.preventDefault();
+  jQuery.ajax({
+      data:{
+          "video_name":video_name,
+          'csrfmiddlewaretoken': '{{csrf_token}}' , 
+      },
+      type:"POST",
+      url:"/video/video_capture/"
+  })
+  .done(function(data){
+      if (data.error){
+          document.getElementById("#Alert").inner.html = "aie"; 
+      }
+      else{
+
+          document.getElementById("name_video_stock").value =  "";
+          
+      };
+      
+  });
+ });
+//-----------------------------------------------------------------1
+
+
+
+
+
+
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
