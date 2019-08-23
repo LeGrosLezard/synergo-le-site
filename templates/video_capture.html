@@ -106,7 +106,6 @@
         <div id="name_video_stock" value=""></div>
         <input type="button" id="clique" style="display:none;" />
 
-
         <br><br>
         <h3>Attention la vidéo se lancer derriere la page.</h3>
             
@@ -117,7 +116,16 @@
             <li>Appuie acharne toi sur b pour reprise</li><br>
             <li>Appuie acharne toi sur s Pour quitter</li><br></h4>
         <ul>
+
+        
         <br><br><br>
+
+
+        <!-- NOW WE JUST DISPLAY THE SUPER ANALYSIS -->
+
+        <div style="background:blue;" id="analysis"></div>
+
+
 
         <!-- Here we make appear video of the dude. -->
 
@@ -146,15 +154,13 @@
 
 
 <script>
-    function play_video(name_video){
-        document.getElementById("name_video_stock").value =  name_video;
-        document.getElementById("clique").click();
-        
-    }
 
 
-
-
+function play_video(name_video){
+    document.getElementById("name_video_stock").value =  name_video;
+    document.getElementById("clique").click();
+    
+}
 
 //-----------------------------------------------------------------1
 jQuery("#clique").on("click", function(e){
@@ -175,9 +181,8 @@ jQuery("#clique").on("click", function(e){
           document.getElementById("#Alert").inner.html = "aie"; 
       }
       else{
-
-          document.getElementById("name_video_stock").value =  "";
-          
+          document.getElementById("analysis").inner.html = "analyse complete sur papier ? c 2 balles gros"; 
+        
       };
       
   });
