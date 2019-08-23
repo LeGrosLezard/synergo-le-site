@@ -9,6 +9,7 @@
 
 #un site web qui peut aider les personnes à comprendre leur gestes et ainsi, s'arreter deux secondes sur leur pensée et mieux se comprendre ptetre ! en tout cas moi ca m'a fait ca au début
 
+#ouais fin si ca marche et que ya du cli ca sera 2 balles la video rien a foutre
 
 soit tu fais télécharger la video
 
