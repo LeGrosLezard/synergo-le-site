@@ -80,92 +80,49 @@
 
 
 <section class="service_area p_120">
-<div class="container box_1620">
-    <div class="main_title">
-	<h2>Vos vidéos</h2>
-	<p>
-            Choisis en une ect....
-	</p>
+    <div class="container box_1620">
+
+        <!-- Here we explain to user what he need to do for us. -->
+        <div class="main_title">
+            <h2>Vos vidéos {{user}}</h2>
+            <p>
+                Choisis en une ect une fenetre apparait et nous mettons selon le temps de la
+                vidéo les choses que nous voyons.<br>
+                Nous ne sommes pas fiable à 100% Nous avons donc besoin si vous le voulez
+                nous renseigner sur la justesse des gestes merci.  
+            </p>
+        </div>
+
+
+        <!-- Here we make appear video of the dude. -->
+        
+            {% for i in liste %}
+            
+            <div class="row m0 service_inner">
+            
+                <div class="col-lg-3 col-md-6 p0">
+                    <div class="service_img">
+                        <img class="img-fluid" src="/static/img/service/service-1.jpg" alt="">
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 p0">
+                    <div class="service_text">
+                        <h4>Spreading <br/>{{i}}</h4>
+                            <p>
+                                <input type="button" value="Voir l'analyse">
+                            </p>
+                    </div>
+                </div>
+
+
+
+            {% endfor %}
+
+        </div>
     </div>
-
-
-
-    {% for i in liste %}
-    <div class="row m0 service_inner">
-    
-	<div class="col-lg-3 col-md-6 p0">
-	    <div class="service_img">
-		<img class="img-fluid" src="/static/img/service/service-1.jpg" alt="">
-	    </div>
-	</div>
-	<div class="col-lg-3 col-md-6 p0">
-	    <div class="service_text">
-		<h4>Spreading <br/>{{i.title}}</h4>
-		    <p>
-			<input type="button" value="Voir l'analyse">
-		    </p>
-	    </div>
-	</div>
-
-
-
-	
-        <div class="col-lg-3 col-md-6 p0">
-            <div class="service_img">
-                <img class="img-fluid" src="/static/img/service/service-2.jpg" alt="">
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 p0">
-            <div class="service_text">
-                <h4>Spreading <br/>{{i.title}}</h4>
-                <p>
-                    <input type="button" value="Voir l'analyse">
-                </p>
-            </div>
-        </div>
-
-
-        
-        <div class="col-lg-3 col-md-6 p0">
-            <div class="service_text">
-                <h4>Spreading <br/>{{i.title}}</h4>
-                <p>
-                    <input type="button" value="Voir l'analyse">
-                </p>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 p0">
-            <div class="service_img">
-                <img class="img-fluid" src="/static/img/service/service-3.jpg" alt="">
-            </div>
-        </div>
-
-
-        
-        <div class="col-lg-3 col-md-6 p0">
-            <div class="service_text">
-                <h4>Spreading <br/>{{i.title}}</h4>
-                <p>
-                    <input type="button" value="Voir l'analyse">
-                </p>
-             </div>
-        </div>
-        <div class="col-lg-3 col-md-6 p0">
-            <div class="service_img">
-                <img class="img-fluid" src="/static/img/service/service-4.jpg" alt="">
-            </div>
-        </div>
-
-
-
-
-        {% endfor %}
-
-
-        
-</div>
-</div>
 </section>
+
 
 
 
