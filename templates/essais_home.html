@@ -22,26 +22,52 @@
     <body>
 
 
+    <DIV STYLE="margin-top:10px;visibility:hidden;" id="top_page">
+        <div class="row">
+
+        <div class="col-sm" style="float:left;color:black;">
+            <strong STYLE="margin-left:5%;">S Y N E R G O</strong>
+        </div>
+
+
+        <div class="col-sm"">
+        </div>
+
+
+         <div class="col-sm">
+        <P>
+            <strong><input type='button' value='Home'>
+            <input type='button' value='About'></strong>
+            <input type='button' value='Contact'>
+            <input type='button' value='Télécharger une vidéo'>
+            <input type='button' value='Vos vidéo'>
+        </P>
+        </div>
+        </div>
+    </DIV>
+
 
     <DIV style="height:150px;margin-top:100px;">
-        <CENTER><DIV id="div_logo" STYLE="margin-top:50px;font-weight:bold;font-size:2em;color:black;"></DIV></CENTER>
+        <CENTER><DIV id="div_logo" STYLE="margin-top:50px;font-weight:bold;font-size:3em;color:black;"></DIV></CENTER>
         <br>
-        <CENTER><DIV id="div_logo1" STYLE="color:black;"></DIV></CENTER>
+        <CENTER><DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;"></DIV></CENTER>
     </DIV>
 
 
     <CENTER>
-        <DIV ID="sentence" STYLE="width:20%;height:150px;">
-        
-            <DIV ID="message1" STYLE="display:none;">Me ment-il ?</div>
-            <DIV ID="message2" STYLE="display:none;">M'aime t'elle ?</div>
-            <DIV ID="message3" STYLE="display:none;">Est-il à l'aise ?</div>
-            <DIV ID="message4" STYLE="display:none;">pourquoi est-ce que ca me gratte ?</div>
-        
-        </DIV> 
+        <br>
+        <DIV ID="sentence" STYLE="width:20%;height:20px;font-size:25px;"></DIV><br><br><br>
+        <DIV ID="sous" STYLE="height:20px;"></DIV>
     </CENTER>
     
 
+    <CENTER>
+        <br><br><br><br><br><br><br>
+        <DIV ID="acces" STYLE="font-size:1.5em;">
+            <p id="acces">
+                A C C E S &nbsp;A U&nbsp; S I T E
+            </p></DIV>
+    </CENTER>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -50,7 +76,19 @@
 
 <em></em>
     
+<style>
+    #acces:hover{
+        color:red;
+    }
+    input{
+        border:none;
+        background:none;
+    }
+    input:hover{
+        color:red;
+    }
 
+</style>
     
 <SCRIPT LANGUAGE=JavaScript>
 
@@ -82,19 +120,29 @@
         actual_texte = nb_msg;
         var fin = document.getElementById("div_logo").innerHTML;
         if (fin == "S Y N E R G O"){
+            document.getElementById("top_page").style.visibility = "visible";
+
+            var text_sous = "<em STYLE='color:black;'>de la compréhension de soi à celle des autres</em>"
+            document.getElementById("sous").innerHTML = text_sous;
+
             
-            setInterval("logo_1()",1000)
+            document.getElementById("acces").style.display = "block";
+            setInterval("logo_1()", 500)
+            
         };
     };
     
     if(document.getElementById){
-        setInterval("changeMessage()",500)
+        setInterval("changeMessage()",200)
     };
 
 
 
 
-    var LISTE = ["message1", "message2", "message3", "message4"]
+    var LISTE = ["<em>pourquoi est-ce que ca me gratte ?</em>",
+                "<em>Me ment-il ?</em>",
+                 "<em>M'aime t'elle ?</em>",
+                 "<em>Est-il à l'aise ?</em>"]
 
     element = 0;
     function sentence(){
@@ -107,13 +155,19 @@
         };
     };
 
+
     function start(){
-        time = window.setInterval("sentence()", 1000);
+        time = window.setInterval("sentence()", 2000);
+
     };
 
 
+
+    window.setTimeout("start()", 2000)
+
     
-    start()
+    
+    
 
 </SCRIPT>
 
