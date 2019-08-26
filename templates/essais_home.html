@@ -37,7 +37,6 @@
          <div class="col-sm">
         <P>
             <strong><input type='button' value='Home'>
-            <input type='button' value='About'></strong>
             <input type='button' value='Contact'>
             <input type='button' value='Télécharger une vidéo'>
             <input type='button' value='Vos vidéo'>
@@ -47,29 +46,30 @@
     </DIV>
 
 
-    <DIV style="height:150px;margin-top:90px;">
+    <DIV style="height:150px;margin-top:80px;">
         <CENTER><DIV id="div_logo" STYLE="margin-top:50px;font-weight:bold;font-size:3em;color:white;"></DIV><br></CENTER>
         <br>
         <CENTER>
             <DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;color:white;"></DIV>
             <DIV ID="sous" STYLE="height:30px;color:white;"></DIV>
-            <img src="/static/img/coeur.png" ID="img" STYLE="width:30%;height:20%;display:none;">
+            <img src="/static/img/coeur.png" ID="img" STYLE="width:25%;height:20%;display:none;">
         </CENTER>
     </DIV>
+
+
+    
     <br>
     <CENTER>
-        <DIV ID="sentence" STYLE="width:20%;height:20px;font-size:15px;text-align:center;color:white;margin-top:220px;"></DIV><br><br>
+        <DIV ID="sentence" STYLE="width:20%;height:20px;font-size:15px;text-align:center;color:white;margin-top:180px;"></DIV><br><br>
     </CENTER>
     
 
     <CENTER>
         <DIV ID="acces" STYLE="font-size:1.5em;">
             <p id="acces">
-                <input type="button" value="A C C E S &nbsp;A U&nbsp; S I T E" id="access_site">
+                <input type="button" class="btn btn-outline-primary" id="access_site" value="A C C E S &nbsp;A U&nbsp; S I T E"></button>
             </p></DIV>
     </CENTER>
-
-
 
 
 
@@ -94,12 +94,14 @@
     
 <style>
     #access_site:hover{
+        background:none;
         color:red;
         border:1px solid white;
         height:62px;
         width:302px;
     }
     #access_site{
+        color:white;
         border:1px solid white;
         height:60px;
         width:300px;
