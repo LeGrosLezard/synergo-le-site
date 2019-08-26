@@ -19,14 +19,14 @@
         <link rel="stylesheet" href="/static/css/responsive.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
-    <body>
+    <body STYLE="background:black;">
 
 
     <DIV STYLE="margin-top:10px;visibility:hidden;" id="top_page">
         <div class="row">
 
         <div class="col-sm" style="float:left;color:black;">
-            <strong STYLE="margin-left:5%;">S Y N E R G O</strong>
+            <strong STYLE="margin-left:5%;color:white;">S Y N E R G O</strong>
         </div>
 
 
@@ -47,27 +47,43 @@
     </DIV>
 
 
-    <DIV style="height:150px;margin-top:100px;">
-        <CENTER><DIV id="div_logo" STYLE="margin-top:50px;font-weight:bold;font-size:3em;color:black;"></DIV></CENTER>
+    <DIV style="height:150px;margin-top:90px;">
+        <CENTER><DIV id="div_logo" STYLE="margin-top:50px;font-weight:bold;font-size:3em;color:white;"></DIV><br></CENTER>
         <br>
-        <CENTER><DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;"></DIV></CENTER>
+        <CENTER>
+            <DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;color:white;"></DIV>
+            <DIV ID="sous" STYLE="height:30px;color:white;"></DIV>
+            <img src="/static/img/coeur.png" ID="img" STYLE="width:30%;height:20%;display:none;">
+        </CENTER>
     </DIV>
-
-
+    <br>
     <CENTER>
-        <br>
-        <DIV ID="sentence" STYLE="width:20%;height:20px;font-size:25px;"></DIV><br><br><br>
-        <DIV ID="sous" STYLE="height:20px;"></DIV>
+        <DIV ID="sentence" STYLE="width:20%;height:20px;font-size:15px;text-align:center;color:white;margin-top:220px;"></DIV><br><br>
     </CENTER>
     
 
     <CENTER>
-        <br><br><br><br><br><br><br>
         <DIV ID="acces" STYLE="font-size:1.5em;">
             <p id="acces">
-                A C C E S &nbsp;A U&nbsp; S I T E
+                <input type="button" value="A C C E S &nbsp;A U&nbsp; S I T E" id="access_site">
             </p></DIV>
     </CENTER>
+
+
+
+
+
+<style>
+
+</style>
+
+
+
+
+
+
+
+
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -77,25 +93,39 @@
 <em></em>
     
 <style>
-    #acces:hover{
+    #access_site:hover{
         color:red;
+        border:1px solid white;
+        height:62px;
+        width:302px;
+    }
+    #access_site{
+        border:1px solid white;
+        height:60px;
+        width:300px;
     }
     input{
+        color:white;
         border:none;
         background:none;
     }
     input:hover{
         color:red;
     }
-
 </style>
     
 <SCRIPT LANGUAGE=JavaScript>
 
 
     function logo_1(){
-        var logo1_text = "<em><strong> - un site en ligne pour la compréhension du non verbale - </strong></em>";
+        var logo1_text = "<em><strong> - un site en ligne pour la compréhension du non verbale </strong></em>";
         document.getElementById("div_logo1").innerHTML = logo1_text;
+        var text_sous = "<em STYLE='color:white;'>de la compréhension de soi à celle des autres</em> - "
+        document.getElementById("sous").innerHTML = text_sous;
+        document.getElementById("img").style.display = "block";
+        
+
+        
     }
 
 
@@ -122,12 +152,7 @@
         if (fin == "S Y N E R G O"){
             document.getElementById("top_page").style.visibility = "visible";
 
-            var text_sous = "<em STYLE='color:black;'>de la compréhension de soi à celle des autres</em>"
-            document.getElementById("sous").innerHTML = text_sous;
-
-            
-            document.getElementById("acces").style.display = "block";
-            setInterval("logo_1()", 500)
+            setInterval("logo_1()", 600)
             
         };
     };
@@ -139,10 +164,10 @@
 
 
 
-    var LISTE = ["<em>pourquoi est-ce que ca me gratte ?</em>",
-                "<em>Me ment-il ?</em>",
-                 "<em>M'aime t'elle ?</em>",
-                 "<em>Est-il à l'aise ?</em>"]
+    var LISTE = ["<em style='color:white;'>pourquoi est-ce que ca me gratte ?</em>",
+                "<em style='color:white;'>Me ment-il ?</em>",
+                 "<em style='color:white;'>M'aime t'elle ?</em>",
+                 "<em style='color:white;'>Est-il à l'aise ?</em>"]
 
     element = 0;
     function sentence(){
@@ -163,7 +188,7 @@
 
 
 
-    window.setTimeout("start()", 2000)
+    window.setTimeout("start()", 2100)
 
     
     
