@@ -3,6 +3,8 @@
 
 ------------------------------------------------
 
+me suis tompé le mec comprend rien et l'autre a tout copris il lui file son style et lunette est refait pcquelle le met e navant et brune 1 dit ouais t cool ouais ben faut y etre
+
 mtn mettre le gros truk, faire les combo demandé si le mec a des lunettes ect et pour skypenergo le faire automatiquement
 
 et faudrai que ca donne de bon truk mais va falloir speech recog js... 
