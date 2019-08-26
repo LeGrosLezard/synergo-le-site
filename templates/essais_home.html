@@ -17,23 +17,48 @@
         <!-- main css -->
         <link rel="stylesheet" href="/static/css/style.css">
         <link rel="stylesheet" href="/static/css/responsive.css">
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
     <body>
 
 
 
-    <DIV style="height:300px;margin-top:100px;">
+    <DIV style="height:150px;margin-top:100px;">
         <CENTER><DIV id="div_logo" STYLE="margin-top:50px;font-weight:bold;font-size:2em;color:black;"></DIV></CENTER>
         <br>
         <CENTER><DIV id="div_logo1" STYLE="color:black;"></DIV></CENTER>
     </DIV>
 
-<em>Ment-il ? m'aime t'elle ? est il à l'aise ? pourquoi ca me gratte ?</em>
+
+    <CENTER>
+        <DIV ID="sentence" STYLE="width:20%;height:150px;">
+        
+            <DIV ID="message1" STYLE="display:none;">Me ment-il ?</div>
+            <DIV ID="message2" STYLE="display:none;">M'aime t'elle ?</div>
+            <DIV ID="message3" STYLE="display:none;">Est-il à l'aise ?</div>
+            <DIV ID="message4" STYLE="display:none;">pourquoi est-ce que ca me gratte ?</div>
+        
+        </DIV> 
+    </CENTER>
+    
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+
+<em></em>
     
 
     
 <SCRIPT LANGUAGE=JavaScript>
+
+
+    function logo_1(){
+        var logo1_text = "<em><strong> - un site en ligne pour la compréhension du non verbale - </strong></em>";
+        document.getElementById("div_logo1").innerHTML = logo1_text;
+    }
 
 
     var chaine = "S Y N E R G O"; 
@@ -48,6 +73,7 @@
         var txt = texte[i];
     };
     actual_texte = 0;
+    
     function changeMessage(){
         
         document.getElementById("div_logo").innerHTML = texte[actual_texte];
@@ -56,17 +82,38 @@
         actual_texte = nb_msg;
         var fin = document.getElementById("div_logo").innerHTML;
         if (fin == "S Y N E R G O"){
-            var logo1_text = "<em><strong> - un site en ligne pour la compréhension du non verbale - </strong></em>";
-            document.getElementById("div_logo1").innerHTML = logo1_text;
-            actual_texte = 0;
             
+            setInterval("logo_1()",1000)
         };
-        
     };
+    
     if(document.getElementById){
         setInterval("changeMessage()",500)
     };
 
+
+
+
+    var LISTE = ["message1", "message2", "message3", "message4"]
+
+    element = 0;
+    function sentence(){
+        document.getElementById('sentence').innerHTML = LISTE[element];
+        if(element < LISTE.length - 1){
+            element ++
+        }
+        else{
+            element = 0
+        };
+    };
+
+    function start(){
+        time = window.setInterval("sentence()", 1000);
+    };
+
+
+    
+    start()
 
 </SCRIPT>
 
