@@ -1,3 +1,5 @@
+import os
+import shutil
 import cv2 #for database
 from django.shortcuts import render #for render
 from django.http import HttpResponse #for response
@@ -41,6 +43,9 @@ def telechargement_video(request):
             #And now we insert it into database
             file = newdoc.docfile
             current_user_video(pseudo, file)
+            path1 = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\synergo\media\video_upload\{}"
+            path2 = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\static\video\{}"
+            shutil.copyfile(path1.format(str(name_video)), path2.format(str(name_video)))
             
             #And we return to video watch template
             return HttpResponseRedirect('/video/video_capture/')
@@ -53,10 +58,6 @@ def telechargement_video(request):
 
 #We call function user_video from database for recup names of video
 from database.video.users_video import recup_video_user
-#We call this function, it displaying video !
-from .views_function import displaying_video_user
-#We call this function for reading the current video analysis
-from .views_function import displaying_video_user
 def video_capture(request):
     """Here we displaying video"""
 
@@ -70,18 +71,16 @@ def video_capture(request):
 
     #Here we recup POST method.
     if request.method == "POST":
-        
-        #First we ask the video name.
         video_name = request.POST.get('video_name')
-        
+        #First we ask the video name.
         if video_name:
-            #we displaying this video.
-            #th1 = threading.Thread(target=displaying_video_user(video_name).start())
-            return HttpResponse('oki')
+            path = "/static/video/{}".format(str(video_name[13:]))
+            print(path, "0000000000000000000000000000000000")
+            return HttpResponse(str(path))
   
 
             
-            
+ 
     return render(request, 'video_capture.html', {"user":pseudo,
                                                   "liste":video})
 
@@ -89,12 +88,19 @@ def video_capture(request):
 
 
 
-
-    
+#We call this function, it displaying video !
+from .views_function import displaying_video_user
+#We call this function for reading the current video analysis
+from .views_function import displaying_video_user
 def video_fantome(request):
+    
     if request.method == "POST":
-        print("POUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-        return HttpResponse('ok')
+        video_name = request.POST.get('video_name')
+
+        if video_name:
+            #we displaying this video.
+            displaying_video_user(video_name)
+            return HttpResponse('ok')
 
 
 
