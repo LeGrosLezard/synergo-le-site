@@ -4,22 +4,12 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="/static/img/favicon.png" type="image/png">
-        <title>Flash Photography</title>
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="/static/css/bootstrap.css">
-        <link rel="stylesheet" href="/static/vendors/linericon/style.css">
-        <link rel="stylesheet" href="/static/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="/static/vendors/lightbox/simpleLightbox.css">
-        <link rel="stylesheet" href="/static/vendors/nice-select/css/nice-select.css">
-        <link rel="stylesheet" href="/static/vendors/animate-css/animate.css">
-        <link rel="stylesheet" href="/static/vendors/popup/magnific-popup.css">
-        <!-- main css -->
+        <title>Synergo</title>
+        <meta name="google" value="notranslate" />
         <link rel="stylesheet" href="/static/css/style.css">
-        <link rel="stylesheet" href="/static/css/responsive.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
-    <body STYLE="background:wite;">
+    <body STYLE="background:wite;width:100%;">
 
 
     <DIV style="height:150px;margin-top:200px;">
@@ -28,53 +18,43 @@
 
 
 
-<SCRIPT LANGUAGE=JavaScript>
+    <SCRIPT LANGUAGE=JavaScript>
 
-
-
-
-    var chaine = "S Y N E R G O"; 
-    var nb_car = chaine.length; 
-    var tableau = chaine.split("");
-    texte = new Array;
-    var txt = '';
-    var nb_msg = nb_car - 1;
-    
-    for (i=0; i<nb_car; i++){
-        texte[i] = txt+tableau[i];
-        var txt = texte[i];
-    };
-    actual_texte = 0;
-
-
-    function redirection(){
-        document.location.href="/compte/login"
-    };
-    
-    function changeMessage(){
+        var chaine = "S Y N E R G O"; 
+        var nb_car = chaine.length; 
+        var tableau = chaine.split("");
+        texte = new Array;
+        var txt = '';
+        var nb_msg = nb_car - 1;
         
-        document.getElementById("div_logo").innerHTML = texte[actual_texte];
-        actual_texte++;
-        if(actual_texte >= texte.length)
-        actual_texte = nb_msg;
-        var fin = document.getElementById("div_logo").innerHTML;
-        if (fin == "S Y N E R G O"){
-            setInterval("redirection()",50)
-            
+        for (i=0; i<nb_car; i++){
+            texte[i] = txt+tableau[i];
+            var txt = texte[i];
         };
-    };
-    
-    if(document.getElementById){
-        setInterval("changeMessage()",90)
-    };
+        actual_texte = 0;
 
+        function redirection(){
+            document.location.href="/compte/login"
+        };
+        
+        function changeMessage(){
+            
+            document.getElementById("div_logo").innerHTML = texte[actual_texte];
+            actual_texte++;
+            if(actual_texte >= texte.length)
+            actual_texte = nb_msg;
+            var fin = document.getElementById("div_logo").innerHTML;
+            if (fin == "S Y N E R G O"){
+                setInterval("redirection()",50)
+                
+            };
+        };
+        
+        if(document.getElementById){
+            setInterval("changeMessage()",90)
+        };
 
-
-
- 
-    
-
-</SCRIPT>
+    </SCRIPT>
 
 
 
