@@ -9,7 +9,7 @@ fantome -> lis la video et a chaque detection ecriture dans txt <-- faire les co
 
 video capture - > via ajax .clcik lis dans le ficheir et l'envoie
 
-sur video capture on envoie le lien du path pour lire la video sur la page via un <video>
+sur video capture on envoie le lien du path pour lire la video sur la page via un video balise + ecriture du fichier texte dans une fenetre
   
 le risque c que ca lag...... 
 
