@@ -35,8 +35,7 @@
 
          <div class="col-sm">
         <P>
-            <strong><input type='button' value='Home'>
-            <input type='button' value='Contact'>
+            <input type='button' value='Mon compte'>
             <input type='button' value='Télécharger une vidéo'>
             <input type='button' value='Vos vidéo'>
         </P>
@@ -45,14 +44,14 @@
     </DIV>
     
     <CENTER>
-        <h1 STYLE="margin-top:50px;font-size:3.5em;color:white;">S Y N E R G O</h1><br>
+        <h1 STYLE="margin-top:50px;font-size:3.5em;color:white;text-shadow: 5px 5px black;">S Y N E R G O</h1><br>
 
         <DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;color:white;">
-            <em><strong> - Un site en ligne pour la compréhension du non verbale - </strong></em>
+            <p><strong> - Upload une de tes vidéos préférées - </strong></p>
         </DIV>
         
         <DIV ID="sous" STYLE="height:30px;">
-            <p STYLE='color:white;'>de la compréhension de soi à celle des autres</p>
+            <p STYLE='color:white;'>Nous essaierons de la décrypter</p>
         </DIV>
 
     </CENTER>
@@ -69,23 +68,27 @@
 
 
             
-              <div class="col-sm" id="qui" STYLE="color:#777777;">
-                  <input type="button" class="input_menu" value="Q U I &nbsp;&nbsp; S O M M E S &nbsp;&nbsp; N O U S"
-                      onclick="display('QUI_SOUS', 'COMMENT_SOUS', 'QUOI_SOUS')">
+              <div class="col-sm" id="qui" STYLE="color:white;">
+                  <center>
+                      <input type="button" class="input_menu" value="Q U I &nbsp;&nbsp; S O M M E S &nbsp;&nbsp; N O U S"
+                          onclick="display('QUI_SOUS', 'COMMENT_SOUS', 'QUOI_SOUS')">
+                  </center>
              </div>
 
 
               
               <div class="col-sm" id="quoi" STYLE="color:white;">
                     <input type="button" class="input_menu" value="Q U E &nbsp;&nbsp;P U I S - J E &nbsp;&nbsp; F A I R E"
-                        onclick="display('QUOI_SOUS', 'QUI_SOUS', 'COMMENT_SOUS')">
+                        onclick="display('QUOI_SOUS', 'QUI_SOUS', 'COMMENT_SOUS')" STYLE="float:right;">
               </div>
 
 
               
               <div class="col-sm" id="comment" STYLE="color:white;">
-                    <input type="button" class="input_menu" value="C O M M E N T"
+                  <center>
+                    <input type="button" class="input_menu" value="C O M M E N T &nbsp;&nbsp; F A I R E"
                         onclick="display('COMMENT_SOUS', 'QUOI_SOUS', 'QUI_SOUS')">
+                  </center>
               </div>
 
               
@@ -115,7 +118,7 @@
         <DIV style="width:70%;margin-top:70px;display:none;" id="QUOI_SOUS">
             <div class="row">
               <div class="col-sm" id="" STYLE="color:white;">
-                  <input type="button" class="sous_menu1" value="M O N &nbsp;&nbsp; C O M P T E">
+                  <input type="button" class="sous_menu1" value="M O N &nbsp;&nbsp; C O M P T E" onclick="document.location.href='/compte/compte_direction/'">
              </div>
 
               <div class="col-sm" id="" STYLE="color:white;">
@@ -140,19 +143,19 @@
         <DIV style="width:70%;margin-top:70px;display:none;" id="QUI_SOUS">
             <div class="row">
               <div class="col-sm" id="" STYLE="color:white;">
-                  <input type="button" class="sous_menu1" value="COULOUM">
+                  <input type="button" class="sous_menu1" value="">
              </div>
 
               
               <div class="col-sm" id="" STYLE="color:white;">
 
-                    <input type="button" class="sous_menu1" value="FFEFEZFZ">
+                    <input type="button" class="sous_menu1" value="N O T R E &nbsp;&nbsp; P R E S E N T A T I O N">
               </div>
 
 
               
               <div class="col-sm" id="" STYLE="color:white;">
-                    <input type="button" class="sous_menu1" value="COUCOU">
+                    <input type="button" class="sous_menu1" value="">
               </div>
 
             </div>
@@ -168,19 +171,19 @@
         <DIV style="width:70%;margin-top:70px;display:none;" id="COMMENT_SOUS">
             <div class="row">
               <div class="col-sm" id="" STYLE="color:white;">
-                  <input type="button" class="sous_menu1" value="SASSASASASA">
+                  <input type="button" class="sous_menu1" value="">
              </div>
 
               
               <div class="col-sm" id="" STYLE="color:white;">
 
-                    <input type="button" class="sous_menu1" value="FEZFEZFZ">
+                    <input type="button" class="sous_menu1" value="E X P L I C A T I O N S">
               </div>
 
 
               
               <div class="col-sm" id="" STYLE="color:white;">
-                    <input type="button" class="sous_menu1" value="BDFBFD">
+                    <input type="button" class="sous_menu1" value="">
               </div>
 
             </div>
@@ -239,7 +242,7 @@
     }
     .input_menu{
         font-size:1.2em;
-        text-shadow: 4px 4px black;
+        text-shadow: 3px 3px black;
     }
     .sous_menu1:hover{
         color:black;
