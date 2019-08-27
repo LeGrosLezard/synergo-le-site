@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="/static/css/responsive.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
-    <body STYLE="background:#151D23;;">
+    <body STYLE="background:#151D23;width:100%;border:1px solid red;"">
 
 
     <DIV STYLE="margin-top:10px;visibility:hidden;" id="top_page">
@@ -34,13 +34,13 @@
         </div>
 
 
-         <div class="col-sm">
-        <P>
+         <div class="col-sm" style="border:1px solid blue;margin-right:2%;">
+
             <strong><input type='button' value='Home'>
-            <input type='button' value='Contact'>
+            <strong><input type='button' value='Contact'>
             <input type='button' value='Télécharger une vidéo'>
-            <input type='button' value='Vos vidéo'>
-        </P>
+            <input type='button' value='Vos vidéo'></strong>
+   
         </div>
         </div>
     </DIV>
@@ -48,11 +48,11 @@
 
     <DIV style="height:150px;margin-top:80px;">
         <CENTER><DIV id="div_logo" STYLE="margin-top:50px;
-            font-weight:bold;font-size:4em;color:white;font-family:'PT Serif';text-shadow:5px 5px black;"></DIV><br></CENTER>
+            font-weight:bold;font-size:4em;color:white;font-family:'PT Serif';text-shadow:5px 5px black;width:80%;border:1px solid red;"></DIV><br></CENTER>
         <br>
         <CENTER>
-            <DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;color:white;"></DIV>
-            <DIV ID="sous" STYLE="height:30px;color:white;"></DIV>
+            <DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;color:white;width:80%;border:1px solid red;"></DIV>
+            <DIV ID="sous" STYLE="height:30px;color:white;width:80%;border:1px solid red;"></DIV>
             <img src="/static/img/coeur.png" ID="img" STYLE="width:25%;height:20%;display:none;">
         </CENTER>
     </DIV>
@@ -61,16 +61,16 @@
     
     <br>
     <CENTER>
-        <DIV ID="sentence" STYLE="width:20%;height:20px;font-size:15px;text-align:center;color:white;margin-top:180px;"></DIV><br><br>
+        <DIV ID="sentence" STYLE="width:20%;height:20px;font-size:15px;text-align:center;color:white;margin-top:180px;border:1px solid red;"></DIV><br><br>
     </CENTER>
     
 
     <CENTER>
         <DIV ID="acces" STYLE="font-size:1.5em;">
-            <p id="acces">
-                <input type="button" class="btn btn-outline-primary" id="access_site" value="A C C E S &nbsp;A U&nbsp; S I T E"
-                    onclick="document.location.href='transition'"></button>
-            </p></DIV>
+         
+            <input type="button" class="btn btn-outline-primary" id="access_site" value="A C C E S &nbsp;A U&nbsp; S I T E"
+                onclick="document.location.href='transition'"></button>
+        </DIV>
     </CENTER>
 
 
@@ -113,9 +113,6 @@
             var text_sous = "<p STYLE='color:white;'>de la compréhension de soi à celle des autres</p> - "
             document.getElementById("sous").innerHTML = text_sous;
             document.getElementById("img").style.display = "block";
-            
-
-            
         }
 
 
@@ -127,6 +124,7 @@
         var nb_msg = nb_car - 1;
         
         for (i=0; i<nb_car; i++){
+
             texte[i] = txt+tableau[i];
             var txt = texte[i];
         };
@@ -136,12 +134,12 @@
             
             document.getElementById("div_logo").innerHTML = texte[actual_texte];
             actual_texte++;
-            if(actual_texte >= texte.length)
-            actual_texte = nb_msg;
+            if(actual_texte >= texte.length){
+                actual_texte = nb_msg;
+            }
             var fin = document.getElementById("div_logo").innerHTML;
             if (fin == "S Y N E R G O"){
                 document.getElementById("top_page").style.visibility = "visible";
-
                 setInterval("logo_1()", 600)
                 
             };
