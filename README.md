@@ -7,7 +7,7 @@ mettre les sons
 
 le menu deplace la page
 
-
+tous les boutons en bootstrap
 
 
 
