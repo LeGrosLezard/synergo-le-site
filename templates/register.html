@@ -1,10 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
+
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="/static/img/favicon.png" type="image/png">
-        <title>Flash Photography</title>
+        <title>Synergo</title>
+        <meta name="google" value="notranslate" />
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="/static/css/bootstrap.css">
         <link rel="stylesheet" href="/static/vendors/linericon/style.css">
@@ -17,105 +20,104 @@
         <!-- main css -->
         <link rel="stylesheet" href="/static/css/style.css">
         <link rel="stylesheet" href="/static/css/responsive.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
-<body>
+
+    
+    <body STYLE="background:#151D23;">
 
 
+        <DIV STYLE="margin-top:10px;" id="top_page">
+            <div class="row">
 
-
-<header class="header_area">
-    <div class="main_menu">
-	<nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-		
-		<a class="navbar-brand logo_h" href="index.html"><img src="/static/img/logo.png" alt=""></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-		</button>
-
-
-		<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-		    <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Compte</a></li>
-			<li class="nav-item"><a class="nav-link" href="about-us.html">About</a></li>
-
-			<li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                            aria-haspopup="true" aria-expanded="false">Télécharge une video</a>
-			</li>
-
-			<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-		    </ul>
-		</div>
-		
+            <div class="col-sm" style="float:left;">
+                <strong STYLE="margin-left:5%;color:white;">S Y N E R G O</strong>
             </div>
-	</nav>
-    </div>
-</header>
 
 
-
-
-<section class="home_banner_area">
-    <div>
-        <div class="banner_inner d-flex align-items-center">
-            <div class="container">
-                <div class="banner_content text-center">
-                    <h3 style="color:black;">Synergo<br></h3>
-                    <h5 style="color:black;">Mais à quoi pensent les autres ?</h5>
-
-                </div>
+            <div class="col-sm"">
             </div>
-        </div>
-    </div>
-</section>
+
+
+             <div class="col-sm">
+            <P>
+                <input type='button' value='Mon compte' class="menu">
+                <input type='button' value='Télécharger une vidéo' class="menu">
+                <input type='button' value='Vos vidéo' class="menu">
+            </P>
+            </div>
+            </div>
+        </DIV>
 
 
 
+        <CENTER>
+            <h1 STYLE="margin-top:50px;font-size:3.5em;color:white;text-shadow: 5px 5px black;">S Y N E R G O</h1><br>
 
-
-
-
-  <section class="features-icons bg-light text-center">
-    <div class="container">
-      <div class="row">
-
-        <div class="col-lg-12">
+            <DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;color:white;">
+                <p><strong> - Inscription - </strong></p>
+            </DIV>
             
-          <input type="button" id="retour" value="Retour"
-              onclick="document.location.href = '../../compte'"><br><br>
+            <DIV ID="sous" STYLE="height:30px;">
+                <p STYLE='color:white;'>Afin de décrypter toutes mes vidéos préférées</p>
+            </DIV>
 
-          <h2>Inscription</h2><br><br>
-                
-          <div>
+        </CENTER>
 
-            <form method="POST">
+
+            
+
+
+
+      <CENTER>
+          <DIV STYLE="width:40%;border:3px solid #777777;height:400px;border-radius:20%;margin-top:60px;">
+
+            <form method="POST" STYLE="margin-top:50px;">
               {% csrf_token %}
                 <center>
 
-                  {{form.username}}<br><br>
-                  {{form.password}}<br><br>
-                  {{form.email}}<br><br>
-                  {{form.email2}}<br><br>
 
+                  <DIV class="row">
+                      <div class="col-sm"><p style="color:white;">Pseudo : </p></div>
+                      <div class="col-sm">{{form.username}}</div>
+                  </DIV>
 
-                  <input type="submit" value="Valider" id="validation">
+                  <DIV class="row">
+                      <div class="col-sm"><p style="color:white;">Mot de passe : </p></div>
+                      <div class="col-sm">{{form.password}}</div>
+                  </DIV>
+
+                  <DIV class="row">
+                      <div class="col-sm"><p style="color:white;">Email : </p></div>
+                      <div class="col-sm">{{form.email}}</div>
+                  </DIV>
+
+                  <DIV class="row">
+                      <div class="col-sm"><p style="color:white;">Vérification email : </p></div>
+                      <div class="col-sm">{{form.email2}}</div>
+                  </DIV>
+                  
+
+                  <DIV class="row">
+                      <div class="col-sm">
+                          <input type="button" id="retour" value="Retour" class="validation"
+                        onclick="document.location.href = '/compte/compte_direction'"></div>
                         
+                      <div class="col-sm">
+                          <input type="submit" value="Valider" id="validation" class="validation">
+                      </div>
+                  </DIV>
+
+                  
+                              
                 </center>
                 {% csrf_token %}
             </form>
 
-        </div>
+        </DIV>
+    </CENTER>
 
-  
-      </div>
-    </div>
-  </section>
+    <br> <br> <br>
 
 
 
@@ -123,97 +125,53 @@
 
 
 
-
-
-  
-
-
-
-
-
-
-
-
-
-{% if user.authenticate %}
-oui
-{%else%}
-,nnoon
-{%endif%}
-
-<br><br><br><br><br><br><br><br><br><br><br><br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<footer class="footer_area">
-<div class="container">
-	<div class="row footer_inner">
-		<div class="col-lg-5 col-sm-6">
-			<aside class="f_widget ab_widget">
-			<div class="f_title">
-				<h3>About Me</h3>
-			</div>
-			<p>
-				Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills,
-			</p>
-			<p>
-				<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-				 Copyright &copy;
-				<script>document.write(new Date().getFullYear());</script>
-				 All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-				<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-			</p>
-			</aside>
-		</div>
-		<div class="col-lg-5 col-sm-6">
-			<aside class="f_widget news_widget">
-			<div class="f_title">
-				<h3>Newsletter</h3>
-			</div>
-			<p>
-				Stay updated with our latest trends
-			</p>
-			<div id="mc_embed_signup">
-				<form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe_form relative">
-					<div class="input-group d-flex flex-row">
-						<input name="EMAIL" placeholder="Enter email address" onfocus="this.placeholder=''" onblur="this.placeholder='Email Address '" required="" type="email">
-						<button class="btn sub-btn"><span class="lnr lnr-arrow-right"></span></button>
-					</div>
-					<div class="mt-10 info">
-					</div>
-				</form>
-			</div>
-			</aside>
-		</div>
-		<div class="col-lg-2">
-			<aside class="f_widget social_widget">
-			<div class="f_title">
-				<h3>Follow Me</h3>
-			</div>
-			<p>
-				Let us be social
-			</p>
-			<ul class="list">
-				<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-				<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-				<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-				<li><a href="#"><i class="fa fa-behance"></i></a></li>
-			</ul>
-			</aside>
-		</div>
-	</div>
-</div>
-</footer>
-</body>
+    </body>
 </html>
+
+
+
+<style>
+    .menu{
+        color:white;
+        border:none;
+        background:none;
+    }
+    .menu:hover{
+        color:red;
+    }
+    .col-sm{
+        padding:10px;
+    }
+    .validation{
+        color:white;
+        border:none;
+        background:none;
+    }
+    .validation:hover{
+        color:red;
+        border:1px solid white;
+    }
+    input{
+        text-align:center;
+    }
+    
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
