@@ -80,8 +80,8 @@ def register(request):
 
     return render(request, 'register.html', context)
 
-
-
+def compte_direction(request):
+    return render(request, 'compte_direction.html')
 
 login_required
 def logout_view(request):
