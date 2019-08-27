@@ -5,7 +5,7 @@
 
 en ajax -> fantome et video_capture
 
-fantome -> lis la video et a chaque detection ecriture dans txt
+fantome -> lis la video et a chaque detection ecriture dans txt <-- faire les combo
 
 video capture - > via ajax .clcik lis dans le ficheir et l'envoie
 
