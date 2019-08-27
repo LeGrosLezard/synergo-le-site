@@ -10,6 +10,12 @@ def garde(request):
 def transition(request):
     return render(request, 'transition.html')
 
+def transition_login(request):
+    return render(request, 'transition_login.html')
+
+def transition_register(request):
+    return render(request, 'transition_register.html')
+
 def menu(request):
     return render(request, 'menu.html')
 
