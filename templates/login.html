@@ -1,7 +1,168 @@
+<!doctype html>
+<html lang="fr">
 
-<form method="POST">
-{% csrf_token%}
-{{form}}
-<input type="submit" value="Valider">
 
-</form>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="/static/img/favicon.png" type="image/png">
+        <title>Synergo</title>
+        <meta name="google" value="notranslate" />
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/static/css/bootstrap.css">
+        <link rel="stylesheet" href="/static/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/static/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/static/vendors/lightbox/simpleLightbox.css">
+        <link rel="stylesheet" href="/static/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/static/vendors/animate-css/animate.css">
+        <link rel="stylesheet" href="/static/vendors/popup/magnific-popup.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="stylesheet" href="/static/css/responsive.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+
+    
+    <body STYLE="background:#151D23;">
+
+
+        <DIV STYLE="margin-top:10px;" id="top_page">
+            <div class="row">
+
+            <div class="col-sm" style="float:left;">
+                <strong STYLE="margin-left:5%;color:white;">S Y N E R G O</strong>
+            </div>
+
+
+            <div class="col-sm"">
+            </div>
+
+
+             <div class="col-sm">
+            <P>
+                <input type='button' value='Mon compte' class="menu">
+                <input type='button' value='Télécharger une vidéo' class="menu">
+                <input type='button' value='Vos vidéo' class="menu">
+            </P>
+            </div>
+            </div>
+        </DIV>
+
+
+
+        <CENTER>
+            <h1 STYLE="margin-top:50px;font-size:3.5em;color:white;text-shadow: 5px 5px black;">S Y N E R G O</h1><br>
+
+            <DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;color:white;">
+                <p><strong> - Connexion - </strong></p>
+            </DIV>
+            
+            <DIV ID="sous" STYLE="height:30px;">
+                <p STYLE='color:white;'>Afin de décrypter toutes mes vidéos préférées</p>
+            </DIV>
+
+        </CENTER>
+
+
+            
+
+
+
+      <CENTER>
+          <DIV STYLE="width:40%;border:3px solid #777777;height:250px;border-radius:20%;margin-top:60px;">
+
+            <form method="POST" STYLE="margin-top:50px;">
+              {% csrf_token %}
+                <center>
+
+
+                  <DIV class="row">
+                      <div class="col-sm"><p style="color:white;">Pseudo : </p></div>
+                      <div class="col-sm">{{form.username}}</div>
+                  </DIV>
+
+                  <DIV class="row">
+                      <div class="col-sm"><p style="color:white;">Mot de passe : </p></div>
+                      <div class="col-sm">{{form.password}}</div>
+                  </DIV>
+
+
+
+                  <DIV class="row">
+                      <div class="col-sm">
+                          <input type="button" id="retour" value="Retour" class="validation"
+                        onclick="document.location.href = '/compte/compte_direction'"></div>
+                        
+                      <div class="col-sm">
+                          <input type="submit" value="Valider" id="validation" class="validation">
+                      </div>
+                  </DIV>
+
+                  
+                              
+                </center>
+                {% csrf_token %}
+            </form>
+
+        </DIV>
+    </CENTER>
+
+    <br> <br> <br>
+
+
+
+
+
+
+
+    </body>
+</html>
+
+
+
+<style>
+    .menu{
+        color:white;
+        border:none;
+        background:none;
+    }
+    .menu:hover{
+        color:red;
+    }
+    .col-sm{
+        padding:10px;
+    }
+    .validation{
+        color:white;
+        border:none;
+        background:none;
+    }
+    .validation:hover{
+        color:red;
+        border:1px solid white;
+    }
+    input{
+        text-align:center;
+    }
+    
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
