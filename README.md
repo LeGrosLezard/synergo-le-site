@@ -4,7 +4,7 @@ ca marche pas a par avec du bidouillage
 
 maiiiis me faut des vidéo de présentation pcque le recruteur il ira sur mon github et s'il essais et que ca marche pas il verra 10 vidéo qui marchent sur le github..... et y'a qu'un seul format qui marche avec ce que j'ai fais
 
-la table de neuf je la fais sur mes doigts et 8*6, 7*6, 3*8 et 7*8  je sais pas le faire, lheure et droite et gauche et c et s chui obligé de faire wc et vs
+la table de neuf je la fais sur mes doigts et 8x6, 7x6, 3x8 et 7x8  je sais pas le faire, lheure et droite et gauche et c et s chui obligé de faire wc et vs
 
 ------------------------------------------------
 
