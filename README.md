@@ -3,7 +3,9 @@
 
 ------------------------------------------------
 
-en faisant apparaitre les truk mettre des sons furtif ment -il un rire de mec imperceptible mais le cerveau l'entend en cliaquant sur aller au site mettre un sons de lyon
+mettre les sons
+
+c pas du tout avec l'ambiance c un site de parfum de marque ca pas d'un mec qui fait des carré sur une video putin
 
 
 
