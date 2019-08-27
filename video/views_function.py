@@ -2,7 +2,6 @@ import cv2
 import time
 import os
 import numpy as np
-from ffpyplayer.player import MediaPlayer
 import threading
 
 PATH_VIDEO = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\synergo\media\{0}"
@@ -27,7 +26,7 @@ def video_capt(video, video_name, message):
     frame = cv2.resize(frame, (600, 400)) 
     #Displaying it
     cv2.imshow('VIDEO', frame)
-    time.sleep(0.05)
+
     
     text_video = file_name(video_name)
     with open(PATH_TEXT.format(text_video), "a") as file:
@@ -78,13 +77,13 @@ def displaying_video_user(video_name):
     while(True):
 
         #If key push (but it don't serve here)
-        if cv2.waitKey(1) & 0xFF == ord('a'):
+        if cv2.waitKey(6) & 0xFF == ord('a'):
             ok = False
 
-        if cv2.waitKey(1) & 0xFF == ord('b'):
+        if cv2.waitKey(6) & 0xFF == ord('b'):
             ok = True
         
-        if cv2.waitKey(1) & 0xFF == ord('s'):
+        if cv2.waitKey(6) & 0xFF == ord('s'):
             break
 
         if ok is True:
