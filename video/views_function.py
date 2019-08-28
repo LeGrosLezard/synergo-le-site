@@ -33,72 +33,66 @@ def video_capt(video, video_name, message):
         file.write(str(message))
 
 
-def video_text_(message):
-    
-    img = np.zeros((500,500,3), np.uint8)
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    x = 0
-    fontScale = 0.5
-    fontColor = (255,255,255)
-    lineType = 2
-
-    liste = []
-    compteur = 0
-    text = ""
-    for i in message:
-        for j in i:
-            if compteur == 80:
-                liste.append(text)
-                compteur = 0
-                text = ""
-                
-
-            compteur += 1
-            text += j
-
-    y = 10
-    for i in liste:
-        cv2.putText(img, i, (x, y), font, 
-                    fontScale, fontColor, lineType)
-        y += 20
-
-    cv2.imshow("text",img)
 
 
+from .traitement_video import detection
 def displaying_video_user(video_name):
 
-    #Create video object with path video of click of user
+    #Call function who displaying video
     video = cv2.VideoCapture(PATH_VIDEO.format(video_name))
-    #Sound of the video
-    #sound = MediaPlayer(PATH_VIDEO.format(video_name))
-    ok = True
-    c = 0
-    #Loop while True read this:
+    faceCascade = cv2.CascadeClassifier(r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\video\haarcascade_frontalface_alt2.xml")
+    eyesCascade = cv2.CascadeClassifier(r'C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\video\haarcascade_eye.xml')
+
+    #Initializing time to 0
+    timer = 0
+
+    LISTE = []
+
     while(True):
-
-        #If key push (but it don't serve here)
-        if cv2.waitKey(6) & 0xFF == ord('a'):
-            ok = False
-
-        if cv2.waitKey(6) & 0xFF == ord('b'):
-            ok = True
+        no_timer = False
+        out = ""
         
-        if cv2.waitKey(6) & 0xFF == ord('s'):
+        start_time = time.time()
+        
+        ret, frame = video.read()
+        frame = cv2.resize(frame, (1200, 1000))
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        pos = detection(frame, faceCascade, eyesCascade)
+
+        if pos is not None:
+            timer += (time.time() - start_time)
+            left = "à " + str(round(timer * 10)) + "la tete pencge à " + pos + "la personne se met à la place du téléspectateur, il invoque sa sensibilité"
+            right = "à " + str(round(timer * 10)) + "la tete pencge à " + pos + "la personne raisonne, la personne analyse ? faut speech recognition"
+
+            if pos == "gauche":
+                out = left
+                print(left)
+            elif pos == "droite":
+                out = right
+                print(right)
+                
+            #we direct write into file for template out
+            #with open("", "a") as file:
+                #file.write(out)
+
+            #we add it for free analysis (end of analysis)
+            LISTE.append([out, timer])
+
+            no_timer = True
+
+            
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        if ok is True:
-            video_capt(video, video_name, c)
-            message= "bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour bonjour "
-            video_text_(message)
-            
+        cv2.imshow('VIDEO', frame)
 
-        c+=1
-            
-    #I don't know
+        if no_timer is None:
+            timer += (time.time() - start_time)
+
+
     video.release()
-    #Destroy all windowd
     cv2.destroyAllWindows()
-
 
 
 def recup_analysis(video_name):
