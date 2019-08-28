@@ -66,21 +66,35 @@
                 <div class="row">
                 
                   <div class="col-sm" id="" STYLE="color:white;">
-                      <input type="button" class="sous_menu1" value="S ' E N R E G I S T R E R" STYLE="font-size:20px;float:right;"
+                      <button type="button" class="btn btn-primary" 
+                          STYLE="font-size:20px;float:right;" id="button"
                           onclick="document.location.href='/transition_register'">
+                          S ' E N R E G I S T R E R
+                     </button>
                  </div>
 
        
                   
                   <div class="col-sm" id="" STYLE="color:white;">
-                        <input type="button" class="sous_menu1" value="R E T O U R" STYLE="font-size:20px;"
-                            onclick="document.location.href='/menu'">
+
+                      <button type="button" class="btn btn-primary"  
+                          STYLE="font-size:20px;" id="button"
+                          onclick="document.location.href='/menu'">
+                          R E T O U R
+                     </button>
+
+
                   </div>
 
                   
                   <div class="col-sm" id="" STYLE="color:white;">
-                        <input type="button" class="sous_menu1" value="S E &nbsp;&nbsp; C O N N E C T E R" STYLE="font-size:20px;float:left;"
-                            onclick="document.location.href='/transition_login'">
+
+                      <button type="button" class="btn btn-primary"  
+                          STYLE="font-size:20px;float:left;" id="button"
+                          onclick="document.location.href='/transition_login'">
+                          S E &nbsp;&nbsp; C O N N E C T E R
+                     </button>
+
                   </div>
 
                 </div>
@@ -106,12 +120,23 @@
 
 
 <style>
+
     input{
+        color:white;
+        background:none;
+        border:1px solid transparent;
+    }
+    input:hover{
+        color:red;
+        border:1px solid white;
+    }
+
+    #button{
         color:white;
         border:none;
         background:none;
     }
-    input:hover{
+    #button:hover{
         color:red;
         border:1px solid white;
     }
