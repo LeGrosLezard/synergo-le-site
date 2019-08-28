@@ -37,8 +37,6 @@
 
             <div class="col-sm"">
             </div>
-
-
              <div class="col-sm">
             <P>
                 <input type='button' value='Mon compte' class="menu">
@@ -48,12 +46,8 @@
             </div>
             </div>
         </DIV>
-
-
-
         <CENTER>
             <h1 STYLE="margin-top:50px;font-size:3.5em;color:white;text-shadow: 5px 5px black;">S Y N E R G O</h1><br>
-
             <DIV id="div_logo1" STYLE="color:black;font-size:1.5em;margin-top:20px;color:white;">
                 <p><strong> - Connexion - </strong></p>
             </DIV>
@@ -61,66 +55,46 @@
             <DIV ID="sous" STYLE="height:30px;">
                 <p STYLE='color:white;'>Afin de décrypter toutes mes vidéos préférées</p>
             </DIV>
-
         </CENTER>
-
-
             
-
-
-
       <CENTER>
           <DIV STYLE="width:40%;border:3px solid #777777;height:250px;border-radius:20%;margin-top:60px;">
-
             <form method="POST" STYLE="margin-top:50px;">
               {% csrf_token %}
                 <center>
-
-
                   <DIV class="row">
                       <div class="col-sm"><p style="color:white;">Pseudo : </p></div>
                       <div class="col-sm">{{form.username}}</div>
                   </DIV>
-
                   <DIV class="row">
                       <div class="col-sm"><p style="color:white;">Mot de passe : </p></div>
                       <div class="col-sm">{{form.password}}</div>
                   </DIV>
-
-
-
                   <DIV class="row">
                       <div class="col-sm">
-                          <input type="button" id="retour" value="Retour" class="validation"
-                        onclick="document.location.href = '/compte/compte_direction'"></div>
+                          <button type="button" class="btn btn-dark" id="button"
+                              onclick="document.location.href = '/compte/compte_direction'">
+                              Retour
+                          </button>
+                      </div>
                         
                       <div class="col-sm">
-                          <input type="submit" value="Valider" id="validation" class="validation">
+                          <button type="button" class="btn btn-dark"
+                              id="button" onclick="submit()">
+                                Valider
+                          </button>
                       </div>
                   </DIV>
-
                   
                               
                 </center>
                 {% csrf_token %}
             </form>
-
         </DIV>
     </CENTER>
-
     <br> <br> <br>
-
-
-
-
-
-
-
     </body>
 </html>
-
-
-
 <style>
     .menu{
         color:white;
@@ -133,12 +107,12 @@
     .col-sm{
         padding:10px;
     }
-    .validation{
+    #button{
         color:white;
         border:none;
         background:none;
     }
-    .validation:hover{
+    #button:hover{
         color:red;
         border:1px solid white;
     }
@@ -147,22 +121,3 @@
     }
     
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
