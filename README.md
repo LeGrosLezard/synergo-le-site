@@ -7,7 +7,9 @@
 
 
 
+faire les combo, faire les truk bien si a 1 sec a 1 sec a 1 sec réduire le truk a une sec
 
+mais ca a la fin
 
 si mec appuis sur pause de la video faire un click automatique pour videocapture
 
