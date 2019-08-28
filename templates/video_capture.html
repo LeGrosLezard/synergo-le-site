@@ -112,6 +112,7 @@
 
     <div id="name_video_stock" value=""></div>
     <input type="button" id="clique" style="display:none;" />
+    <input type="button" id="analysis" style="display:none;">
 
         
     <br><br><br><br>
@@ -142,13 +143,15 @@
 
         <DIV class="col-sm">
             <CENTER>
-                <DIV STYLE="width:80%;height:600px;background:#DBDBDB;
-                    border:4px solid black;overflow-y:scroll;">
+                <DIV STYLE="width:70%;height:520px;background:#515052;
+                    border:4px solid black;overflow-y:scroll;
+                    text-align:justify;font-size:1.2em;
+                    font-weight:bold;" id="analysis_div">
                     <br><br>
                     <center><h3 style="color:black;">A N A L Y S E</h3></center>
                 </DIV>
                 <br>
-                <DIV style="width:80%;color:white;">
+                <DIV style="width:70%;color:white;">
                     <p style='float:right;'>S Y N E R G O</p>
                 </DIV>
             </CENTER>
@@ -186,6 +189,38 @@ Our partner: <br>
 
 <script>
 
+jQuery("#analysis").on("click", function(e){
+
+ video_name = document.getElementById("name_video_stock").value
+
+ e.preventDefault();
+  jQuery.ajax({
+      data:{
+          "requete_ana":"requete_ana",
+          "video_name":video_name,
+          'csrfmiddlewaretoken': '{{csrf_token}}' , 
+      },
+      type:"POST",
+      url:"/video/video_capture/"
+  })
+  .done(function(data){
+      if (data.error){
+          document.getElementById("#Alert").inner.html = "aie"; 
+      }
+      else{
+          document.getElementById("analysis").click()
+
+          titre = '<br><br><center><h3 style="color:black;">A N A L Y S E</h3></center><br><br>'
+          document.getElementById("analysis_div").innerHTML = titre + data;
+          
+      };
+      
+  });
+ });
+
+
+
+
 
 function play_video(name_video){
     
@@ -215,6 +250,8 @@ jQuery("#clique").on("click", function(e){
       else{
           document.getElementById("video_display").src = data;
           document.getElementById("video_display").play()
+          document.getElementById("analysis").click()
+          
       };
       
   });
