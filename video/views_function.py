@@ -33,6 +33,8 @@ def video_capt(video, video_name, message):
     with open(PATH_TEXT.format(text_video), "a") as file:
         file.write(str(message))
 
+
+
 from .traitement_video import detection
 def displaying_video_user(video_name):
 
@@ -45,13 +47,14 @@ def displaying_video_user(video_name):
     timer = 0
     LISTE = []
     path_to_text = PATH_TEXT_STATIC.format(str(video_name[13:-3]) + "txt")
-    print(path_to_text)
+
+    start_time = time.time()
 
     while(True):
         no_timer = False
         out = ""
- 
-        start_time = time.time()
+
+        
         
         ret, frame = video.read()
         frame = cv2.resize(frame, (1200, 1000))
@@ -61,8 +64,8 @@ def displaying_video_user(video_name):
 
         if pos is not None:
             timer += (time.time() - start_time)
-            left = "<u>à " + str(round(timer * 10)) + " sec :</u> la tete penche à " + pos + " la personne se met à la place du téléspectateur, il invoque sa sensibilité\n<br>"
-            right = "<u>à " + str(round(timer * 10)) + " sec :</u> la tete penche à " + pos + " la personne raisonne, la personne analyse\n<br>"
+            left = "<u>à " + str(round(timer)) + " sec :</u> la tete penche à " + pos + " la personne se met à la place du téléspectateur, il invoque sa sensibilité\n<br>"
+            right = "<u>à " + str(round(timer)) + " sec :</u> la tete penche à " + pos + " la personne raisonne, la personne analyse\n<br>"
 
             if pos == "gauche":
                 out = left
@@ -88,8 +91,6 @@ def displaying_video_user(video_name):
 
         if no_timer is None:
             timer += (time.time() - start_time)
-
-
 
     video.release()
     cv2.destroyAllWindows()
