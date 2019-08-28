@@ -5,7 +5,7 @@ import os
 
 
 
-def detection(frame, faceCascade, eyesCascade, LISTE):
+def detection(frame, faceCascade, eyesCascade):
     
     #Config for face detection
     faces = faceCascade.detectMultiScale(
@@ -36,13 +36,12 @@ def detection(frame, faceCascade, eyesCascade, LISTE):
         )
 
 
-        essais1(eyes, roi_gray, frame, LISTE)#Call the function who say if
-                                             #the positionning
+        pos = eyes_positionning(eyes, roi_gray, frame)#Call the function who say if
+                                                      #the positionning
+        return pos
 
 
-
-
-def essais1(eyes, roi_gray, frame, LISTE):
+def eyes_positionning(eyes, roi_gray, frame):
 
     #Sometimes eyes are superimposed
     eye = 0
@@ -62,7 +61,7 @@ def essais1(eyes, roi_gray, frame, LISTE):
         for x, y, w, h in eyes:
             #Sometimes eyes are superimposed so we increment eye
             #from the first loop
-            #if the second detecting or loop
+            #if the second detecting of loop
             #is == to the first we cancel it
             if x + 5 >= eye <= x - 5:
                 eye += x
@@ -85,16 +84,16 @@ def essais1(eyes, roi_gray, frame, LISTE):
         #if right - 20 < left < right -5
         #left eye is highter than right eye
         if droite - 20 < gauche < droite - 5:
-            print("gauche")
             ok = True#cancel the retourn of head
-
+            return "gauche"
+        
         if ok != True:
             #if right + 15 < left < right + 5
             #left eye is not highter than right eye
             if droite + 15 > gauche > droite + 5:
-                print("droite")
-
+                return "droite"
+            
     #show our draw
-    cv2.imshow('VIDEO', frame)
+    #cv2.imshow('VIDEO', frame)
 
 
