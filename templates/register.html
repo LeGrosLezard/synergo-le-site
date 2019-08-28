@@ -10,16 +10,8 @@
         <meta name="google" value="notranslate" />
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="/static/css/bootstrap.css">
-        <link rel="stylesheet" href="/static/vendors/linericon/style.css">
-        <link rel="stylesheet" href="/static/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="/static/vendors/lightbox/simpleLightbox.css">
-        <link rel="stylesheet" href="/static/vendors/nice-select/css/nice-select.css">
-        <link rel="stylesheet" href="/static/vendors/animate-css/animate.css">
-        <link rel="stylesheet" href="/static/vendors/popup/magnific-popup.css">
         <!-- main css -->
         <link rel="stylesheet" href="/static/css/style.css">
-        <link rel="stylesheet" href="/static/css/responsive.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
 
@@ -100,11 +92,19 @@
 
                   <DIV class="row">
                       <div class="col-sm">
-                          <input type="button" id="retour" value="Retour" class="validation"
-                        onclick="document.location.href = '/compte/compte_direction'"></div>
+                          <button type="button" class="btn btn-dark" id="button"
+                              onclick="document.location.href = '/compte/compte_direction'">
+                              Retour
+                          </button>
+                      </div>
+
+
                         
                       <div class="col-sm">
-                          <input type="submit" value="Valider" id="validation" class="validation">
+                          <button type="button" class="btn btn-dark"
+                              id="button" onclick="submit()">
+                                Valider
+                          </button>
                       </div>
                   </DIV>
 
@@ -142,12 +142,12 @@
     .col-sm{
         padding:10px;
     }
-    .validation{
+    #button{
         color:white;
         border:none;
         background:none;
     }
-    .validation:hover{
+    #button:hover{
         color:red;
         border:1px solid white;
     }
