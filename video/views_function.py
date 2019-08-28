@@ -6,6 +6,8 @@ import threading
 
 PATH_VIDEO = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\synergo\media\{0}"
 PATH_TEXT = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\synergo\media\texte_video\{0}"
+PATH_TEXT_STATIC = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\static\video_texte\{}"
+
 
 def file_name(video_name):
     """We create name of our file"""
@@ -42,16 +44,17 @@ def displaying_video_user(video_name):
     video = cv2.VideoCapture(PATH_VIDEO.format(video_name))
     faceCascade = cv2.CascadeClassifier(r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\video\haarcascade_frontalface_alt2.xml")
     eyesCascade = cv2.CascadeClassifier(r'C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\video\haarcascade_eye.xml')
-
+    
     #Initializing time to 0
     timer = 0
-
     LISTE = []
+    path_to_text = PATH_TEXT_STATIC.format(str(video_name[13:-3]) + "txt")
+    print(path_to_text)
 
     while(True):
         no_timer = False
         out = ""
-        
+ 
         start_time = time.time()
         
         ret, frame = video.read()
@@ -62,19 +65,19 @@ def displaying_video_user(video_name):
 
         if pos is not None:
             timer += (time.time() - start_time)
-            left = "à " + str(round(timer * 10)) + "la tete pencge à " + pos + "la personne se met à la place du téléspectateur, il invoque sa sensibilité"
-            right = "à " + str(round(timer * 10)) + "la tete pencge à " + pos + "la personne raisonne, la personne analyse ? faut speech recognition"
+            left = "<u>à " + str(round(timer * 10)) + " sec :</u> la tete penche à " + pos + " la personne se met à la place du téléspectateur, il invoque sa sensibilité\n<br>"
+            right = "<u>à " + str(round(timer * 10)) + " sec :</u> la tete penche à " + pos + " la personne raisonne, la personne analyse\n<br>"
 
             if pos == "gauche":
                 out = left
-                print(left)
+                #print(left)
             elif pos == "droite":
                 out = right
-                print(right)
-                
+                #print(right)
+
             #we direct write into file for template out
-            #with open("", "a") as file:
-                #file.write(out)
+            with open(path_to_text, "a") as file:
+                file.write(out)
 
             #we add it for free analysis (end of analysis)
             LISTE.append([out, timer])
@@ -91,6 +94,7 @@ def displaying_video_user(video_name):
             timer += (time.time() - start_time)
 
 
+
     video.release()
     cv2.destroyAllWindows()
 
@@ -99,14 +103,14 @@ def recup_analysis(video_name):
     """Here we read the text
     and return it"""
 
+
     text_video = file_name(video_name)
-    with open(PATH_TEXT.format(text_video), "r") as file:
-        text = file.read()
+
+    with open(PATH_TEXT_STATIC.format(text_video), "r") as file:
+        text = str(file.read())
+
 
     return text
-
-
-
 
 
 
