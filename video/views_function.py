@@ -27,15 +27,11 @@ def video_capt(video, video_name, message):
     #frame to 400x60xx
     frame = cv2.resize(frame, (600, 400)) 
     #Displaying it
-    cv2.imshow('VIDEO', frame)
+    #cv2.imshow('VIDEO', frame)
 
-    
     text_video = file_name(video_name)
     with open(PATH_TEXT.format(text_video), "a") as file:
         file.write(str(message))
-
-
-
 
 from .traitement_video import detection
 def displaying_video_user(video_name):
@@ -88,7 +84,7 @@ def displaying_video_user(video_name):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        cv2.imshow('VIDEO', frame)
+        #cv2.imshow('VIDEO', frame)
 
         if no_timer is None:
             timer += (time.time() - start_time)
