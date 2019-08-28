@@ -39,14 +39,26 @@ def telechargement_video(request):
             #and register it into database
             newdoc = video_upload(docfile = request.FILES['docfile'])
             newdoc.save()
-            
+
             #And now we insert it into database
             file = newdoc.docfile
             current_user_video(pseudo, file)
+               
+            #path video media
             path1 = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\synergo\media\video_upload\{}"
             path2 = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\static\video\{}"
-            shutil.copyfile(path1.format(str(name_video)), path2.format(str(name_video)))
-            
+            file = str(file)
+            #we import video from media to static for the template
+            shutil.copyfile(path1.format(str(file[13:])), path2.format(str(file[13:])))
+
+            #path text_video
+            #we import video from media to static for the template
+            path3 = r"C:\Users\jeanbaptiste\Desktop\boboDancer\env\synergo\static\video_texte\{}"
+            #convert path text for analysis object .mp4 to .txt
+            file_txt = str(file)
+            file_txt = file_txt[13:-3] + "txt" #13:3 -> because real name is video_upload\video2_IjhobwF.mp4
+            file = open(path3.format(str(file_txt)), "w")
+
             #And we return to video watch template
             return HttpResponseRedirect('/video/video_capture/')
     
@@ -74,9 +86,10 @@ def video_capture(request):
         video_name = request.POST.get('video_name')
         #First we ask the video name.
         if video_name:
-            path = "/static/video/{}".format(str(video_name[13:]))
-            print(path, "0000000000000000000000000000000000")
-            return HttpResponse(str(path))
+            path1 = "/static/video/{}".format(str(video_name[13:]))
+            path2 = "/static/video_texte/{}".format(str(video_name[13:]))
+
+            return HttpResponse(str(path1))
   
 
             
@@ -98,6 +111,7 @@ def video_fantome(request):
         video_name = request.POST.get('video_name')
 
         if video_name:
+            print(video_name, "videoooooooooooooooooooo")
             #we displaying this video.
             displaying_video_user(video_name)
             return HttpResponse('ok')
