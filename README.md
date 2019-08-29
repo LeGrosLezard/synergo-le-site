@@ -6,35 +6,7 @@
 
 
 
-faut faire les combo ne pas marqué cote1
-cote2
-cote2
-cote2
-cote2
-cote2
-milieu
-cote2
-front
-milieu
-cote2
-front
-milieu
-cote2
-milieu
-cote2
-milieu
-cote2
-milieu
-cote2
-front
-milieu
-cote2
-front
-milieu
-
-si milieu apparit 5 fois alors marqué milieu et les petits carrés ont pas le meme nombre que les grand
-
-faire les combo, faire les truk bien si a 1 sec a 1 sec a 1 sec réduire le truk a une sec
+bon stop mais faut faire si milieu alors on ne dit pas le reste (si tu te grattes au milieu y'aura peut etre tempe milieu milieu milieu tempe.... )
 
 si mec appuis sur pause de la video faire un click automatique pour videocapture
 
