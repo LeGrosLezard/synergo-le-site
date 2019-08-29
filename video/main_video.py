@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from PIL import Image
 import os
-
+import time
 
 SUBSTRACTOR = cv2.createBackgroundSubtractorMOG2(history=100,
                                                 varThreshold=50,
@@ -74,11 +74,10 @@ SUBSTRACTOR14 = cv2.createBackgroundSubtractorMOG2(history=100,
 
 def video_capture_visage():
 
-    #k, j
+    #k, j, l
     video = cv2.VideoCapture("l.mp4")
     faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
     
-    MOUVEMENT = []
     c = 0
     l = []
     c1 = 0
@@ -114,6 +113,9 @@ def video_capture_visage():
     listee = []
     liste_display = ["dza", "dza"]
     compteur = 0
+    start_time = time.time()
+    compteur1 = 0
+
     
     while(True):
 
@@ -135,7 +137,7 @@ def video_capture_visage():
                 try:
                     liste = sum([j for i in mask for j in i])
                     l.append(liste)
-                    if liste > sum(l)/len(l) + 40000:
+                    if liste > sum(l)/len(l) + 50000:
                         return phrase
                 except:
                     pass
@@ -234,101 +236,97 @@ def video_capture_visage():
 
             if milieu:
                 if coté1:
-                    liste_display.append("a")
                     if liste_display[-2] != "a":
-                        print("milieu par main droite")
+                        liste_display.append("a")
                 else:
-                    
-                    liste_display.append("b")
                     if liste_display[-2] != "b":
-                        print("milieu par main gauche")
+                        liste_display.append("b")
 
             elif front:
                 if épaul1 or épaul2:
                     if épaul1:
-                        liste_display.append("c")
                         if liste_display[-2] != "c":
-                            print("front par main droite")
+                            liste_display.append("c")
                         
                         
                     else:
-                        liste_display.append("d")
                         if liste_display[-2] != "d":
-                            print("front par main gauche")
-                        
-
+                            liste_display.append("d")
                 else:
-                    liste_display.append("o")
-                    if liste_display[-2] != "o":
-                        print("front")
+                    if liste_display[-2] != "p":
+                        liste_display.append("p")
                     
             elif patte1 or patte2:
                 if patte1:
-                    liste_display.append("e")
                     if liste_display[-2] != "e":
-                        print("patte droite")
+                        liste_display.append("e")
                     
                 elif patte2:
-                    liste_display.append("f")
                     if liste_display[-2] != "f":
-                        print("patte gauche")
+                        liste_display.append("f")
 
             elif bouche:
                 if épaul1 or épaul2:
                     if épaul1:
-                        liste_display.append("g")
                         if liste_display[-2] != "g":
-                            print("bouche par main droite")
+                            liste_display.append("g")
                             
                     elif épaul2:
-                        liste_display.append("h")
                         if liste_display[-2] != "h":
-                            print("bouche par main gauche")
-                        
-                        
+                            liste_display.append("h")
                 else:
-                    liste_display.append("i")
                     if liste_display[-2] != "i":
-                        print("bouche")
+                        liste_display.append("i")
+
                     
             elif épaul1 or épaul2:
                 if épaul1:
-                    liste_display.append("j")
                     if liste_display[-2] != "j":
-                        print("épaule droite")
+                        liste_display.append("j")
                         
                 elif épaul2:
-                    liste_display.append("k")
                     if liste_display[-2] != "k":
-                        print("épaule gauche")
+                        liste_display.append("k")
 
             elif tempe1 or tempe2:
                 if tempe1:
-                    liste_display.append("l")
                     if liste_display[-2] != "l":
-                        print("tempe droite")
+                        liste_display.append("l")
                         
                 elif tempe2:
-                    liste_display.append("m")
                     if liste_display[-2] != "m":
-                        print("tempe gauche")
+                        liste_display.append("m")
                     
             elif oreille1 or oreille2:
                 if oreille1:
-                    liste_display.append("n")
                     if liste_display[-2] != "n":
-                        print("oreille droite")
+                       liste_display.append("n")
                     
                 elif oreille2:
-                    liste_display.append("o")
                     if liste_display[-2] != "o":
-                        print("oreille gauche")
+                        liste_display.append("o")
 
 
 
 
+        timer = (time.time() - start_time)
+        if timer > compteur1 + 1:
+            print(liste_display)
 
+            dico = {"a":"milieu par main droite","b":"milieu par main gauche","c":"front par main droite","d":"front par main gauche",
+                    "e":"patte droite","f":"patte gauche","g":"bouche par épaul droite","h":"bouche par épaul gauche","i":"bouche",
+                    "j":"épaule droite","k":"épaule gauche","l":"tempe droite","m":"tempe gauche","n":"oreille droite",
+                    "o":"oreille gauche","p":"front"}
 
+            for i in liste_display[2:]:
+                for cle, valeur in dico.items():
+                    if i == cle:
+                        print(valeur)
+    
+            #si milieu on annule tous
+
+            liste_display = ["aaa", "aa"]
+            compteur1 += 1
 
 
 
@@ -345,8 +343,6 @@ def video_capture_visage():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         
-        if len(MOUVEMENT) > 10:
-            del MOUVEMENT[:8]
 
         compteur += 1
 
@@ -355,9 +351,10 @@ def video_capture_visage():
     cv2.destroyAllWindows()
 
 
-
-video_capture_visage()
-
+try:
+    video_capture_visage()
+except:
+    pass
 
 
 
