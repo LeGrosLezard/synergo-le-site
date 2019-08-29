@@ -75,7 +75,7 @@ SUBSTRACTOR14 = cv2.createBackgroundSubtractorMOG2(history=100,
 def video_capture_visage():
 
 
-    video = cv2.VideoCapture("video_jb.mp4")
+    video = cv2.VideoCapture(0)
     faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
     
     MOUVEMENT = []
@@ -117,52 +117,39 @@ def video_capture_visage():
 
         ret, frame_visage = video.read()
         frame_visage = cv2.resize(frame_visage, (1200, 1000))
-        frame_visage1 = cv2.resize(frame_visage, (1200, 1000))
-
-
-        
 
         gray = cv2.cvtColor(frame_visage, cv2.COLOR_BGR2GRAY)
 
-        #-------------------------------------------------------------1
         faces = faceCascade.detectMultiScale(
             gray, scaleFactor=3.0,
             minNeighbors=1, minSize=(60, 100),
             flags=cv2.CASCADE_SCALE_IMAGE)
 
+
         for x, y, w, h in faces:
-            
+
             #cv2.rectangle(gray, (x, y), (x+w, y +h), 2)
-            #---------------------------------------------------------1
-
-        
-
-
-            #---------------------------------------------------------milieu
 
             #milieu
             cv2.rectangle(gray, (x + int(round(w/3)), y - int(round(150 * 100 / h))), (x + int(round(w/3)) * 2, y - int(round(80 * 100 / h))), (255), 2)
             crop = gray[y - int(round(150 * 100 / h)):y - int(round(80 * 100 / h)), x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR.apply(crop)
 
+            liste = sum([j for i in mask for j in i])
 
-            liste = []
 
-            for i in mask:
-                for j in i:
-                    liste.append(j)
 
-            if sum(liste) == 0:
-                c = 0
-                l = []
+            def detection(liste, l, phrase):
+                try:
+                    liste1 = sum(l)/len(l)
+                    if liste > liste1 + 100000:
+                        print(phrase)
+                except:
+                    pass
+                l.append(liste)
 
-            elif c > 5:
-                if sum(l) > 1000000:
-                    print("milieu")
-
-            else:
-                c += 1
-                l.append(sum(liste))
+            detection(liste, l, "milieu")
+                
                 
             #---------------------------------------------------------milieu
                 
@@ -171,145 +158,77 @@ def video_capture_visage():
 
                 
             #pattes
-            #cv2.rectangle(gray, (x - 20, y - int(round(110 * 100 / h))), (x + 30, y - int(round(50 * 100 / h))), (255), 2)
+            cv2.rectangle(gray, (x - 20, y - int(round(110 * 100 / h))), (x + 30, y - int(round(50 * 100 / h))), (255), 2)
             crop1 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x - 20:x + 30]
             mask = SUBSTRACTOR1.apply(crop1)
-            liste = []
 
-            for i in mask:
-                for j in i:
-                    liste.append(j)
+            liste = sum([j for i in mask for j in i])
 
-            if sum(liste) == 0:
-                c1 = 0
-                l1 = []
+            detection(liste, l1, "pate1")
 
-            elif c1 > 5:
-                if sum(l1) > 1000000:
-                    print("patte1")
-
-
-            else:
-                c1 += 1
-                l1.append(sum(liste))
+            
 
 
 
-            #cv2.rectangle(gray, (x + w - 20, y - int(round(100 * 100 / h))), (x + w + 30, y - int(round(40 * 100 / h))), (255), 2)
-            crop2 = gray[y - int(round(100 * 100 / h)):y - int(round(40 * 100 / h)), x + w - 20:x + w + 30]
+            cv2.rectangle(gray, (x + w - 20, y - int(round(100 * 100 / h))), (x + w + 30, y - int(round(50 * 100 / h))), (255), 2)
+            crop2 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x + w - 20:x + w + 30]
             mask = SUBSTRACTOR2.apply(crop2)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
+            
+            liste = sum([j for i in mask for j in i])
 
-            if sum(liste) == 0:
-                c2 = 0
-                l2 = []
+            detection(liste, l2, "pate2")
 
-            elif c2 > 5:
-                if sum(l2) > 1000000:
-                    print("patte2")
+            
 
-            else:
-                c2 += 1
-                l2.append(sum(liste))
+            
+
 
                 
             #---------------------------------------------------------pattes
             #---------------------------------------------------------téco
 
             #téco
-            #cv2.rectangle(gray, (x - w - 30, y), (x - 60, y + h - 30), 3)
+            cv2.rectangle(gray, (x - w - 30, y), (x - 60, y + h - 30), 3)
             crop3 = gray[y:y + h - 30, x - w - 30:x - 60]
             mask = SUBSTRACTOR3.apply(crop3)
             
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
+            liste = sum([j for i in mask for j in i])
 
-            if sum(liste) == 0:
-                c3 = 0
-                l3 = []
-
-            elif c3 > 5:
-                if sum(l3) > 1000000:
-                    print("téco1")
-
-            else:
-                c3 += 1
-                l3.append(sum(liste))
+            detection(liste, l3, "cote1")
 
 
 
             
-            #cv2.rectangle(gray, (x + w + 60, y), (x + w * 2 + 30, y + h - 30), 3)
+            cv2.rectangle(gray, (x + w + 60, y), (x + w * 2 + 30, y + h - 30), 3)
             crop4 = gray[y:y + h - 30, x + w + 60:x + w * 2 + 30]
             mask = SUBSTRACTOR4.apply(crop4)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
+            
+            liste = sum([j for i in mask for j in i])
 
-            if sum(liste) == 0:
-                c4 = 0
-                l4 = []
-
-            elif c4 > 5:
-                if sum(l4) > 1000000:
-                    print("téco2")
-
-            else:
-                c4 += 1
-                l4.append(sum(liste))
+            detection(liste, l4, "cote2")
 
             #---------------------------------------------------------téco
 
             #---------------------------------------------------------chebou
-            #cv2.rectangle(gray,(x + int(round(w/3)), y + h - 20), (x + int(round(w/3)) * 2, y + h - 5), 1)
+            cv2.rectangle(gray,(x + int(round(w/3)), y + h - 20), (x + int(round(w/3)) * 2, y + h - 5), 1)
             crop5 = gray[y + h - 20:y + h + 10,x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR5.apply(crop5)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
-
-            if sum(liste) == 0:
-                c5 = 0
-                l5 = []
-
-            elif c5 > 5:
-                if sum(l5) > 1000000:
-                    print("chebou")
-
-            else:
-                c5 += 1
-                l5.append(sum(liste))
-
+            
+            liste = sum([j for i in mask for j in i])
+            
+            detection(liste, l5, "chebou")
+            
             #---------------------------------------------------------chebou
 
             #---------------------------------------------------------menton
-            #cv2.rectangle(gray,(x + int(round(w/3)), y + h + 10), (x + int(round(w/3)) * 2, y + h + 25), 1)
+            cv2.rectangle(gray,(x + int(round(w/3)), y + h + 10), (x + int(round(w/3)) * 2, y + h + 25), 1)
             
             crop6 = gray[y + h + 10:y + h + 25,x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR6.apply(crop6)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
 
-            if sum(liste) == 0:
-                c6 = 0
-                l6 = []
-
-            elif c6 > 5:
-                if sum(l6) > 1000000:
-                    print("menton")
-
-            else:
-                c6 += 1
-                l6.append(sum(liste))
+            liste = sum([j for i in mask for j in i])
+            
+            detection(liste, l6, "menton")
 
 
             #---------------------------------------------------------menton
@@ -317,26 +236,17 @@ def video_capture_visage():
 
 
             #---------------------------------------------------------buste
-            #cv2.rectangle(gray,(x, y + h + 120), (x + w, y + h + 180), 1)
+            cv2.rectangle(gray,(x, y + h + 120), (x + w, y + h + 180), 1)
 
             crop7 = gray[y + h + 120:y + h + 180, x:x + w]
             mask = SUBSTRACTOR7.apply(crop7)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
 
-            if sum(liste) == 0:
-                c7 = 0
-                l7 = []
-
-            elif c7 > 5:
-                if sum(l7) > 1000000:
-                    print("buste")
-
-            else:
-                c7 += 1
-                l7.append(sum(liste))
+            try:
+                liste = sum([j for i in mask for j in i])
+            except:
+                pass
+            
+            detection(liste, l7, "buste")
 
 
             
@@ -344,88 +254,46 @@ def video_capture_visage():
 
 
             #---------------------------------------------------------epaul
-            #cv2.rectangle(gray, (x - 50, y + h + 20), (x + 30, y + h + 60), 1)
+            cv2.rectangle(gray, (x - 50, y + h + 20), (x + 30, y + h + 60), 1)
 
 
             crop8 = gray[y + h + 20:y + h + 60, x - 50:x + 30]
             mask = SUBSTRACTOR8.apply(crop8)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
+            
+            liste = sum([j for i in mask for j in i])
 
-            if sum(liste) == 0:
-                c8 = 0
-                l8 = []
-
-            elif c8 > 5:
-                if sum(l8) > 1000000:
-                    print("epaul1")
-
-            else:
-                c8 += 1
-                l8.append(sum(liste))
+            detection(liste, l8, "epaul1")
 
 
 
             
-            #cv2.rectangle(gray,(x + w - 30, y + h + 20), (x + w + 30, y + h + 60), 1)
+            cv2.rectangle(gray,(x + w - 30, y + h + 20), (x + w + 30, y + h + 60), 1)
 
 
             crop9 = gray[y + h + 20:y + h + 60, x + w - 30:(x + w + 30)]
             mask = SUBSTRACTOR9.apply(crop9)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
-
-            if sum(liste) == 0:
-                c9 = 0
-                l9 = []
-
-            elif c9 > 5:
-                if sum(l9) > 1000000:
-                    print("epaul2")
-
-            else:
-                c9 += 1
-                l9.append(sum(liste))
-
-
-
-
-
-
-
-
-
-
             
+            liste = sum([j for i in mask for j in i])
+            
+
+            detection(liste, l9, "epaul2")
+
+
+
+
             #---------------------------------------------------------epaul
 
 
             #---------------------------------------------------------front
-            #cv2.rectangle(gray, (x + 30, y - int(round(30 * 100 / h))), (x + w - 30, y - int(round(-40 * 100 / h))), 2)
+            cv2.rectangle(gray, (x + 30, y - int(round(30 * 100 / h))), (x + w - 30, y - int(round(-40 * 100 / h))), 2)
 
             crop10 = gray[y - int(round(30 * 100 / h)):y - int(round(-40 * 100 / h)), x + 30:x + w - 30]
 
             mask = SUBSTRACTOR10.apply(crop10)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
+            
+            liste = sum([j for i in mask for j in i])
 
-            if sum(liste) == 0:
-                c10 = 0
-                l10 = []
-
-            elif c10 > 5:
-                if sum(l10) > 1000000:
-                    print("front")
-
-            else:
-                c10 += 1
-                l10.append(sum(liste))
+            detection(liste, l10, "front")
 
 
             
@@ -440,22 +308,10 @@ def video_capture_visage():
 
             
             mask = SUBSTRACTOR11.apply(crop11)
-            liste = []
-            for i in mask:
-                for j in i:
-                    liste.append(j)
+            
+            liste = sum([j for i in mask for j in i])
 
-            if sum(liste) == 0:
-                c11 = 0
-                l11 = []
-
-            elif c11 > 5:
-                if sum(l11) > 1000000:
-                    print("tempes1111111111111111111111")
-
-            else:
-                c11 += 1
-                l11.append(sum(liste))
+            detection(liste, l11, "tempes1")
 
             
 
@@ -467,24 +323,9 @@ def video_capture_visage():
             
             mask = SUBSTRACTOR12.apply(crop12)
             
-            liste = []
+            liste = sum([j for i in mask for j in i])
 
-      
-            for i in mask:
-                for j in i:
-                    liste.append(j)
-
-            if sum(liste) == 0:
-                c12 = 0
-                l12 = []
-
-            elif c12 > 5:
-                if sum(l12) > 1000000:
-                    print("tempes22222")
-  
-            else:
-                c12 += 1
-                l12.append(sum(liste))
+            detection(liste, l12, "tempes2")
 
 
     
@@ -505,24 +346,9 @@ def video_capture_visage():
         
             mask = SUBSTRACTOR13.apply(crop13)
             
-            liste = []
+            liste = sum([j for i in mask for j in i])
 
-      
-            for i in mask:
-                for j in i:
-                    liste.append(j)
-
-            if sum(liste) == 0:
-                c13 = 0
-                l13 = []
-
-            elif c13 > 5:
-                if sum(l13) > 1000000:
-                    print("oreille1")
-      
-            else:
-                c13 += 1
-                l13.append(sum(liste))
+            detection(liste, l13, "oreille1")
 
 
 
@@ -537,24 +363,9 @@ def video_capture_visage():
             
             mask = SUBSTRACTOR14.apply(crop14)
             
-            liste = []
-
-      
-            for i in mask:
-                for j in i:
-                    liste.append(j)
-
-            if sum(liste) == 0:
-                c14 = 0
-                l14 = []
-
-            elif c14 > 5:
-                if sum(l14) > 1000000:
-                    print("oreille2")
-          
-            else:
-                c14 += 1
-                l14.append(sum(liste))
+            liste = sum([j for i in mask for j in i])
+            
+            detection(liste, l14, "oreille2")
 
  
 
