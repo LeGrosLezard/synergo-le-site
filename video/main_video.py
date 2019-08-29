@@ -112,7 +112,8 @@ def video_capture_visage():
 
     
     listee = []
-    
+    liste_display = ["dza", "dza"]
+    compteur = 0
     
     while(True):
 
@@ -141,7 +142,6 @@ def video_capture_visage():
 
 
 
-
             crop3 = gray[y:y + h - 30, x - w - 30:x - 60]
             mask = SUBSTRACTOR3.apply(crop3)
             
@@ -154,14 +154,12 @@ def video_capture_visage():
             coté2 = detection(mask, l4, "gauche")
 
             
-
             crop = gray[y - int(round(150 * 100 / h)):y - int(round(80 * 100 / h)), x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR.apply(crop)
 
             milieu = detection(mask, l, "milieu")
 
             
-
             crop1 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x - 20:x + 30]
             mask = SUBSTRACTOR1.apply(crop1)
 
@@ -174,12 +172,9 @@ def video_capture_visage():
             patte2 = detection(mask, l2, "pate gauche")
 
 
-
-
             crop5 = gray[y + h - 20:y + h + 10,x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR5.apply(crop5)
             
-
             bouche = detection(mask, l5, "chebou")
 
 
@@ -195,12 +190,10 @@ def video_capture_visage():
             buste = detection(mask, l7, "buste")
 
 
-
             crop8 = gray[y + h + 20:y + h + 60, x - 50:x + 30]
             mask = SUBSTRACTOR8.apply(crop8)
             
             épaul1 = detection(mask, l8, "épaule droite")
-
 
 
             crop9 = gray[y + h + 20:y + h + 60, x + w - 30:(x + w + 30)]
@@ -209,21 +202,16 @@ def video_capture_visage():
             épaul2 = detection(mask, l9, "épaule gauche")
 
 
-
             crop10 = gray[y - int(round(30 * 100 / h)):y - int(round(-40 * 100 / h)), x + 30:x + w - 30]
             mask = SUBSTRACTOR10.apply(crop10)
             
             front = detection(mask, l10, "front")
 
 
-            
-
             crop11 = gray[y - 20:y + 40, x - 40:x]
             mask = SUBSTRACTOR11.apply(crop11)
             
             tempe1 = detection(mask, l11, "tempe droite")
-            
-
             
 
             crop12 = gray[y - 20:y + 40, x + w:x + w + 40]
@@ -232,16 +220,11 @@ def video_capture_visage():
             tempe2 = detection(mask, l12, "tempe gauche")
 
     
-
-
             crop13 = gray[y + 70:y + 110, x - 40:x]
             mask = SUBSTRACTOR13.apply(crop13)
 
             oreille1 = detection(mask, l13, "oreille droite")
 
-
-
-            
 
             crop14 = gray[y + 70:y + 110, x + w:x + w + 40]
             mask = SUBSTRACTOR14.apply(crop14)
@@ -249,59 +232,97 @@ def video_capture_visage():
             oreille2 = detection(mask, l14, "oreille gauche")
 
 
-
-            #liste = [coté1, coté2, milieu, patte1, patte2, bouche, menton, butste, épaul1, épaul2, front, tempe1, tempe2, oreille1, oreille2]
-                        
-           
             if milieu:
                 if coté1:
-                    print("milieu par main droite")
+                    liste_display.append("a")
+                    if liste_display[-2] != "a":
+                        print("milieu par main droite")
                 else:
-                    print("milieu par main gauche")
+                    
+                    liste_display.append("b")
+                    if liste_display[-2] != "b":
+                        print("milieu par main gauche")
 
             elif front:
                 if épaul1 or épaul2:
                     if épaul1:
-                        print("front par main droite")
+                        liste_display.append("c")
+                        if liste_display[-2] != "c":
+                            print("front par main droite")
+                        
+                        
                     else:
-                        print("front par main gauche")
+                        liste_display.append("d")
+                        if liste_display[-2] != "d":
+                            print("front par main gauche")
+                        
 
                 else:
-                    print("front")
+                    liste_display.append("o")
+                    if liste_display[-2] != "o":
+                        print("front")
                     
             elif patte1 or patte2:
                 if patte1:
-                    print("patte droite")
+                    liste_display.append("e")
+                    if liste_display[-2] != "e":
+                        print("patte droite")
+                    
                 elif patte2:
-                    print("patte gauche")
+                    liste_display.append("f")
+                    if liste_display[-2] != "f":
+                        print("patte gauche")
 
             elif bouche:
                 if épaul1 or épaul2:
                     if épaul1:
-                        print("bouche par main droite")
+                        liste_display.append("g")
+                        if liste_display[-2] != "g":
+                            print("bouche par main droite")
+                            
                     elif épaul2:
-                        print("bouche par main gauche")
+                        liste_display.append("h")
+                        if liste_display[-2] != "h":
+                            print("bouche par main gauche")
+                        
                         
                 else:
-                    print("bouche")
-
+                    liste_display.append("i")
+                    if liste_display[-2] != "i":
+                        print("bouche")
+                    
             elif épaul1 or épaul2:
                 if épaul1:
-                    print("épaule droite")
+                    liste_display.append("j")
+                    if liste_display[-2] != "j":
+                        print("épaule droite")
+                        
                 elif épaul2:
-                    print("épaule gauche")
+                    liste_display.append("k")
+                    if liste_display[-2] != "k":
+                        print("épaule gauche")
 
             elif tempe1 or tempe2:
                 if tempe1:
-                    print("tempe droite")
+                    liste_display.append("l")
+                    if liste_display[-2] != "l":
+                        print("tempe droite")
+                        
                 elif tempe2:
-                    print("tempe gauche")
+                    liste_display.append("m")
+                    if liste_display[-2] != "m":
+                        print("tempe gauche")
                     
             elif oreille1 or oreille2:
                 if oreille1:
-                    print("oreille droite")
+                    liste_display.append("n")
+                    if liste_display[-2] != "n":
+                        print("oreille droite")
+                    
                 elif oreille2:
-                    print("oreille gauche")
+                    liste_display.append("o")
+                    if liste_display[-2] != "o":
+                        print("oreille gauche")
 
 
 
@@ -327,7 +348,9 @@ def video_capture_visage():
         if len(MOUVEMENT) > 10:
             del MOUVEMENT[:8]
 
+        compteur += 1
 
+        
     video.release()
     cv2.destroyAllWindows()
 
