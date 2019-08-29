@@ -74,8 +74,8 @@ SUBSTRACTOR14 = cv2.createBackgroundSubtractorMOG2(history=100,
 
 def video_capture_visage():
 
-
-    video = cv2.VideoCapture(0)
+    #k, j
+    video = cv2.VideoCapture("l.mp4")
     faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
     
     MOUVEMENT = []
@@ -111,12 +111,14 @@ def video_capture_visage():
     l14 = []
 
     
+    listee = []
+    
     
     while(True):
 
 
         ret, frame_visage = video.read()
-        frame_visage = cv2.resize(frame_visage, (1200, 1000))
+        frame_visage = cv2.resize(frame_visage, (1000, 800))
 
         gray = cv2.cvtColor(frame_visage, cv2.COLOR_BGR2GRAY)
 
@@ -128,260 +130,178 @@ def video_capture_visage():
 
         for x, y, w, h in faces:
 
-            #cv2.rectangle(gray, (x, y), (x+w, y +h), 2)
-
-            #milieu
-            cv2.rectangle(gray, (x + int(round(w/3)), y - int(round(150 * 100 / h))), (x + int(round(w/3)) * 2, y - int(round(80 * 100 / h))), (255), 2)
-            crop = gray[y - int(round(150 * 100 / h)):y - int(round(80 * 100 / h)), x + int(round(w/3)):x + int(round(w/3)) * 2]
-            mask = SUBSTRACTOR.apply(crop)
-
-            liste = sum([j for i in mask for j in i])
-
-
-
-            def detection(liste, l, phrase):
+            def detection(mask, l, phrase):
                 try:
-                    liste1 = sum(l)/len(l)
-                    if liste > liste1 + 100000:
-                        print(phrase)
+                    liste = sum([j for i in mask for j in i])
+                    l.append(liste)
+                    if liste > sum(l)/len(l) + 40000:
+                        return phrase
                 except:
                     pass
-                l.append(liste)
-
-            detection(liste, l, "milieu")
-                
-                
-            #---------------------------------------------------------milieu
-                
-            #---------------------------------------------------------pattes
-
-
-                
-            #pattes
-            cv2.rectangle(gray, (x - 20, y - int(round(110 * 100 / h))), (x + 30, y - int(round(50 * 100 / h))), (255), 2)
-            crop1 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x - 20:x + 30]
-            mask = SUBSTRACTOR1.apply(crop1)
-
-            liste = sum([j for i in mask for j in i])
-
-            detection(liste, l1, "pate1")
-
-            
 
 
 
-            cv2.rectangle(gray, (x + w - 20, y - int(round(100 * 100 / h))), (x + w + 30, y - int(round(50 * 100 / h))), (255), 2)
-            crop2 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x + w - 20:x + w + 30]
-            mask = SUBSTRACTOR2.apply(crop2)
-            
-            liste = sum([j for i in mask for j in i])
 
-            detection(liste, l2, "pate2")
-
-            
-
-            
-
-
-                
-            #---------------------------------------------------------pattes
-            #---------------------------------------------------------téco
-
-            #téco
-            cv2.rectangle(gray, (x - w - 30, y), (x - 60, y + h - 30), 3)
             crop3 = gray[y:y + h - 30, x - w - 30:x - 60]
             mask = SUBSTRACTOR3.apply(crop3)
             
-            liste = sum([j for i in mask for j in i])
+            coté1 = detection(mask, l3, "droite")
 
-            detection(liste, l3, "cote1")
-
-
-
-            
-            cv2.rectangle(gray, (x + w + 60, y), (x + w * 2 + 30, y + h - 30), 3)
+     
             crop4 = gray[y:y + h - 30, x + w + 60:x + w * 2 + 30]
             mask = SUBSTRACTOR4.apply(crop4)
             
-            liste = sum([j for i in mask for j in i])
+            coté2 = detection(mask, l4, "gauche")
 
-            detection(liste, l4, "cote2")
+            
 
-            #---------------------------------------------------------téco
+            crop = gray[y - int(round(150 * 100 / h)):y - int(round(80 * 100 / h)), x + int(round(w/3)):x + int(round(w/3)) * 2]
+            mask = SUBSTRACTOR.apply(crop)
 
-            #---------------------------------------------------------chebou
-            cv2.rectangle(gray,(x + int(round(w/3)), y + h - 20), (x + int(round(w/3)) * 2, y + h - 5), 1)
+            milieu = detection(mask, l, "milieu")
+
+            
+
+            crop1 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x - 20:x + 30]
+            mask = SUBSTRACTOR1.apply(crop1)
+
+            patte1 = detection(mask, l1, "pate droite")
+
+     
+            crop2 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x + w - 20:x + w + 30]
+            mask = SUBSTRACTOR2.apply(crop2)
+            
+            patte2 = detection(mask, l2, "pate gauche")
+
+
+
+
             crop5 = gray[y + h - 20:y + h + 10,x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR5.apply(crop5)
             
-            liste = sum([j for i in mask for j in i])
-            
-            detection(liste, l5, "chebou")
-            
-            #---------------------------------------------------------chebou
 
-            #---------------------------------------------------------menton
-            cv2.rectangle(gray,(x + int(round(w/3)), y + h + 10), (x + int(round(w/3)) * 2, y + h + 25), 1)
-            
+            bouche = detection(mask, l5, "chebou")
+
+
             crop6 = gray[y + h + 10:y + h + 25,x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR6.apply(crop6)
 
-            liste = sum([j for i in mask for j in i])
-            
-            detection(liste, l6, "menton")
+            menton = detection(mask, l6, "menton")
 
-
-            #---------------------------------------------------------menton
-
-
-
-            #---------------------------------------------------------buste
-            cv2.rectangle(gray,(x, y + h + 120), (x + w, y + h + 180), 1)
 
             crop7 = gray[y + h + 120:y + h + 180, x:x + w]
             mask = SUBSTRACTOR7.apply(crop7)
 
-            try:
-                liste = sum([j for i in mask for j in i])
-            except:
-                pass
-            
-            detection(liste, l7, "buste")
+            buste = detection(mask, l7, "buste")
 
-
-            
-            #---------------------------------------------------------buste
-
-
-            #---------------------------------------------------------epaul
-            cv2.rectangle(gray, (x - 50, y + h + 20), (x + 30, y + h + 60), 1)
 
 
             crop8 = gray[y + h + 20:y + h + 60, x - 50:x + 30]
             mask = SUBSTRACTOR8.apply(crop8)
             
-            liste = sum([j for i in mask for j in i])
+            épaul1 = detection(mask, l8, "épaule droite")
 
-            detection(liste, l8, "epaul1")
-
-
-
-            
-            cv2.rectangle(gray,(x + w - 30, y + h + 20), (x + w + 30, y + h + 60), 1)
 
 
             crop9 = gray[y + h + 20:y + h + 60, x + w - 30:(x + w + 30)]
             mask = SUBSTRACTOR9.apply(crop9)
             
-            liste = sum([j for i in mask for j in i])
-            
-
-            detection(liste, l9, "epaul2")
+            épaul2 = detection(mask, l9, "épaule gauche")
 
 
-
-
-            #---------------------------------------------------------epaul
-
-
-            #---------------------------------------------------------front
-            cv2.rectangle(gray, (x + 30, y - int(round(30 * 100 / h))), (x + w - 30, y - int(round(-40 * 100 / h))), 2)
 
             crop10 = gray[y - int(round(30 * 100 / h)):y - int(round(-40 * 100 / h)), x + 30:x + w - 30]
-
             mask = SUBSTRACTOR10.apply(crop10)
             
-            liste = sum([j for i in mask for j in i])
-
-            detection(liste, l10, "front")
+            front = detection(mask, l10, "front")
 
 
             
-            #---------------------------------------------------------front
-
-
-            #---------------------------------------------------------tempes
-            cv2.rectangle(gray,(x-40, y - 20), (x, y + 40), (0), 1)
 
             crop11 = gray[y - 20:y + 40, x - 40:x]
-
-
-            
             mask = SUBSTRACTOR11.apply(crop11)
             
-            liste = sum([j for i in mask for j in i])
-
-            detection(liste, l11, "tempes1")
-
+            tempe1 = detection(mask, l11, "tempe droite")
             
 
             
-            cv2.rectangle(gray,(x + w, y -20), (x + w + 40, y + 40),(255), 1)
 
             crop12 = gray[y - 20:y + 40, x + w:x + w + 40]
-           
-            
             mask = SUBSTRACTOR12.apply(crop12)
             
-            liste = sum([j for i in mask for j in i])
-
-            detection(liste, l12, "tempes2")
-
+            tempe2 = detection(mask, l12, "tempe gauche")
 
     
 
-            
-
-
-            
-            #---------------------------------------------------------tempes
-
-
-            #---------------------------------------------------------oreille
-            cv2.rectangle(gray,(x - 40, y + 70), (x, y + 110), 1)
-
 
             crop13 = gray[y + 70:y + 110, x - 40:x]
-           
-        
             mask = SUBSTRACTOR13.apply(crop13)
-            
-            liste = sum([j for i in mask for j in i])
 
-            detection(liste, l13, "oreille1")
-
-
+            oreille1 = detection(mask, l13, "oreille droite")
 
 
 
             
-            cv2.rectangle(gray,(x + w + 40, y + 70), (x + w, y + 110), 1)
-
-
 
             crop14 = gray[y + 70:y + 110, x + w:x + w + 40]
-            
             mask = SUBSTRACTOR14.apply(crop14)
-            
-            liste = sum([j for i in mask for j in i])
-            
-            detection(liste, l14, "oreille2")
 
- 
+            oreille2 = detection(mask, l14, "oreille gauche")
 
 
 
-            
-            #---------------------------------------------------------oreille
-
-
-                    
+            #liste = [coté1, coté2, milieu, patte1, patte2, bouche, menton, butste, épaul1, épaul2, front, tempe1, tempe2, oreille1, oreille2]
                         
            
+            if milieu:
+                if coté1:
+                    print("milieu par main droite")
+                else:
+                    print("milieu par main gauche")
 
+            elif front:
+                if épaul1 or épaul2:
+                    if épaul1:
+                        print("front par main droite")
+                    else:
+                        print("front par main gauche")
 
+                else:
+                    print("front")
+                    
+            elif patte1 or patte2:
+                if patte1:
+                    print("patte droite")
+                elif patte2:
+                    print("patte gauche")
 
+            elif bouche:
+                if épaul1 or épaul2:
+                    if épaul1:
+                        print("bouche par main droite")
+                    elif épaul2:
+                        print("bouche par main gauche")
+                        
+                else:
+                    print("bouche")
 
+            elif épaul1 or épaul2:
+                if épaul1:
+                    print("épaule droite")
+                elif épaul2:
+                    print("épaule gauche")
+
+            elif tempe1 or tempe2:
+                if tempe1:
+                    print("tempe droite")
+                elif tempe2:
+                    print("tempe gauche")
+                    
+            elif oreille1 or oreille2:
+                if oreille1:
+                    print("oreille droite")
+                elif oreille2:
+                    print("oreille gauche")
 
 
 
