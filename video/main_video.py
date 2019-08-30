@@ -74,81 +74,87 @@ SUBSTRACTOR14 = cv2.createBackgroundSubtractorMOG2(history=100,
 
 def video_capture_visage():
 
-    #k, j, l
+    #k, j, l <- video jb
+
+    #for displaying video
     video = cv2.VideoCapture("l.mp4")
     faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
+
     
-    c = 0
+    #We croping our frame by box
+    #we add content of the detection movement
+    #if the sum of the list exceeds a threshold
+    #there are movement
     l = []
-    c1 = 0
     l1 = []
-    c2 = 0
     l2 = []
-    c3 = 0
     l3 = []
-    c4 = 0
     l4 = []
-    c5 = 0
     l5 = []
-    c6 = 0
     l6 = []
-    c7 = 0
     l7 = []
-    c8 = 0
     l8 = []
-    c9 = 0
     l9 = []
-    c10 = 0
     l10 = []
-    c11 = 0
     l11 = []
-    c12 = 0
     l12 = []
-    c13 = 0
     l13 = []
-    c14 = 0
     l14 = []
 
     
     listee = []
-    liste_display = ["dza", "dza"]
+
+    #We add all detection into this list.
+    #if nothing is input in there
+    #we stop and run a loop for see wat detection is did
+    liste_display = []
     compteur = 0
-    start_time = time.time()
     compteur1 = 0
 
     
     while(True):
 
-
+        
         ret, frame_visage = video.read()
         frame_visage = cv2.resize(frame_visage, (1000, 800))
 
+        #gray for more speed
         gray = cv2.cvtColor(frame_visage, cv2.COLOR_BGR2GRAY)
-
+        #face detection
         faces = faceCascade.detectMultiScale(
             gray, scaleFactor=3.0,
             minNeighbors=1, minSize=(60, 100),
             flags=cv2.CASCADE_SCALE_IMAGE)
 
-
+        #on detection
         for x, y, w, h in faces:
 
+            
             def detection(mask, l, phrase):
+                """Here we ask the sum of the list(we insert element in list
+                from the box). if the mean > + 50000 there is movement in there"""
                 try:
+                    #doing the sum of elements of the list
                     liste = sum([j for i in mask for j in i])
+                    #we add the sum of all element
                     l.append(liste)
+                    #if the current list of detection is > at the mean of all passation
+                    #a refaire
                     if liste > sum(l)/len(l) + 50000:
+                        #we return the point detected
                         return phrase
                 except:
                     pass
 
 
+            #We create box. In this box we substract the current background
+            #If there are movement in there the number of pixel up.
             crop3 = gray[y:y + h - 30, x - w - 30:x - 60]
             mask = SUBSTRACTOR3.apply(crop3)
             
             coté1 = detection(mask, l3, "droite")
 
-     
+             
             crop4 = gray[y:y + h - 30, x + w + 60:x + w * 2 + 30]
             mask = SUBSTRACTOR4.apply(crop4)
             
@@ -232,78 +238,65 @@ def video_capture_visage():
 
             oreille2 = detection(mask, l14, "oreille gauche")
 
-
+            #for ewample for touch my forehead
+            #i need to activate my shoulder to
+            #pass by my hear the coin of shoulder and the shoulder.
+            #so i dont touch my hear but my shoulder so shoulder == 1 and hear == 4
             if milieu:
                 if coté1:
-                    if liste_display[-2] != "milieu par main droite":
-                        liste_display.append("milieu par main droite")
+                    liste_display.append("milieu par main droite")
                 else:
-                    if liste_display[-2] != "milieu par main gauche":
-                        liste_display.append("milieu par main gauche")
+                    liste_display.append("milieu par main gauche")
 
             elif front:
                 if épaul1 or épaul2:
                     if épaul1:
-                        if liste_display[-2] != "front par main droite":
-                            liste_display.append("front par main droite")
+                        liste_display.append("front par main droite")
                         
                         
                     else:
-                        if liste_display[-2] != "front par main gauche":
-                            liste_display.append("front par main gauche")
+                        liste_display.append("front par main gauche")
                 else:
-                    if liste_display[-2] != "front":
-                        liste_display.append("front")
+                    liste_display.append("front")
                     
             elif patte1 or patte2:
                 if patte1:
-                    if liste_display[-2] != "patte par main droite":
-                        liste_display.append("patte par main droite")
+                    liste_display.append("patte par main droite")
                     
                 elif patte2:
-                    if liste_display[-2] != "patte par main gauche":
-                        liste_display.append("patte par main gauche")
+                    liste_display.append("patte par main gauche")
 
             elif bouche:
                 if épaul1 or épaul2:
                     if épaul1:
-                        if liste_display[-2] != "bouche par main droite":
-                            liste_display.append("bouche par main droite")
+                        liste_display.append("bouche par main droite")
                             
                     elif épaul2:
-                        if liste_display[-2] != "bouche par main gauche":
-                            liste_display.append("bouche par main gauche")
+                        liste_display.append("bouche par main gauche")
                 else:
-                    if liste_display[-2] != "bouche":
-                        liste_display.append("bouche")
+                    liste_display.append("bouche")
 
                     
             elif épaul1 or épaul2:
                 if épaul1:
-                    if liste_display[-2] != "épaul droite":
-                        liste_display.append("épaul droite")
+                    liste_display.append("épaul droite")
                         
                 elif épaul2:
-                    if liste_display[-2] != "épaul gauche":
-                        liste_display.append("épaul gauche")
+                    liste_display.append("épaul gauche")
 
             elif tempe1 or tempe2:
                 if tempe1:
-                    if liste_display[-2] != "tempe droite":
-                        liste_display.append("tempe droite")
+                    liste_display.append("tempe droite")
                         
                 elif tempe2:
-                    if liste_display[-2] != "tempe gauche":
-                        liste_display.append("tempe gauche")
+                    liste_display.append("tempe gauche")
                     
             elif oreille1 or oreille2:
                 if oreille1:
-                    if liste_display[-2] != "oreille droite":
-                       liste_display.append("oreille droite")
+                    liste_display.append("oreille droite")
                     
                 elif oreille2:
-                    if liste_display[-2] != "oreille gauche":
-                        liste_display.append("oreille gauche")
+                    liste_display.append("oreille gauche")
 
             else:
                 liste_display.append("fin")
@@ -338,7 +331,7 @@ def video_capture_visage():
                                 val = cle
                 
             
-                liste_display = ["aaa", "aa"]
+                liste_display = []
 
 
                 
