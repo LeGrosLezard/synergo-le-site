@@ -77,7 +77,7 @@ def video_capture_visage():
     #k, j, l <- video jb
 
     #for displaying video
-    video = cv2.VideoCapture("l.mp4")
+    video = cv2.VideoCapture("VIDEO.mp4")
     faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
     
@@ -101,6 +101,9 @@ def video_capture_visage():
     l13 = []
     l14 = []
 
+    #Here we detecting if the dude move or not his head
+    #from x
+    MOUVEMENT = [0]
     
     listee = []
 
@@ -117,20 +120,18 @@ def video_capture_visage():
         
         ret, frame_visage = video.read()
         frame_visage = cv2.resize(frame_visage, (1000, 800))
-
         #gray for more speed
         gray = cv2.cvtColor(frame_visage, cv2.COLOR_BGR2GRAY)
         #face detection
         faces = faceCascade.detectMultiScale(
-            gray, scaleFactor=3.0,
+            gray, scaleFactor=1.9,
             minNeighbors=1, minSize=(60, 100),
             flags=cv2.CASCADE_SCALE_IMAGE)
 
         #on detection
         for x, y, w, h in faces:
-
-            
-            def detection(mask, l, phrase):
+            cv2.rectangle(gray, (x,y), (x+w, y+h),(0), 2)
+            def detection(mask, l, phrase, nb, x):
                 """Here we ask the sum of the list(we insert element in list
                 from the box). if the mean > + 50000 there is movement in there"""
                 try:
@@ -140,7 +141,7 @@ def video_capture_visage():
                     l.append(liste)
                     #if the current list of detection is > at the mean of all passation
                     #a refaire
-                    if liste > sum(l)/len(l) + 50000:
+                    if liste > sum(l)/len(l) + nb:
                         #we return the point detected
                         return phrase
                 except:
@@ -151,97 +152,100 @@ def video_capture_visage():
             #If there are movement in there the number of pixel up.
             crop3 = gray[y:y + h - 30, x - w - 30:x - 60]
             mask = SUBSTRACTOR3.apply(crop3)
+
             
-            coté1 = detection(mask, l3, "droite")
+            coté1 = detection(mask, l3, "droite", 100000, x + w)
 
              
             crop4 = gray[y:y + h - 30, x + w + 60:x + w * 2 + 30]
             mask = SUBSTRACTOR4.apply(crop4)
             
-            coté2 = detection(mask, l4, "gauche")
+            coté2 = detection(mask, l4, "gauche", 100000, x + w)
 
             
             crop = gray[y - int(round(150 * 100 / h)):y - int(round(80 * 100 / h)), x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR.apply(crop)
-
-            milieu = detection(mask, l, "milieu")
+            
+            milieu = detection(mask, l, "milieu", 100000, x + w)
 
             
             crop1 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x - 20:x + 30]
             mask = SUBSTRACTOR1.apply(crop1)
 
-            patte1 = detection(mask, l1, "pate droite")
+            patte1 = detection(mask, l1, "pate droite", 100000, x + w)
 
      
             crop2 = gray[y - int(round(110 * 100 / h)):y - int(round(50 * 100 / h)), x + w - 20:x + w + 30]
             mask = SUBSTRACTOR2.apply(crop2)
             
-            patte2 = detection(mask, l2, "pate gauche")
+            patte2 = detection(mask, l2, "pate gauche", 100000, x + w)
 
 
             crop5 = gray[y + h - 20:y + h + 10,x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR5.apply(crop5)
             
-            bouche = detection(mask, l5, "chebou")
+            bouche = detection(mask, l5, "chebou", 100000, x + w)
 
-
-            crop6 = gray[y + h + 10:y + h + 25,x + int(round(w/3)):x + int(round(w/3)) * 2]
+            cv2.rectangle(gray, (x + int(round(w/3)), y + h + 10), (x + int(round(w/3)) * 2,y + h + 45), (0), 3)
+            crop6 = gray[y + h + 10:y + h + 45,x + int(round(w/3)):x + int(round(w/3)) * 2]
             mask = SUBSTRACTOR6.apply(crop6)
 
-            menton = detection(mask, l6, "menton")
+            menton = detection(mask, l6, "menton", 3000, x + w)
 
 
             crop7 = gray[y + h + 120:y + h + 180, x:x + w]
             mask = SUBSTRACTOR7.apply(crop7)
 
-            buste = detection(mask, l7, "buste")
+            buste = detection(mask, l7, "buste", 100000, x + w)
 
 
             crop8 = gray[y + h + 20:y + h + 60, x - 50:x + 30]
             mask = SUBSTRACTOR8.apply(crop8)
             
-            épaul1 = detection(mask, l8, "épaule droite")
+            épaul1 = detection(mask, l8, "épaule droite", 100000, x + w)
 
 
             crop9 = gray[y + h + 20:y + h + 60, x + w - 30:(x + w + 30)]
             mask = SUBSTRACTOR9.apply(crop9)
             
-            épaul2 = detection(mask, l9, "épaule gauche")
+            épaul2 = detection(mask, l9, "épaule gauche", 100000, x + w)
 
 
             crop10 = gray[y - int(round(30 * 100 / h)):y - int(round(-40 * 100 / h)), x + 30:x + w - 30]
             mask = SUBSTRACTOR10.apply(crop10)
-            
-            front = detection(mask, l10, "front")
+            cv2.imshow('mask', mask)
+            front = detection(mask, l10, "front", 100000, x + w)
 
 
             crop11 = gray[y - 20:y + 40, x - 40:x]
             mask = SUBSTRACTOR11.apply(crop11)
             
-            tempe1 = detection(mask, l11, "tempe droite")
+            tempe1 = detection(mask, l11, "tempe droite", 100000, x + w)
             
 
             crop12 = gray[y - 20:y + 40, x + w:x + w + 40]
             mask = SUBSTRACTOR12.apply(crop12)
             
-            tempe2 = detection(mask, l12, "tempe gauche")
+            tempe2 = detection(mask, l12, "tempe gauche", 100000, x + w)
 
     
             crop13 = gray[y + 70:y + 110, x - 40:x]
             mask = SUBSTRACTOR13.apply(crop13)
 
-            oreille1 = detection(mask, l13, "oreille droite")
+            oreille1 = detection(mask, l13, "oreille droite", 100000, x + w)
 
 
             crop14 = gray[y + 70:y + 110, x + w:x + w + 40]
             mask = SUBSTRACTOR14.apply(crop14)
 
-            oreille2 = detection(mask, l14, "oreille gauche")
+            oreille2 = detection(mask, l14, "oreille gauche", 100000, x + w)
 
             #for ewample for touch my forehead
             #i need to activate my shoulder to
             #pass by my hear the coin of shoulder and the shoulder.
             #so i dont touch my hear but my shoulder so shoulder == 1 and hear == 4
+
+            
             if milieu:
                 if coté1:
                     liste_display.append("milieu par main droite")
@@ -323,14 +327,14 @@ def video_capture_visage():
 
                 ok = 10
                 val = ""
-                for i in liste_display[2:]:
+
+                for i in liste_display:
                     for cle, valeur in dico.items():
                         if i == cle:
                             if ok > valeur:
                                 ok = valeur
                                 val = cle
-                
-            
+
                 liste_display = []
 
 
@@ -343,8 +347,10 @@ def video_capture_visage():
 
         #-------------------------------------------------------------1
 
-            
-  
+        
+        
+        MOUVEMENT.append(x + w)
+
 
         cv2.imshow('FACE', gray)
         
@@ -352,7 +358,7 @@ def video_capture_visage():
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        
+
 
         compteur += 1
 
@@ -361,10 +367,9 @@ def video_capture_visage():
     cv2.destroyAllWindows()
 
 
-try:
-    video_capture_visage()
-except:
-    pass
+
+video_capture_visage()
+
 
 
 
