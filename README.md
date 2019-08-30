@@ -6,9 +6,11 @@
 
 
 
-bon stop mais faut faire si milieu alors on ne dit pas le reste (si tu te grattes au milieu y'aura peut etre tempe milieu milieu milieu tempe.... )
+différence de profondeur = difference de position des cadres
 
-si mec appuis sur pause de la video faire un click automatique pour videocapture
+retour de main milieu -> épaul
+
+appuis sur pause de la video faire un click automatique pour videocapture
 
 mettre les sons subliminaux mais chai pas si on a le droit 
 
