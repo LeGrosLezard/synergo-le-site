@@ -82,10 +82,10 @@ SUBSTRACTOR17 = cv2.createBackgroundSubtractorMOG2(history=100,
 
 def video_capture_visage():
 
-    #k, j, l <- video jb
+    #k, j, l, m <- video jb
 
     #for displaying video
-    video = cv2.VideoCapture("VIDEO.mp4")
+    video = cv2.VideoCapture("j.mp4")
     faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
     
@@ -158,14 +158,19 @@ def video_capture_visage():
     
     activate_compteur = False
     active_compteur = 0
+    ok = 0
+    stop = False
     while(True):
+
+
 
         ret, frame_visage = video.read()
         frame_visage = cv2.resize(frame_visage, (1000, 800))
     
         gray = cv2.cvtColor(frame_visage, cv2.COLOR_BGR2GRAY)
-        mask = SUBSTRACTOR1.apply(gray)
-        cv2.imshow("dzadaz", mask)
+        the_mask = SUBSTRACTOR1.apply(gray)
+        
+        
         
         faces = faceCascade.detectMultiScale(
             gray, scaleFactor=3,
@@ -177,24 +182,30 @@ def video_capture_visage():
             
 
             if MOUVEMENT[-1] > x + 5 or MOUVEMENT[-1] < x - 5:
-                ll = [[], [], [], []]
-                ll1 = [[], [], [], []]
-                ll2 = [[], [], [], []]
-                ll3 = [[], [], [], []]
-                ll4 = [[], [], [], []]
-                ll5 = [[], [], [], []]
-                ll6 = [[], [], [], []]
-                ll7 = [[], [], [], []]
-                ll8 = [[], [], [], []]
-                ll9 = [[], [], [], []]
-                ll10 = [[], [], [], []]
-                ll11 = [[], [], [], []]
-                ll12 = [[], [], [], []]
-                ll13 = [[], [], [], []]
-                ll14 = [[], [], [], []]
-                ll15 = [[], [], [], []]
-                ll16 = [[], [], [], []]
-                ll17 = [[], [], [], []]
+                stop = True
+
+                if ok >= 2:
+                    
+                    ll = [[], [], [], []]
+                    ll1 = [[], [], [], []]
+                    ll2 = [[], [], [], []]
+                    ll3 = [[], [], [], []]
+                    ll4 = [[], [], [], []]
+                    ll5 = [[], [], [], []]
+                    ll6 = [[], [], [], []]
+                    ll7 = [[], [], [], []]
+                    ll8 = [[], [], [], []]
+                    ll9 = [[], [], [], []]
+                    ll10 = [[], [], [], []]
+                    ll11 = [[], [], [], []]
+                    ll12 = [[], [], [], []]
+                    ll13 = [[], [], [], []]
+                    ll14 = [[], [], [], []]
+                    ll15 = [[], [], [], []]
+                    ll16 = [[], [], [], []]
+                    ll17 = [[], [], [], []]
+
+                    stop = False
 
 
                 
@@ -236,21 +247,21 @@ def video_capture_visage():
                 ll3[1].append(y + h + 10)
                 ll3[2].append(x - w - 30)
                 ll3[3].append(x - 60)
-                #milieu
+                #droite
 
 
                 ll4[0].append(y)
                 ll4[1].append(y + h + 10)
-                ll4[2].append(x + w + 60)
+                ll4[2].append(x + w + 80)
                 ll4[3].append(x + w * 2 + 30)
-                #droite
+                #gauche
 
 
                 ll5[0].append(y - int(round(150 * 100 / h)))
                 ll5[1].append(y - int(round(80 * 100 / h)))
                 ll5[2].append(x + int(round(w/3)))
                 ll5[3].append(x + int(round(w/3)) * 2)
-                #gauche
+                #milieu
 
 
 
@@ -298,7 +309,7 @@ def video_capture_visage():
                 ll12[0].append(y + h + 20)
                 ll12[1].append(y + h + 60)
                 ll12[2].append(x + w - 30)
-                ll12[3].append(x + w + 30)
+                ll12[3].append(x + w + 50)
                 #épaul gauche
 
                 ll13[0].append(y - int(round(30 * 100 / h)))
@@ -323,13 +334,13 @@ def video_capture_visage():
 
 
                 ll16[0].append(y + 70)
-                ll16[1].append(y + 110)
+                ll16[1].append(y + 130)
                 ll16[2].append(x - 40)
                 ll16[3].append(x)
                 #oreille droite
 
                 ll17[0].append(y + 70)
-                ll17[1].append(y + 110)
+                ll17[1].append(y + 130)
                 ll17[2].append(x + w)
                 ll17[3].append(x + w + 40)
                 #oreille gauche
@@ -344,13 +355,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll3[2]) / len(ll3[2])))
             xw1 = round(int(sum(ll3[3]) / len(ll3[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop3 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR3.apply(crop3)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop3 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop3 for j in i])
             try:
                 if liste > sum(l)/len(l) + 100000 and active_compteur is False:
-                    print("milieu")
+                    #print("droite")
+                    liste_display.append("droite")
                     
             except:
                 pass
@@ -363,32 +374,30 @@ def video_capture_visage():
             x1 = round(int(sum(ll4[2]) / len(ll4[2])))
             xw1 = round(int(sum(ll4[3]) / len(ll4[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop4 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR4.apply(crop4)
-            
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop4 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop4 for j in i])
             try:
                 if liste > sum(l1)/len(l1) + 100000 and active_compteur is False:
-                    print("droite")
+                    #print("gauche")
+                    liste_display.append("gauche")
                     
             except:
                 pass
             l1.append(liste)
-    
 
             y1 = round(int(sum(ll5[0]) / len(ll5[0])))
             yh1 = round(int(sum(ll5[1]) / len(ll5[1])))
             x1 = round(int(sum(ll5[2]) / len(ll5[2])))
             xw1 = round(int(sum(ll5[3]) / len(ll5[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop5 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR5.apply(crop5)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop5 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop5 for j in i])
             try:
                 if liste > sum(l2)/len(l2) + 100000 and active_compteur is False:
-                    print("gauche")
+                    #print("milieu")
+                    liste_display.append("milieu")
                     
             except:
                 pass
@@ -401,13 +410,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll6[2]) / len(ll6[2])))
             xw1 = round(int(sum(ll6[3]) / len(ll6[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop6 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR6.apply(crop6)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop6 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop6 for j in i])
             try:
                 if liste > sum(l3)/len(l3) + 100000 and active_compteur is False:
-                    print("patte droite")
+                    #print("patte droite")
+                    liste_display.append("patte droite")
                     
             except:
                 pass
@@ -420,13 +429,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll7[2]) / len(ll7[2])))
             xw1 = round(int(sum(ll7[3]) / len(ll7[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop7 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR7.apply(crop7)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop7 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop7 for j in i])
             try:
                 if liste > sum(l4)/len(l4) + 100000 and active_compteur is False:
-                    print("patte gauche")
+                    #print("patte gauche")
+                    liste_display.append("patte gauche")
                     
             except:
                 pass
@@ -438,13 +447,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll8[2]) / len(ll8[2])))
             xw1 = round(int(sum(ll8[3]) / len(ll8[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop8 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR8.apply(crop8)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop8 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop8 for j in i])
             try:
                 if liste > sum(l5)/len(l5) + 100000 and active_compteur is False:
-                    print("bouche")
+                    #print("bouche")
+                    liste_display.append("bouche")
                     
             except:
                 pass
@@ -455,14 +464,17 @@ def video_capture_visage():
             x1 = round(int(sum(ll9[2]) / len(ll9[2])))
             xw1 = round(int(sum(ll9[3]) / len(ll9[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop9 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR9.apply(crop9)
-            liste = sum([j for i in mask for j in i])
-
-            if liste > 6000 and active_compteur is False:
-                print("menton")
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop9 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop9 for j in i])
+            try:
+                if liste > sum(l6)/len(l6) + 10000 and active_compteur is False:
+                    #print("menton")
+                    liste_display.append("menton")
                     
+            except:
+                pass
+            l6.append(liste)
 
 
 
@@ -471,13 +483,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll10[2]) / len(ll10[2])))
             xw1 = round(int(sum(ll10[3]) / len(ll10[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop10 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR10.apply(crop10)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop10 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop10 for j in i])
             try:
-                if liste > sum(l7)/len(l7) + 100000 and active_compteur is False:
-                    print("buste")
+                if liste > sum(l7)/len(l7) + 200000 and active_compteur is False:
+                    #print("buste")
+                    liste_display.append("buste")
                     
             except:
                 pass
@@ -489,14 +501,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll11[2]) / len(ll11[2])))
             xw1 = round(int(sum(ll11[3]) / len(ll11[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop11 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR11.apply(crop11)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop11 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop11 for j in i])
             try:
-                if liste > sum(l8)/len(l8) + 100000 and active_compteur is False:
-                    print("épaule droite")
-                    
+                if liste > sum(l8)/len(l8) + 80000 and active_compteur is False:
+                    #print("épaule droite")
+                    liste_display.append("épaule droite")
             except:
                 pass
             l8.append(liste)
@@ -507,13 +518,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll12[2]) / len(ll12[2])))
             xw1 = round(int(sum(ll12[3]) / len(ll12[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop12 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR12.apply(crop12)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop12 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop12 for j in i])
             try:
-                if liste > sum(l9)/len(l9) + 100000 and active_compteur is False:
-                    print("épaule gauche")
+                if liste > sum(l9)/len(l9) + 80000 and active_compteur is False:
+                    #print("épaule gauche")
+                    liste_display.append("épaule gauche")
                     
             except:
                 pass
@@ -525,13 +536,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll13[2]) / len(ll13[2])))
             xw1 = round(int(sum(ll13[3]) / len(ll13[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop13 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR13.apply(crop13)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop13 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop13 for j in i])
             try:
                 if liste > sum(l10)/len(l10) + 100000 and active_compteur is False:
-                    print("front")
+                    #print("front")
+                    liste_display.append("front")
                     
             except:
                 pass
@@ -543,13 +554,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll14[2]) / len(ll14[2])))
             xw1 = round(int(sum(ll14[3]) / len(ll14[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop14 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR14.apply(crop14)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop14 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop14 for j in i])
             try:
                 if liste > sum(l11)/len(l11) + 100000 and active_compteur is False:
-                    print("tempe droite")
+                    #print("tempe droite")
+                    liste_display.append("tempe droite")
                     
             except:
                 pass
@@ -562,13 +573,13 @@ def video_capture_visage():
             x1 = round(int(sum(ll15[2]) / len(ll15[2])))
             xw1 = round(int(sum(ll15[3]) / len(ll15[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop15 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR15.apply(crop15)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop15 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop15 for j in i])
             try:
                 if liste > sum(l12)/len(l12) + 100000 and active_compteur is False:
-                    print("tempe gauche")
+                    #print("tempe gauche")
+                    liste_display.append("tempe gauche")
                     
             except:
                 pass
@@ -581,13 +592,15 @@ def video_capture_visage():
             x1 = round(int(sum(ll16[2]) / len(ll16[2])))
             xw1 = round(int(sum(ll16[3]) / len(ll16[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop16 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR16.apply(crop16)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop16 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop16 for j in i])
+            
             try:
-                if liste > sum(l13)/len(l13) + 100000 and active_compteur is False:
-                    print("oreille droite")
+                #print(liste, sum(l13)/len(l13))
+                if liste > sum(l13)/len(l13) + 10000 and active_compteur is False:
+                    #print("oreille droite")
+                    liste_display.append("oreille droite")
                     
             except:
                 pass
@@ -599,156 +612,91 @@ def video_capture_visage():
             x1 = round(int(sum(ll17[2]) / len(ll17[2])))
             xw1 = round(int(sum(ll17[3]) / len(ll17[3])))
             
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-            crop17 = gray[y1:yh1, x1:xw1]
-            mask = SUBSTRACTOR17.apply(crop17)
-            liste = sum([j for i in mask for j in i])
+            cv2.rectangle(the_mask, (x1, y1), (xw1, yh1), (255), 3)
+            crop17 = the_mask[y1:yh1, x1:xw1]
+            liste = sum([j for i in crop17 for j in i])
             try:
-                if liste > sum(l14)/len(l14) + 100000 and active_compteur is False:
-                    print("oreille gauche")
+                if liste > sum(l14)/len(l14) + 10000 and active_compteur is False:
+                    #print("oreille gauche")
+                    liste_display.append("oreille gauche")
                     
             except:
                 pass
             l14.append(liste)
-                
 
+
+                
         if activate_compteur is True:
             active_compteur += 1
-
             
-##            if milieu:
-##                if coté1:
-##                    #liste_display.append("milieu par main droite")
-##                    print("md")
-##                else:
-##                    #liste_display.append("milieu par main gauche")
-##                    print("mg")
-##
-##            elif front:
-##                if épaul1 or épaul2:
-##                    if épaul1:
-##                        #liste_display.append("front par main droite")
-##                        print("fd")
-##                        
-##                        
-##                    else:
-##                        #liste_display.append("front par main gauche")
-##                        print("fg")
-##                else:
-##                    #liste_display.append("front")
-##                    print("f")
-##                    
-##            elif patte1 or patte2:
-##                if patte1:
-##                    #liste_display.append("patte par main droite")
-##                    print("pd")
-##                    
-##                elif patte2:
-##                    #liste_display.append("patte par main gauche")
-##                    print("pg")
-##
-##            elif bouche:
-##                if épaul1 or épaul2:
-##                    if épaul1:
-##                        #liste_display.append("bouche par main droite")
-##                        print("pd")
-##                            
-##                    elif épaul2:
-##                        #liste_display.append("bouche par main gauche")
-##                        print("bg")
-##                else:
-##                    #liste_display.append("bouche")
-##                    print("bouche")
-##
-##                    
-##            elif épaul1 or épaul2:
-##                if épaul1:
-##                    #liste_display.append("épaul droite")
-##                    print("ed")
-##                        
-##                elif épaul2:
-##                    #liste_display.append("épaul gauche")
-##                    print("eg")
-##
-##            elif tempe1 or tempe2:
-##                if tempe1:
-##                    #liste_display.append("tempe droite")
-##                    print("td")
-##                        
-##                elif tempe2:
-##                    #liste_display.append("tempe gauche")
-##                    print("tg")
-##                    
-##            elif oreille1 or oreille2:
-##                if oreille1:
-##                    #liste_display.append("oreille droite")
-##                    print("od")
-##                elif oreille2:
-##                    #liste_display.append("oreille gauche")
-##                    print("og")
-##
-##            else:
-##                #liste_display.append("fin")
-##                #print("fin")
-##                pass
+
+            for i in liste_display:
+
+                if i in ("buste"):
+                    dico = {"milieu":1,
+                            "bouche":1,
+                            "menton":2,
+                            "épaule droite":1,
+                            "épaule gauche":1,
+                            "buste":4}
+                    val = 10
+                    donc = ""
+                    for i in liste_display:
+                        for cle, valeur in dico.items():
+                            if i == cle and val > valeur:
+                                val = valeur
+                                donc = cle
+                    if donc != "":
+                        print(donc)
+                        
+                    liste_display = []
+
+
+
+                
+                elif i in ("droite", "gauche"):
+       
+                    val = 10
+                    donc = ""
+                    dico = {"milieu":1,
+                            "patte droite":2,
+                            "patte gauche":2,
+                            "bouche":1,
+                            "épaule droite":3,
+                            "épaule gauche":3,
+                            "tempe droite":3,
+                            "tempe gauche":3,
+                            "oreille droite":4,
+                            "oreille gauche":4,
+                            "front":1,
+                            "droite":5,
+                            "gauche":5}
+                    
+
+                    else:
+                        for i in liste_display:
+                            for cle, valeur in dico.items():
+                                if i == cle and val > valeur:
+                                    val = valeur
+                                    donc = cle
+
+                        if donc != "":
+                            print(donc)
+                        
+                    liste_display = []
+                else:
+                    pass
 
 
 
 
+                
 
 
 
+        cv2.imshow("dzadaz", the_mask)
+        #cv2.imshow('FACE', gray)
 
-
-
-
-
-
-##            if liste_display[-1] == "fin":
-##
-##                dico = {"milieu par main droite":1,
-##                        "milieu par main gauche":1,
-##                        "front par main droite":1,
-##                        "front par main gauche":1,
-##                        "patte droite":2,
-##                        "patte gauche":2,
-##                        "bouche par main droite":1,
-##                        "bouche par main gauche":1,
-##                        "bouche":1,
-##                        "épaul droite":3,
-##                        "épaul gauche":3,
-##                        "tempe droite":3,
-##                        "tempe gauche":3,
-##                        "oreille droite":4,
-##                        "oreille gauche":4,
-##                        "front":1}
-##
-##                ok = 10
-##                val = ""
-##
-##                for i in liste_display:
-##                    for cle, valeur in dico.items():
-##                        if i == cle:
-##                            if ok > valeur:
-##                                ok = valeur
-##                                val = cle
-##
-##                liste_display = []
-##
-##
-##                
-##            if val != "":
-##                print(val)
-
-
-        #epaul droite -> milieu -> epaul droite == retour 
-
-        #-------------------------------------------------------------1
-
-
-
-        cv2.imshow('FACE', gray)
-        
 
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -756,6 +704,8 @@ def video_capture_visage():
 
 
         compteur += 1
+        if stop is True:
+            ok += 1
 
         
     video.release()
