@@ -143,7 +143,6 @@ def video_capture_visage():
                     pass
 
 
-
             crop3 = gray[y:y + h - 30, x - w - 30:x - 60]
             mask = SUBSTRACTOR3.apply(crop3)
             
@@ -236,100 +235,118 @@ def video_capture_visage():
 
             if milieu:
                 if coté1:
-                    if liste_display[-2] != "a":
-                        liste_display.append("a")
+                    if liste_display[-2] != "milieu par main droite":
+                        liste_display.append("milieu par main droite")
                 else:
-                    if liste_display[-2] != "b":
-                        liste_display.append("b")
+                    if liste_display[-2] != "milieu par main gauche":
+                        liste_display.append("milieu par main gauche")
 
             elif front:
                 if épaul1 or épaul2:
                     if épaul1:
-                        if liste_display[-2] != "c":
-                            liste_display.append("c")
+                        if liste_display[-2] != "front par main droite":
+                            liste_display.append("front par main droite")
                         
                         
                     else:
-                        if liste_display[-2] != "d":
-                            liste_display.append("d")
+                        if liste_display[-2] != "front par main gauche":
+                            liste_display.append("front par main gauche")
                 else:
-                    if liste_display[-2] != "p":
-                        liste_display.append("p")
+                    if liste_display[-2] != "front":
+                        liste_display.append("front")
                     
             elif patte1 or patte2:
                 if patte1:
-                    if liste_display[-2] != "e":
-                        liste_display.append("e")
+                    if liste_display[-2] != "patte par main droite":
+                        liste_display.append("patte par main droite")
                     
                 elif patte2:
-                    if liste_display[-2] != "f":
-                        liste_display.append("f")
+                    if liste_display[-2] != "patte par main gauche":
+                        liste_display.append("patte par main gauche")
 
             elif bouche:
                 if épaul1 or épaul2:
                     if épaul1:
-                        if liste_display[-2] != "g":
-                            liste_display.append("g")
+                        if liste_display[-2] != "bouche par main droite":
+                            liste_display.append("bouche par main droite")
                             
                     elif épaul2:
-                        if liste_display[-2] != "h":
-                            liste_display.append("h")
+                        if liste_display[-2] != "bouche par main gauche":
+                            liste_display.append("bouche par main gauche")
                 else:
-                    if liste_display[-2] != "i":
-                        liste_display.append("i")
+                    if liste_display[-2] != "bouche":
+                        liste_display.append("bouche")
 
                     
             elif épaul1 or épaul2:
                 if épaul1:
-                    if liste_display[-2] != "j":
-                        liste_display.append("j")
+                    if liste_display[-2] != "épaul droite":
+                        liste_display.append("épaul droite")
                         
                 elif épaul2:
-                    if liste_display[-2] != "k":
-                        liste_display.append("k")
+                    if liste_display[-2] != "épaul gauche":
+                        liste_display.append("épaul gauche")
 
             elif tempe1 or tempe2:
                 if tempe1:
-                    if liste_display[-2] != "l":
-                        liste_display.append("l")
+                    if liste_display[-2] != "tempe droite":
+                        liste_display.append("tempe droite")
                         
                 elif tempe2:
-                    if liste_display[-2] != "m":
-                        liste_display.append("m")
+                    if liste_display[-2] != "tempe gauche":
+                        liste_display.append("tempe gauche")
                     
             elif oreille1 or oreille2:
                 if oreille1:
-                    if liste_display[-2] != "n":
-                       liste_display.append("n")
+                    if liste_display[-2] != "oreille droite":
+                       liste_display.append("oreille droite")
                     
                 elif oreille2:
-                    if liste_display[-2] != "o":
-                        liste_display.append("o")
+                    if liste_display[-2] != "oreille gauche":
+                        liste_display.append("oreille gauche")
+
+            else:
+                liste_display.append("fin")
 
 
+            if liste_display[-1] == "fin":
+
+                dico = {"milieu par main droite":1,
+                        "milieu par main gauche":1,
+                        "front par main droite":1,
+                        "front par main gauche":1,
+                        "patte droite":2,
+                        "patte gauche":2,
+                        "bouche par main droite":1,
+                        "bouche par main gauche":1,
+                        "bouche":1,
+                        "épaul droite":3,
+                        "épaul gauche":3,
+                        "tempe droite":3,
+                        "tempe gauche":3,
+                        "oreille droite":4,
+                        "oreille gauche":4,
+                        "front":1}
+
+                ok = 10
+                val = ""
+                for i in liste_display[2:]:
+                    for cle, valeur in dico.items():
+                        if i == cle:
+                            if ok > valeur:
+                                ok = valeur
+                                val = cle
+                
+            
+                liste_display = ["aaa", "aa"]
 
 
-        timer = (time.time() - start_time)
-        if timer > compteur1 + 1:
-            print(liste_display)
-
-            dico = {"a":"milieu par main droite","b":"milieu par main gauche","c":"front par main droite","d":"front par main gauche",
-                    "e":"patte droite","f":"patte gauche","g":"bouche par épaul droite","h":"bouche par épaul gauche","i":"bouche",
-                    "j":"épaule droite","k":"épaule gauche","l":"tempe droite","m":"tempe gauche","n":"oreille droite",
-                    "o":"oreille gauche","p":"front"}
-
-            for i in liste_display[2:]:
-                for cle, valeur in dico.items():
-                    if i == cle:
-                        print(valeur)
-    
-            #si milieu on annule tous
-
-            liste_display = ["aaa", "aa"]
-            compteur1 += 1
+                
+            if val != "":
+                print(val)
 
 
-
+        #epaul droite -> milieu -> epaul droite == retour 
 
         #-------------------------------------------------------------1
 
