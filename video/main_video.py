@@ -70,7 +70,15 @@ SUBSTRACTOR14 = cv2.createBackgroundSubtractorMOG2(history=100,
                                                 varThreshold=50,
                                                 detectShadows=True)
 
-
+SUBSTRACTOR15 = cv2.createBackgroundSubtractorMOG2(history=100,
+                                                varThreshold=50,
+                                                detectShadows=True)
+SUBSTRACTOR16 = cv2.createBackgroundSubtractorMOG2(history=100,
+                                                varThreshold=50,
+                                                detectShadows=True)
+SUBSTRACTOR17 = cv2.createBackgroundSubtractorMOG2(history=100,
+                                                varThreshold=50,
+                                                detectShadows=True)
 
 def video_capture_visage():
 
@@ -80,6 +88,7 @@ def video_capture_visage():
     video = cv2.VideoCapture("VIDEO.mp4")
     faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
+    
     
     #We croping our frame by box
     #we add content of the detection movement
@@ -147,14 +156,17 @@ def video_capture_visage():
 
 
     
+    activate_compteur = False
+    active_compteur = 0
     while(True):
 
-        
         ret, frame_visage = video.read()
         frame_visage = cv2.resize(frame_visage, (1000, 800))
-
+    
         gray = cv2.cvtColor(frame_visage, cv2.COLOR_BGR2GRAY)
- 
+        mask = SUBSTRACTOR1.apply(gray)
+        cv2.imshow("dzadaz", mask)
+        
         faces = faceCascade.detectMultiScale(
             gray, scaleFactor=3,
             minNeighbors=1, minSize=(60, 100),
@@ -164,8 +176,28 @@ def video_capture_visage():
         for x, y, w, h in faces:
             
 
-            if MOUVEMENT[-1] > x + 20 or MOUVEMENT[-1] < x - 20:
-                print(x, MOUVEMENT[-1])
+            if MOUVEMENT[-1] > x + 5 or MOUVEMENT[-1] < x - 5:
+                ll = [[], [], [], []]
+                ll1 = [[], [], [], []]
+                ll2 = [[], [], [], []]
+                ll3 = [[], [], [], []]
+                ll4 = [[], [], [], []]
+                ll5 = [[], [], [], []]
+                ll6 = [[], [], [], []]
+                ll7 = [[], [], [], []]
+                ll8 = [[], [], [], []]
+                ll9 = [[], [], [], []]
+                ll10 = [[], [], [], []]
+                ll11 = [[], [], [], []]
+                ll12 = [[], [], [], []]
+                ll13 = [[], [], [], []]
+                ll14 = [[], [], [], []]
+                ll15 = [[], [], [], []]
+                ll16 = [[], [], [], []]
+                ll17 = [[], [], [], []]
+
+
+                
             MOUVEMENT.append(x)
             
 
@@ -198,8 +230,8 @@ def video_capture_visage():
 
 
             if len(ll3[0]) < 2:
-
-
+                
+                activate_compteur = True
                 ll3[0].append(y)
                 ll3[1].append(y + h + 10)
                 ll3[2].append(x - w - 30)
@@ -304,20 +336,46 @@ def video_capture_visage():
 
         
         if len(ll3[0]) >= 2:
+            if active_compteur > 2:
+                active_compteur = False
             
             y1 = round(int(sum(ll3[0]) / len(ll3[0])))
             yh1 = round(int(sum(ll3[1]) / len(ll3[1])))
             x1 = round(int(sum(ll3[2]) / len(ll3[2])))
             xw1 = round(int(sum(ll3[3]) / len(ll3[3])))
-            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
             
+            cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
+            crop3 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR3.apply(crop3)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l)/len(l) + 100000 and active_compteur is False:
+                    print("milieu")
+                    
+            except:
+                pass
+            l.append(liste)
+
+
 
             y1 = round(int(sum(ll4[0]) / len(ll4[0])))
             yh1 = round(int(sum(ll4[1]) / len(ll4[1])))
             x1 = round(int(sum(ll4[2]) / len(ll4[2])))
             xw1 = round(int(sum(ll4[3]) / len(ll4[3])))
+            
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop4 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR4.apply(crop4)
+            
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l1)/len(l1) + 100000 and active_compteur is False:
+                    print("droite")
+                    
+            except:
+                pass
+            l1.append(liste)
+    
 
             y1 = round(int(sum(ll5[0]) / len(ll5[0])))
             yh1 = round(int(sum(ll5[1]) / len(ll5[1])))
@@ -325,7 +383,17 @@ def video_capture_visage():
             xw1 = round(int(sum(ll5[3]) / len(ll5[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop5 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR5.apply(crop5)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l2)/len(l2) + 100000 and active_compteur is False:
+                    print("gauche")
+                    
+            except:
+                pass
+            l2.append(liste)
+ 
 
 
             y1 = round(int(sum(ll6[0]) / len(ll6[0])))
@@ -334,7 +402,18 @@ def video_capture_visage():
             xw1 = round(int(sum(ll6[3]) / len(ll6[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop6 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR6.apply(crop6)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l3)/len(l3) + 100000 and active_compteur is False:
+                    print("patte droite")
+                    
+            except:
+                pass
+            l3.append(liste)
+       
+                
 
             y1 = round(int(sum(ll7[0]) / len(ll7[0])))
             yh1 = round(int(sum(ll7[1]) / len(ll7[1])))
@@ -342,7 +421,16 @@ def video_capture_visage():
             xw1 = round(int(sum(ll7[3]) / len(ll7[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop7 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR7.apply(crop7)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l4)/len(l4) + 100000 and active_compteur is False:
+                    print("patte gauche")
+                    
+            except:
+                pass
+            l4.append(liste)
             
 
             y1 = round(int(sum(ll8[0]) / len(ll8[0])))
@@ -351,7 +439,16 @@ def video_capture_visage():
             xw1 = round(int(sum(ll8[3]) / len(ll8[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop8 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR8.apply(crop8)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l5)/len(l5) + 100000 and active_compteur is False:
+                    print("bouche")
+                    
+            except:
+                pass
+            l5.append(liste)
 
             y1 = round(int(sum(ll9[0]) / len(ll9[0])))
             yh1 = round(int(sum(ll9[1]) / len(ll9[1])))
@@ -359,8 +456,14 @@ def video_capture_visage():
             xw1 = round(int(sum(ll9[3]) / len(ll9[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
+            crop9 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR9.apply(crop9)
+            liste = sum([j for i in mask for j in i])
 
-            
+            if liste > 6000 and active_compteur is False:
+                print("menton")
+                    
+
 
 
             y1 = round(int(sum(ll10[0]) / len(ll10[0])))
@@ -369,7 +472,17 @@ def video_capture_visage():
             xw1 = round(int(sum(ll10[3]) / len(ll10[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop10 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR10.apply(crop10)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l7)/len(l7) + 100000 and active_compteur is False:
+                    print("buste")
+                    
+            except:
+                pass
+            l7.append(liste)
+                
 
             y1 = round(int(sum(ll11[0]) / len(ll11[0])))
             yh1 = round(int(sum(ll11[1]) / len(ll11[1])))
@@ -377,7 +490,17 @@ def video_capture_visage():
             xw1 = round(int(sum(ll11[3]) / len(ll11[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop11 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR11.apply(crop11)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l8)/len(l8) + 100000 and active_compteur is False:
+                    print("épaule droite")
+                    
+            except:
+                pass
+            l8.append(liste)
+                
 
             y1 = round(int(sum(ll12[0]) / len(ll12[0])))
             yh1 = round(int(sum(ll12[1]) / len(ll12[1])))
@@ -385,7 +508,17 @@ def video_capture_visage():
             xw1 = round(int(sum(ll12[3]) / len(ll12[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop12 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR12.apply(crop12)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l9)/len(l9) + 100000 and active_compteur is False:
+                    print("épaule gauche")
+                    
+            except:
+                pass
+            l9.append(liste)
+                
 
             y1 = round(int(sum(ll13[0]) / len(ll13[0])))
             yh1 = round(int(sum(ll13[1]) / len(ll13[1])))
@@ -393,7 +526,17 @@ def video_capture_visage():
             xw1 = round(int(sum(ll13[3]) / len(ll13[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop13 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR13.apply(crop13)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l10)/len(l10) + 100000 and active_compteur is False:
+                    print("front")
+                    
+            except:
+                pass
+            l10.append(liste)
+                
             
             y1 = round(int(sum(ll14[0]) / len(ll14[0])))
             yh1 = round(int(sum(ll14[1]) / len(ll14[1])))
@@ -401,7 +544,17 @@ def video_capture_visage():
             xw1 = round(int(sum(ll14[3]) / len(ll14[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-
+            crop14 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR14.apply(crop14)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l11)/len(l11) + 100000 and active_compteur is False:
+                    print("tempe droite")
+                    
+            except:
+                pass
+            l11.append(liste)
+                
 
 
             y1 = round(int(sum(ll15[0]) / len(ll15[0])))
@@ -410,14 +563,36 @@ def video_capture_visage():
             xw1 = round(int(sum(ll15[3]) / len(ll15[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
+            crop15 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR15.apply(crop15)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l12)/len(l12) + 100000 and active_compteur is False:
+                    print("tempe gauche")
+                    
+            except:
+                pass
+            l12.append(liste)
 
+
+                
             y1 = round(int(sum(ll16[0]) / len(ll16[0])))
             yh1 = round(int(sum(ll16[1]) / len(ll16[1])))
             x1 = round(int(sum(ll16[2]) / len(ll16[2])))
             xw1 = round(int(sum(ll16[3]) / len(ll16[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
-           
+            crop16 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR16.apply(crop16)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l13)/len(l13) + 100000 and active_compteur is False:
+                    print("oreille droite")
+                    
+            except:
+                pass
+            l13.append(liste)
+                
 
             y1 = round(int(sum(ll17[0]) / len(ll17[0])))
             yh1 = round(int(sum(ll17[1]) / len(ll17[1])))
@@ -425,9 +600,20 @@ def video_capture_visage():
             xw1 = round(int(sum(ll17[3]) / len(ll17[3])))
             
             cv2.rectangle(gray, (x1, y1), (xw1, yh1), (0), 3)
+            crop17 = gray[y1:yh1, x1:xw1]
+            mask = SUBSTRACTOR17.apply(crop17)
+            liste = sum([j for i in mask for j in i])
+            try:
+                if liste > sum(l14)/len(l14) + 100000 and active_compteur is False:
+                    print("oreille gauche")
+                    
+            except:
+                pass
+            l14.append(liste)
+                
 
-
-        
+        if activate_compteur is True:
+            active_compteur += 1
 
             
 ##            if milieu:
