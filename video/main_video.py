@@ -85,7 +85,7 @@ def video_capture_visage():
     #k, j, l, m <- video jb
 
     #for displaying video
-    video = cv2.VideoCapture("j.mp4")
+    video = cv2.VideoCapture("videoplayback.mp4")
     faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
     
@@ -673,17 +673,18 @@ def video_capture_visage():
                             "gauche":5}
                     
 
-                    else:
-                        for i in liste_display:
-                            for cle, valeur in dico.items():
-                                if i == cle and val > valeur:
-                                    val = valeur
-                                    donc = cle
 
-                        if donc != "":
-                            print(donc)
-                        
+                    for i in liste_display:
+                        for cle, valeur in dico.items():
+                            if i == cle and val > valeur:
+                                val = valeur
+                                donc = cle
+
+                    if donc != "":
+                        print(donc)
+                    
                     liste_display = []
+                    
                 else:
                     pass
 
