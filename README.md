@@ -1,10 +1,8 @@
 # synergo-le-site
 
-ben je comprend pk faut utiliser des pré entrainé 1heure et c meme pas fini et des fois ca deviens tout blanc et c pas sur que ca marche bon ben faire ca
+detection: L42Project
 
-- apprendre a télécharger un model
-
-- si detection de la main dans une des zones alors la main est ici
+- faut identifier les mains et suivre leur parcours a chaque instant ca ca va detendre sté horrible 3.7 32 3.7 64 3.6 grrrrrrrr en plus mon cmd est sous conda 84 j'ai tj rien compris nik
 
 ------------------------------------------------
 
