@@ -1,12 +1,15 @@
 # synergo-le-site
 
-men fou ca marchait
+ben je comprend pk faut utiliser des pré entrainé 1heure et c meme pas fini et des fois ca deviens tout blanc et c pas sur que ca marche bon ben faire ca
+
+- apprendre a télécharger un model
+
+- si detection de la main dans une des zones alors la main est ici
 
 ------------------------------------------------
 
 
 
-différence de profondeur = difference de position des cadres
 
 retour de main milieu -> épaul
 
