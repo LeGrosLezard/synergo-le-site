@@ -1,15 +1,9 @@
 # synergo-le-site
 
-detection: L42Project
 
-- faut identifier les mains et suivre leur parcours a chaque instant ca ca va detendre sté horrible 3.7 32 3.7 64 3.6 grrrrrrrr en plus mon cmd est sous conda 84 j'ai tj rien compris nik
-
-------------------------------------------------
+ok gros -> petit mais si un petit apparait dans une region du genre le plis du bras ben c impossible
 
 
-
-
-retour de main milieu -> épaul
 
 appuis sur pause de la video faire un click automatique pour videocapture
 
@@ -19,6 +13,7 @@ le menu deplace la page
 
 
 
+demandé: video cam ou mp4 ? si cam mettre le truk du 30/08 ()
 
 
 https://synergo.herokuapp.com/ 
