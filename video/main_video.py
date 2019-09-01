@@ -31,7 +31,10 @@ debut_analyse = False
 ok_petit = False
 LISTE_CALBUTE = []
 LISTE_CALBUTE1 = []
+LISTE_MAIN = []
+pts = []
 
+only_hand = False
 
 while True:
     
@@ -84,16 +87,27 @@ while True:
                                 x, y, y1_zon, x2_hemi1,
                                 x2_hemi2, w, x1_col, x2_col, frame)
 
-            debut_analyse = possibilite_main(x, y, w, h, LISTE,
+            
+
+            debut_analyse, hand_only = possibilite_main(x, y, w, h, LISTE,
                                              cv2.contourArea(c),
                                              LISTE2, etape,
                                              liste_situ, ok_petit,
-                                             LISTE_CALBUTE, LISTE_CALBUTE1, frame)
+                                             LISTE_CALBUTE,
+                                             LISTE_CALBUTE1,
+                                             frame, only_hand,
+                                             LISTE_MAIN)
+            
             if debut_analyse is True:
                 ok_petit = True
+   
+            if hand_only is True:
+                only_hand = True
                 
             compteur_rect += 1
-            
+
+
+
 
 
 
@@ -101,25 +115,29 @@ while True:
     #print(compteur_rect, "nombre carre")
 
     if compteur_rect == 0:
+        score = 0
         
-        for i in LISTE2:
-            print(i)
-        print("")
-        for i in LISTE:
-            print(i)
+        #print(LISTE_MAIN)
+        #print("fin ici on analyse")
+        for i in LISTE_MAIN:
+            if score < i[4]:
+                score += i[4]
+                pts = []
+                pts = [i[0], i[2], i[1], i[3]]
+        #print(pts)
 
-
-        
-        print("fin ici on analyse")
         LISTE2 = []
         LISTE = []
         etape = 0
         ok_petit = False
         debut_analyse = False
+        only_hand = False
 
-        
+    if pts != []:
+        cv2.rectangle(frame, (pts[0], pts[1]), (pts[2], pts[3]), (0,0,255), 3)
+        cv2.putText(frame, str("truk de merde ?"), (pts[0], pts[1]), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),1,cv2.LINE_AA)
 
-
+    #ET SI DEUX MAIN ???
     
     cv2.putText(frame, str(compteur_rect), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
 
@@ -152,7 +170,7 @@ while True:
     
 
     if compteur_rect > 0:
-        time.sleep(1)
+        time.sleep(0.5)
 
 
 cap.release()
