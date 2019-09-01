@@ -110,24 +110,30 @@ def situation_mouvement(area, x, y, y1_zon, x2_hemi1, x2_hemi2, w, x1_col, x2_co
 
 def possibilite_main(x, y, w, h, LISTE, aire, LISTE2,
                      etape, liste_situ, ok_petit, LISTE_CALBUTE,
-                     LISTE_CALBUTE1, frame):
+                     LISTE_CALBUTE1, frame, only_hand, LISTE_MAIN):
 
     
 
     debut_analyse = ""
+    hand_only = False
+
+
+    
     if aire > 30000:
         try:
             #print(LISTE2[-1][0], LISTE2[-1][1],LISTE2[-1][2],LISTE2[-1][3])
             LISTE_CALBUTE.append(y+h - LISTE2[-1][3])
             if sum(LISTE_CALBUTE) > 0:
-                print(sum(LISTE_CALBUTE), "mouvement DESCENDANT", y+h)
+                #print(sum(LISTE_CALBUTE), "mouvement DESCENDANT", y+h)
+                pass
             else:
-                print(sum(LISTE_CALBUTE), "mouvement ASCENDANT", y+h)
+                #print(sum(LISTE_CALBUTE), "mouvement ASCENDANT", y+h)
+                pass
         except:
             pass
         
         #print([x, x+w, y, y+h, aire], "mouvement actuel")
-        proba = 100
+        proba = 80
         LISTE2.append([x, x+w, y, y+h, aire, liste_situ, etape])
         cv2.putText(frame, str("Bras "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
         debut_analyse = True
@@ -138,6 +144,7 @@ def possibilite_main(x, y, w, h, LISTE, aire, LISTE2,
         if ok_petit is True:
 
             proba = 0
+            
 
             
             try:
@@ -147,45 +154,99 @@ def possibilite_main(x, y, w, h, LISTE, aire, LISTE2,
                 pass
             
             if sum(LISTE_CALBUTE) > 0:
-                print(sum(LISTE_CALBUTE), "mouvement DESCENDANT", y+h)
+                #print(sum(LISTE_CALBUTE), "mouvement DESCENDANT", y+h)
+                pass
             else:
-                print(sum(LISTE_CALBUTE), "mouvement ASCENDANT", y+h)
+                #print(sum(LISTE_CALBUTE), "mouvement ASCENDANT", y+h)
+                pass
 
             
-            print("main", x, y+h, "DERNIER mouvement", LISTE2[-1][0], LISTE2[-1][3])
+            #print("main", x, y+h, "DERNIER mouvement", LISTE2[-1][0], LISTE2[-1][3])
 
-            if y+h + 80 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
-                proba += 60
-                print("60%")
-                
-            elif y+h + 90 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
-                proba += 50
-                print("50%")
+            if only_hand is False:
+                if y+h + 70 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
+                    proba += 70
+                    print("70%")
+                    hand_only = True
+                    LISTE_CALBUTE1.append(y+h)
+                    
+                    
+                elif y+h + 80 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
+                    proba += 60
+                    print("60%")
+                    hand_only = True
+                    LISTE_CALBUTE1.append(y+h)
+                    
+                    
+                elif y+h + 90 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
+                    proba += 50
+                    print("50%")
+                    hand_only = True
+                    LISTE_CALBUTE1.append(y+h)
+                    
 
-            elif y+h + 100 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
-                proba += 40
-                print("40%")
+                elif y+h + 100 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
+                    proba += 40
+                    print("40%")
+
+
+                if y+h - 100 < LISTE2[-1][3] and sum(LISTE_CALBUTE) < 0:
+                    proba += 40
+                    print("40%")
+
+
+                cv2.putText(frame, str("main "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+                LISTE.append([x, x+w, y, y+h, aire, liste_situ, etape])
+
+            else:
+                proba = 0
+                #seconde étape on a trouvé un mouvement
+                #on a trouvé une fin de mouvement
+                #ON CHERCHE LES FIN DE MOUVEMENT
+                #la on est de haut en bas
+                #le mec peut alors les relevé, les mettre vers sont ventre
+                #tendre le bras vers une extrémité
+                #la laissé comme ca
+
+                try:
+                    print("main", y+h, "DERNIERE MAIN", LISTE_CALBUTE1[-1])
+                except:
+                    pass
+
+                if y+h + 38 == LISTE_CALBUTE1[-1]:
+                    proba += 80
+
+                elif y+h + 56 == LISTE_CALBUTE1[-1]:
+                    proba += 60
+
+
+                else:
+                    proba += 0
+
+
+
+                LISTE_MAIN.append([x, x+w, y, y+h, proba])
+
+
+                    
+                cv2.putText(frame, str("main "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+
+
                 
-            if y+h - 100 < LISTE2[-1][3] and sum(LISTE_CALBUTE) < 0:
-                proba += 30
-                print("40%")
+
 
             
 
 
-                
-            cv2.putText(frame, str("main "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+            
 
 
-            LISTE.append([x, x+w, y, y+h, aire, liste_situ, etape])
-    print("")
-    return debut_analyse
 
-    #gros carré to petit carré
 
-    #SI PAS GROS CARRE PETIT CARRE = FAUX
+    return debut_analyse, hand_only
 
-    #gros petit gros
+
 
 
 def analyse_post_traumatic(LISTE1, LISTE2):
