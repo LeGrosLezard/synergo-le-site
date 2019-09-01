@@ -11,7 +11,7 @@ cap=cv2.VideoCapture("VIDEO.mp4")
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
 kernel_blur=43
-seuil=20
+seuil=10
 #seuil=10
 surface=3000
 ret, originale=cap.read()
@@ -26,6 +26,12 @@ from essais1 import *
 #faut stocker les carrés la dedans
 LISTE = []
 LISTE2 = []
+etape = 0
+debut_analyse = False
+ok_petit = False
+LISTE_CALBUTE = []
+LISTE_CALBUTE1 = []
+
 
 while True:
     
@@ -62,11 +68,11 @@ while True:
                 continue
             
             x, y, w, h = cv2.boundingRect(c)
-            possibilite_main(x, y, w, h, LISTE, cv2.contourArea(c), LISTE2)
+            
 
-    
-            cv2.rectangle(frame, (x, y), (int(round(x+w/2)), int(round(y+h/4))), (0, 0, 255), 2)
-
+            
+            #cv2.rectangle(frame, (x, y), (int(round(x+w/2)), int(round(y+h/4))), (0, 0, 255), 2)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
             #cv2.putText(frame, str("main?"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
             
             
@@ -74,10 +80,18 @@ while True:
             #print(cv2.contourArea(c), "AREA")
 
             """!IMPORTANT"""      
-            situation_mouvement(cv2.contourArea(c),
+            liste_situ = situation_mouvement(cv2.contourArea(c),
                                 x, y, y1_zon, x2_hemi1,
                                 x2_hemi2, w, x1_col, x2_col, frame)
 
+            debut_analyse = possibilite_main(x, y, w, h, LISTE,
+                                             cv2.contourArea(c),
+                                             LISTE2, etape,
+                                             liste_situ, ok_petit,
+                                             LISTE_CALBUTE, LISTE_CALBUTE1, frame)
+            if debut_analyse is True:
+                ok_petit = True
+                
             compteur_rect += 1
             
 
@@ -87,17 +101,24 @@ while True:
     #print(compteur_rect, "nombre carre")
 
     if compteur_rect == 0:
-        print("fin ici on analyse")
-        LISTE2 = []
-        LISTE = []
-    else:  
+        
         for i in LISTE2:
             print(i)
         print("")
         for i in LISTE:
             print(i)
-        print("")
-        print("")
+
+
+        
+        print("fin ici on analyse")
+        LISTE2 = []
+        LISTE = []
+        etape = 0
+        ok_petit = False
+        debut_analyse = False
+
+        
+
 
     
     cv2.putText(frame, str(compteur_rect), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
@@ -116,7 +137,7 @@ while True:
 
     cv2.imshow("frame", frame)
     
-
+    etape += 1
         
     #cv2.imshow("mask", mask)
     #cv2.imshow("dazdaz", mask_colonne)
