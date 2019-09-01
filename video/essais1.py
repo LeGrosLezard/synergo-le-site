@@ -12,7 +12,7 @@ def detection_faces(frame, faceCascade, gray):
     )
 
     if faces == ():
-        faces = (0,0,0,0)
+        faces = [(0,0,0,0)]
 
     for x, y, w, h in faces:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 0), 2)
@@ -22,19 +22,21 @@ def detection_faces(frame, faceCascade, gray):
         mask_colonne = frame[y:y+h+800, x-50:x+w+50]
 
         return mask_colonne, y, y+h+800, x-50, x+w+50, faces
-    
-    return 0,0,0,0
+
+    return 0, 0, 0, 0, 0, faces
 
 
 
 def zone2(frame):
-    
-    #coupe l'image de 70% de haut
-    cv2.rectangle(frame, (0, int(round(600*70/100))), (800, 600), (0, 255, 255), 2)
-    mask = frame[int(round(600*70/100)):600, 0:800]
 
-    return mask, int(round(600*70/100)), 600, 0, 800
+    try:
+        #coupe l'image de 70% de haut
+        cv2.rectangle(frame, (0, int(round(600*70/100))), (800, 600), (0, 255, 255), 2)
+        mask = frame[int(round(600*70/100)):600, 0:800]
 
+        return mask, int(round(600*70/100)), 600, 0, 800
+    except:
+        return 0, 0, 0, 0, 0
 
 def zone_extra_hemi_espace(frame, faces):
 
