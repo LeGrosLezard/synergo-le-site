@@ -1,6 +1,8 @@
 import numpy as np
 import cv2
 
+
+
 def detection_faces(frame, faceCascade, gray):
     
     faces = faceCascade.detectMultiScale(
@@ -38,6 +40,8 @@ def zone2(frame):
     except:
         return 0, 0, 0, 0, 0
 
+
+
 def zone_extra_hemi_espace(frame, faces):
 
     #droite gauche du cadre
@@ -46,6 +50,79 @@ def zone_extra_hemi_espace(frame, faces):
         cv2.rectangle(frame, (x + w, 0), (x+800, y+800), (255, 0, 0), 2)
 
         return 0,0, x, y+800, x+w, 0, x+800, y+800
+
+
+def situation_mouvement(area, x, y, y1_zon, x2_hemi1, x2_hemi2, w, x1_col, x2_col, frame):
+    air = ""
+    proba = 0
+
+
+    if area > 30000:
+        print("GROS MOUVEMENT")
+        proba = 60
+        cv2.putText(frame, str("bras " + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+        air = True
+        
+    if y > y1_zon:
+        print("LE CARRE EST EN BAS")
+        pass
+    
+    if y < y1_zon:
+        print("LE CARRE EST EN HAUT")
+        pass
+    
+    if x < x2_hemi1 and y < y1_zon:
+        print("CARRE DANS LA ZONE HEMI DROITE")
+        pass
+    
+    if x > x2_hemi2 and y < y1_zon:
+        print("CARRE DANS LA ZONE HEMI GAUCHE")
+        pass
+    
+    if y > y1_zon and x > x1_col and x+w < x2_col:
+        print("CARRE FACE VENTRE")
+        pass
+    
+    if air != True:
+        cv2.putText(frame, str("main "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+    """MOUVEMENT -> rectangle énorme, puis qui se rétrécit juqu'a la main -> meme zone 100%"""
+    """Faut mtn analyser sa position"""
+    """SUIVRE LE MOUVEMENT DES RECTANGLE SI LE MOUVEMENT EST HUMAIN LA PROBA AUGMENTE"""
+    """Attention des fois des carrree apparaissent apres pres du bras ce ne sont
+    pas des mains mais la proba augmentera enfaite..."""
+    """Il pour dire il s'est touché la tempe ca sera le tour dapres enfaite
+    et faire soustration temps pour dire la le mec s'est touché la tempe
+    via la position du rectangle
+    """
+    """DETECTEUR DE ZONE POUR SAVOIR ???? OU APPROXIMATION DES COINS ??"""
+    
+    #"""ATTENTION sur cam les mouvements sont hyper élargis plus de flou ?"""
+    
+
+def possibilite_main(x, y, w, h, LISTE, aire, LISTE2):
+
+    if aire > 30000:
+        LISTE2.append([x, x+w, y, y+h, aire])
+
+        
+    else:
+        LISTE.append([x, x+w, y, y+h, aire])
+
+    #gros carré to petit carré
+
+    #SI PAS GROS CARRE PETIT CARRE = FAUX
+
+    #gros petit gros
+
+
+
+
+
+
+
+
+
 
 
 
