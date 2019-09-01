@@ -1,7 +1,11 @@
 # synergo-le-site
 
 
-ok gros -> petit mais si un petit apparait dans une region du genre le plis du bras ben c impossible
+faire la suite des mains
+
+faire les mouvements asendant et les video hyper zoomées
+
+
 
 
 
