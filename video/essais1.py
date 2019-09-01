@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-
+import time
 
 
 def detection_faces(frame, faceCascade, gray):
@@ -56,35 +56,43 @@ def situation_mouvement(area, x, y, y1_zon, x2_hemi1, x2_hemi2, w, x1_col, x2_co
     air = ""
     proba = 0
 
-
+    liste = []
+    
     if area > 30000:
-        print("GROS MOUVEMENT")
-        proba = 60
-        cv2.putText(frame, str("bras " + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+        #print("GROS MOUVEMENT")
+        liste.append("GROS MOUVEMENT")
+        #proba = 60
+        #cv2.putText(frame, str("bras " + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
         air = True
         
     if y > y1_zon:
-        print("LE CARRE EST EN BAS")
+        #print("LE CARRE EST EN BAS")
+        liste.append("LE CARRE EST EN BAS")
         pass
     
     if y < y1_zon:
-        print("LE CARRE EST EN HAUT")
+        #print("LE CARRE EST EN HAUT")
+        liste.append("LE CARRE EST EN HAUT")
         pass
     
     if x < x2_hemi1 and y < y1_zon:
-        print("CARRE DANS LA ZONE HEMI DROITE")
+        #print("CARRE DANS LA ZONE HEMI DROITE")
+        liste.append("CARRE DANS LA ZONE HEMI DROITE")
         pass
     
     if x > x2_hemi2 and y < y1_zon:
-        print("CARRE DANS LA ZONE HEMI GAUCHE")
+        #print("CARRE DANS LA ZONE HEMI GAUCHE")
+        liste.append("CARRE DANS LA ZONE HEMI GAUCHE")
         pass
     
     if y > y1_zon and x > x1_col and x+w < x2_col:
-        print("CARRE FACE VENTRE")
+        #print("CARRE FACE VENTRE")
+        liste.append("CARRE FACE VENTRE")
         pass
     
-    if air != True:
-        cv2.putText(frame, str("main "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+
+    return liste
 
     """MOUVEMENT -> rectangle énorme, puis qui se rétrécit juqu'a la main -> meme zone 100%"""
     """Faut mtn analyser sa position"""
@@ -100,14 +108,78 @@ def situation_mouvement(area, x, y, y1_zon, x2_hemi1, x2_hemi2, w, x1_col, x2_co
     #"""ATTENTION sur cam les mouvements sont hyper élargis plus de flou ?"""
     
 
-def possibilite_main(x, y, w, h, LISTE, aire, LISTE2):
+def possibilite_main(x, y, w, h, LISTE, aire, LISTE2,
+                     etape, liste_situ, ok_petit, LISTE_CALBUTE,
+                     LISTE_CALBUTE1, frame):
 
+    
+
+    debut_analyse = ""
     if aire > 30000:
-        LISTE2.append([x, x+w, y, y+h, aire])
+        try:
+            #print(LISTE2[-1][0], LISTE2[-1][1],LISTE2[-1][2],LISTE2[-1][3])
+            LISTE_CALBUTE.append(y+h - LISTE2[-1][3])
+            if sum(LISTE_CALBUTE) > 0:
+                print(sum(LISTE_CALBUTE), "mouvement DESCENDANT", y+h)
+            else:
+                print(sum(LISTE_CALBUTE), "mouvement ASCENDANT", y+h)
+        except:
+            pass
+        
+        #print([x, x+w, y, y+h, aire], "mouvement actuel")
+        proba = 100
+        LISTE2.append([x, x+w, y, y+h, aire, liste_situ, etape])
+        cv2.putText(frame, str("Bras "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+        debut_analyse = True
 
         
     else:
-        LISTE.append([x, x+w, y, y+h, aire])
+        
+        if ok_petit is True:
+
+            proba = 0
+
+            
+            try:
+                #print(LISTE[-1][0], LISTE[-1][1], LISTE[-1][2], LISTE[-1][3])
+                pass
+            except:
+                pass
+            
+            if sum(LISTE_CALBUTE) > 0:
+                print(sum(LISTE_CALBUTE), "mouvement DESCENDANT", y+h)
+            else:
+                print(sum(LISTE_CALBUTE), "mouvement ASCENDANT", y+h)
+
+            
+            print("main", x, y+h, "DERNIER mouvement", LISTE2[-1][0], LISTE2[-1][3])
+
+            if y+h + 80 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
+                proba += 60
+                print("60%")
+                
+            elif y+h + 90 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
+                proba += 50
+                print("50%")
+
+            elif y+h + 100 > LISTE2[-1][3] and sum(LISTE_CALBUTE) > 0:
+                proba += 40
+                print("40%")
+                
+            if y+h - 100 < LISTE2[-1][3] and sum(LISTE_CALBUTE) < 0:
+                proba += 30
+                print("40%")
+
+            
+
+
+                
+            cv2.putText(frame, str("main "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+
+            LISTE.append([x, x+w, y, y+h, aire, liste_situ, etape])
+    print("")
+    return debut_analyse
 
     #gros carré to petit carré
 
@@ -116,12 +188,23 @@ def possibilite_main(x, y, w, h, LISTE, aire, LISTE2):
     #gros petit gros
 
 
+def analyse_post_traumatic(LISTE1, LISTE2):
+    pass
 
 
 
 
-
-
+##ok au moins l'image ressemble au video je sais pas du tout comment faire réduit le seuil sinon ca detecte pas trop
+##
+##ok pour les zones du genre tempe faut le truk du début
+##
+##faire les pourcentages cm1 a la fin...
+##
+##------------------------------------------------
+##
+##skin detecteur au cas ou
+##
+##ou haarcascade dans le carré
 
 
 
