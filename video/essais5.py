@@ -12,6 +12,9 @@ from essais6 import *
 
 DIRECTION_VERTICALE = []
 DIRECTION_HORIZONTALE = []
+
+HAND = []
+
 MOUVEMENT = []
 
 SUBSTRACTOR9 = cv2.createBackgroundSubtractorMOG2(history=100,
@@ -28,6 +31,7 @@ ll9 = [[], [], [], []]
 
 cap=cv2.VideoCapture("VIDEO.mp4")
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
+
 
 counter = 0
 kernel_blur=43
@@ -60,19 +64,19 @@ while True:
             UPPER, LOWER = most_pixel(counter, frame1)
 
         if counter > 5:
-            skinMask = skin_mask(frame, frame1, frame_movement, UPPER, LOWER, counter, x, y, w, h,
+            skinMask = skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
+                                 counter, x, y, w, h,
                                  x_mov, y_mov, w_mov, h_mov, localisation,
-                                 DIRECTION_VERTICALE, DIRECTION_HORIZONTALE)
+                                 DIRECTION_VERTICALE, DIRECTION_HORIZONTALE,
+                                 HAND)
 
     except:
         pass
 
+    
 
-
-    #ICI les zones de la tete
-    #LE BUT c de:
-    #- voir ou la main va, si pres de la tete verifier angle du cadre
-
+    #MAINTENENT c de suivre les grand mouvement et les petits mouvements
+    
 
     originale = gray
     cv2.imshow("frame", frame_movement)
@@ -80,7 +84,7 @@ while True:
         
 
 
-    key=cv2.waitKey(1)&0xFF
+    key=cv2.waitKey(400)&0xFF
     if key==ord('q'):
         break
 
