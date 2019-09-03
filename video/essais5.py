@@ -9,7 +9,7 @@ from collections import defaultdict
 from essais6 import *
 
 
-cap=cv2.VideoCapture("VIDEO2.mp4")
+cap=cv2.VideoCapture("VIDEO.mp4")
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
 counter = 0
@@ -30,10 +30,10 @@ while True:
 
     originale, kernel_dilate = original_traitement(cap, kernel_blur)
     contours, frame_contour = to_mask(frame_movement, gray, originale, kernel_blur, seuil, kernel_dilate)
-    x_mov, y_mov, w_mov, h_mov = contour(frame_movement, contours, surface, frame_contour)
+    x_mov, y_mov, w_mov, h_mov, localisation = contour(frame_movement, contours, surface, frame_contour)
 
-    print(x_mov, y_mov, w_mov, h_mov)
-
+    
+    
     
     try:
         frame1, x, y, w, h = face_detector(faceCascade, gray, frame)
@@ -42,7 +42,9 @@ while True:
             UPPER, LOWER = most_pixel(counter, frame1)
 
         if counter > 5:
-            skinMask = skin_mask(frame, frame1, UPPER, LOWER, counter, x, y, w, h)
+            skinMask = skin_mask(frame, frame1, frame_movement, UPPER, LOWER, counter, x, y, w, h,
+                                 x_mov, y_mov, w_mov, h_mov, localisation)
+            
             cv2.imshow("frame1", skinMask)
     except:
         pass
@@ -51,7 +53,7 @@ while True:
 
 
 
-
+    #le but c de définir ou est la main mtn
 
 
 
