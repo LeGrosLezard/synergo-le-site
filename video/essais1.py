@@ -113,9 +113,11 @@ def most_pixel(c, frame1):
 
 
 
+
+ 
 def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
               x_mov, y_mov, w_mov, h_mov, localisation,
-              DIRECTION_VERTICALE, DIRECTION_HORIZONTALE):
+              DIRECTION_VERTICALE, DIRECTION_HORIZONTALE, HAND):
 
     #On recoit si c'est un grand mouvement ou un petit
     # -> CONTOUR()
@@ -124,72 +126,138 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
 
         skinMask = cv2.inRange(frame, np.array([b], dtype = "uint8"), np.array([a], dtype = "uint8"))
 
+        #PETIT MOUVEMENT
         if localisation is True:
 
             frame_detector = skinMask[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
 
-            #Une détection apparait au niveau du visage -> mouvement du visage
+            #VISAGE
             if x - 20 < x_mov and int(round(y+h*1.5)) > y_mov+h_mov:
                 proba = 60
                 cv2.putText(frame_movement, str("tete" + "" + str(proba) + " %"),
                             (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
-
-
-
+                #hand_movement(HAND, y_mov, h_mov, "tete")
+            
 
             else:
-                #MAINTENANT IL FAUT DETERMINER SI C LE BRAS OU LA MAIN
                 counter_Wpx = 0
 
-                #On verifie que l'interieur de la détection est une zone de peau.
-                detector = skinMask[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
+
+                print(x+w, y+h)
+
+
                 
-                for i in range(detector.shape[0]):
-                    for j in range(detector.shape[1]):
-                        if detector[i, j] == 255:
+
+                #On verifie que l'interieur de la détection est une zone de peau.
+                detector_skin = skinMask[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
+                area_zone = frame[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
+
+                for i in range(detector_skin.shape[0]):
+                    for j in range(detector_skin.shape[1]):
+                        if detector_skin[i, j] == 255:
                             counter_Wpx+=1
-
-
-                #On determine que c'est un mouvement du background et ou chemise.
+    
+                
+                #NON MAIN
                 if counter_Wpx == 0:
                     cv2.putText(frame_movement, str("non main" + "" + "100%"),
                             (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
-                
+
+                #MAIN ?
+                elif counter_Wpx > 0:
+                    #BAS
+                    if y_mov+h_mov > int(round(600*80/100)):
+                        hand_movement(HAND, y_mov, h_mov, "bas")
+                        cv2.putText(frame_movement, str("bas" + "" + "100%"),
+                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+  
+                    #MILIEU
+                    elif y_mov+h_mov > int(round(600*50/100)) and y_mov+h_mov < int(round(600*80/100)):
+                        hand_movement(HAND, y_mov, h_mov, "milieu")
+                        cv2.putText(frame_movement, str("milieu" + "" + "100%"),
+                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
 
-        #Une détection apparait avec une aire de plus de 1000 -> grand mouvement
+                        
+                    #HAUT
+                    elif y_mov+h_mov < int(round(600*50/100)):
+                        hand_movement(HAND, y_mov, h_mov, "haut")
+                        cv2.putText(frame_movement, str("haut" + "" + "100%"),
+                            (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+
+
+
+
+
+
+
+
+
+
+        #GRAND MOUVEMENT
         elif localisation is False:
             proba = 90
 
-            #On détermine que c'est un mouvement de la TETE
-            if x - 20 < x_mov and int(round(y+h*1.5)) > y_mov+h_mov:
+
+            #ZONE TETE
+            if x - 20 < x_mov and int(round(y+h*2)) > y_mov+h_mov:
                 cv2.putText(frame_movement, str("TETE " + "" + str(proba) + " %"),
                             (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
-            
+                mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
+                                    DIRECTION_HORIZONTALE, x_mov, "tete")
+
+            #AUTRE ZONE
             else:
-                #On determine que c'est un mouvement du BAS
-                if y_mov > int(round(600*70/100)):
-                
+            
+                #BAS
+                if y_mov+h_mov > int(round(600*80/100)):
+                    
                     cv2.putText(frame_movement, str("mouvement bas " + "" + str(proba) + " %"),
                                 (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
                     mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
-                                            DIRECTION_HORIZONTALE, x_mov, "bas") 
-                else:
+                                            DIRECTION_HORIZONTALE, x_mov, "bas")
+
+
+                #MILLIEU
+                elif y_mov+h_mov > int(round(600*50/100)) and y_mov+h_mov < int(round(600*80/100)):
                     
-                    cv2.putText(frame_movement, str("mouvement " + "" + str(proba) + " %"),
+                    cv2.putText(frame_movement, str("mouvement milieu" + "" + str(proba) + " %"),
                                 (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
+                    mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
+                                        DIRECTION_HORIZONTALE, x_mov, "milieu")
+                    
 
+                #HAUT
+                elif y_mov+h_mov < int(round(600*50/100)):
+
+                    cv2.putText(frame_movement, str("mouvement haut" + "" + str(proba) + " %"),
+                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
                     mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
-                                        DIRECTION_HORIZONTALE, x_mov, "else")
+                                        DIRECTION_HORIZONTALE, x_mov, "haut")
 
 
 
         return skinMask
+
+
+#LE BUT C DE DIRE GRAND MOUVEMENT ALORS TROUVE MAIN DONC GRAND ACTIVE PETIT
+
+
+def hand_movement(HAND, y_mov, h_mov, zone):
+    
+    try:
+        #print(HAND[-1], zone)
+        print("main", zone)
+    except:
+        pass
+
+    HAND.append(y_mov+h_mov)
 
 
 
@@ -197,11 +265,12 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
 def mouvement_direction(DIRECTION_VERTICALE, y, h,
                         DIRECTION_HORIZONTALE, x, zone):
 
+
     try:
-        print(DIRECTION_HORIZONTALE[-1], 'x')
-        print(DIRECTION_VERTICALE[-1], "y")
-        print(zone)
-        print("")
+        #print('x', DIRECTION_HORIZONTALE[-1], x)
+        #print('y+h', DIRECTION_VERTICALE[-1], y+h)
+        print("mouvement", zone)
+        #print("")
     except:
         pass
     
