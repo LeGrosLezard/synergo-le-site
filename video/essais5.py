@@ -6,66 +6,63 @@ import cv2
 from PIL import Image
 import operator
 from collections import defaultdict
+from essais6 import *
 
-cap=cv2.VideoCapture("VIDEO.mp4")
+
+cap=cv2.VideoCapture("VIDEO2.mp4")
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
-c = 0
-a = []
-b = []
+counter = 0
+kernel_blur=43
+seuil=10
+surface=3000
+
+
+
+
 while True:
     
-    ret, frame=cap.read()
+    ret, frame =cap.read()
     frame = cv2.resize(frame, (800, 600))
-
+    frame_movement = cv2.resize(frame, (800, 600))
 
     gray=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = faceCascade.detectMultiScale(
-        gray,
-        scaleFactor=1.3,
-        minNeighbors=1,
-        minSize=(60, 100),
-        flags=cv2.CASCADE_SCALE_IMAGE
-    )
 
+    originale, kernel_dilate = original_traitement(cap, kernel_blur)
+    contours, frame_contour = to_mask(frame_movement, gray, originale, kernel_blur, seuil, kernel_dilate)
+    x_mov, y_mov, w_mov, h_mov = contour(frame_movement, contours, surface, frame_contour)
 
-    for x, y, w, h in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 0), 2)
+    print(x_mov, y_mov, w_mov, h_mov)
 
-        frame1 = frame[y+10:y+h-10, x+30:x+w-35]
+    
+    try:
+        frame1, x, y, w, h = face_detector(faceCascade, gray, frame)
 
+        if counter == 5:
+            UPPER, LOWER = most_pixel(counter, frame1)
 
-        if c == 5:
-            dico = {}
-            img = Image.fromarray(frame1)
-            for value in img.getdata():
-                if value in dico.keys():
-                    dico[value] += 1
-                else:
-                    dico[value] = 1
-                    
-            sorted_x = sorted(dico.items(), key=operator.itemgetter(1), reverse=True)
-            print(sorted_x[0][0])
-            print(sorted_x[-1][0])
-            
-            a = sorted_x[0][0][0]+20, sorted_x[0][0][1]+20, sorted_x[0][0][2]+20
-            b = sorted_x[-1][0][0], sorted_x[-1][0][1], sorted_x[-1][0][2]
-
-        if c > 5:
-            lower = np.array([a], dtype = "uint8")
-            upper = np.array([b], dtype = "uint8")
-            skinMask = cv2.inRange(frame, upper, lower)
+        if counter > 5:
+            skinMask = skin_mask(frame, frame1, UPPER, LOWER, counter, x, y, w, h)
             cv2.imshow("frame1", skinMask)
+    except:
+        pass
+
+
+
+
+
+
+
+
+
+
+    originale = gray
+    cv2.imshow("frame", frame_movement)
+    counter+=1
         
 
 
-
-    cv2.imshow("frame", frame)
-    c+=1
-        
-
-
-    key=cv2.waitKey(500)&0xFF
+    key=cv2.waitKey(1)&0xFF
     if key==ord('q'):
         break
 
