@@ -34,14 +34,17 @@ faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
 
 counter = 0
-kernel_blur=43
+kernel_blur=13
 seuil=10
 surface=1000
 
-
+hand_detection = False
 
 
 while True:
+
+    
+
     
     ret, frame =cap.read()
     frame = cv2.resize(frame, (800, 600))
@@ -52,39 +55,42 @@ while True:
     
     originale, kernel_dilate = original_traitement(cap, kernel_blur)
     contours, frame_contour = to_mask(frame_movement, gray, originale, kernel_blur, seuil, kernel_dilate)
-    x_mov, y_mov, w_mov, h_mov, localisation = contour(frame_movement, contours, surface, frame_contour)
+    x_mov, y_mov, w_mov, h_mov, taille_area = contour(frame_movement, contours, surface, frame_contour)
 
     
     
     
     try:
         frame1, x, y, w, h = face_detector(faceCascade, gray, frame)
-
+        
         if counter == 5:
             UPPER, LOWER = most_pixel(counter, frame1)
 
         if counter > 5:
-            skinMask = skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
-                                 counter, x, y, w, h,
-                                 x_mov, y_mov, w_mov, h_mov, localisation,
-                                 DIRECTION_VERTICALE, DIRECTION_HORIZONTALE,
-                                 HAND)
+            skinMask, hand_detection = skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
+                                                 counter, x, y, w, h,
+                                                 x_mov, y_mov, w_mov, h_mov, taille_area,
+                                                 DIRECTION_VERTICALE, DIRECTION_HORIZONTALE,
+                                                 HAND, hand_detection)
 
+ 
     except:
         pass
-
     
+    #A LA FIN DU MOUVEMENT
+    #SI C UNE MAIN DANS LE MEME CADRANT ALORS C LA MAIN
+    #EN SUIVANT UNE LOGIQUE DE X
+    #POUR LA ZONE EN PREND Y+H
 
-    #MAINTENENT c de suivre les grand mouvement et les petits mouvements
+    #SI X TROP 2LOIGN2 DE YH ALORS NON
     
-
     originale = gray
     cv2.imshow("frame", frame_movement)
     counter+=1
         
 
 
-    key=cv2.waitKey(400)&0xFF
+    key=cv2.waitKey(500)&0xFF
     if key==ord('q'):
         break
 
