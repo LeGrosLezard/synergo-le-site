@@ -3,7 +3,7 @@ import cv2
 from PIL import Image
 import operator
 from collections import defaultdict
-
+import time
 
 
 
@@ -23,7 +23,6 @@ def original_traitement(cap, kernel_blur):
 
 def to_mask(frame, gray, originale, kernel_blur, seuil, kernel_dilate):
     
-    
     gray=cv2.GaussianBlur(gray, (kernel_blur, kernel_blur), 0)
     mask=cv2.absdiff(originale, gray)
     mask=cv2.threshold(mask, seuil, 255, cv2.THRESH_BINARY)[1]
@@ -40,7 +39,7 @@ def to_mask(frame, gray, originale, kernel_blur, seuil, kernel_dilate):
 def bras_mouvement(air, frame, x, y):
     proba = 100
 
-    if air > 30000:
+    if air > 9500:
         return False
     else:
         return True
@@ -74,7 +73,7 @@ def contour(frame, contours, surface, frame_contour):
 
 
 
-#ICI skin detectreur--------------------------------------------------------
+#ICI skin detecteur--------------------------------------------------------
 def face_detector(faceCascade, gray, frame):
 
     faces = faceCascade.detectMultiScale(
@@ -115,7 +114,8 @@ def most_pixel(c, frame1):
 
 
 def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
-              x_mov, y_mov, w_mov, h_mov, localisation):
+              x_mov, y_mov, w_mov, h_mov, localisation,
+              DIRECTION_VERTICALE, DIRECTION_HORIZONTALE):
 
     #On recoit si c'est un grand mouvement ou un petit
     # -> CONTOUR()
@@ -128,26 +128,91 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
 
             frame_detector = skinMask[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
 
-            #ICI on determine que c la tete mais si le mec met la main alors...
+            #Une détection apparait au niveau du visage -> mouvement du visage
             if x - 20 < x_mov and int(round(y+h*1.5)) > y_mov+h_mov:
                 proba = 60
                 cv2.putText(frame_movement, str("tete" + "" + str(proba) + " %"),
                             (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+
+
+
+
             else:
-                proba = 20
-                cv2.putText(frame_movement, str("main? faut voir si y'a du blanc mtn " + "" + str(proba) + " %"),
+                #MAINTENANT IL FAUT DETERMINER SI C LE BRAS OU LA MAIN
+                counter_Wpx = 0
+
+                #On verifie que l'interieur de la détection est une zone de peau.
+                detector = skinMask[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
+                
+                for i in range(detector.shape[0]):
+                    for j in range(detector.shape[1]):
+                        if detector[i, j] == 255:
+                            counter_Wpx+=1
+
+
+                #On determine que c'est un mouvement du background et ou chemise.
+                if counter_Wpx == 0:
+                    cv2.putText(frame_movement, str("non main" + "" + "100%"),
                             (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+                
 
 
- 
+        #Une détection apparait avec une aire de plus de 1000 -> grand mouvement
         elif localisation is False:
             proba = 90
-            cv2.putText(frame_movement, str("mouvement " + "" + str(proba) + " %"),
-                        (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+            #On détermine que c'est un mouvement de la TETE
+            if x - 20 < x_mov and int(round(y+h*1.5)) > y_mov+h_mov:
+                cv2.putText(frame_movement, str("TETE " + "" + str(proba) + " %"),
+                            (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+            
+            else:
+                #On determine que c'est un mouvement du BAS
+                if y_mov > int(round(600*70/100)):
+                
+                    cv2.putText(frame_movement, str("mouvement bas " + "" + str(proba) + " %"),
+                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+                    mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
+                                            DIRECTION_HORIZONTALE, x_mov, "bas") 
+                else:
+                    
+                    cv2.putText(frame_movement, str("mouvement " + "" + str(proba) + " %"),
+                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+
+
+                    mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
+                                        DIRECTION_HORIZONTALE, x_mov, "else")
 
 
 
         return skinMask
+
+
+
+
+def mouvement_direction(DIRECTION_VERTICALE, y, h,
+                        DIRECTION_HORIZONTALE, x, zone):
+
+    try:
+        print(DIRECTION_HORIZONTALE[-1], 'x')
+        print(DIRECTION_VERTICALE[-1], "y")
+        print(zone)
+        print("")
+    except:
+        pass
+    
+    DIRECTION_VERTICALE.append(y+h)
+    DIRECTION_HORIZONTALE.append(x)
+
+
+    #LE BUT EST DE SUIVRE LA MAIN
+
+
+
 
 
 
@@ -159,14 +224,29 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
     #en arretant toutes les conditions passées.
 
     #CONDITION la vidéo doit durée + de 20 minutes et pas de plan coupé.
+    #Ne marche qu'avec le bas et pas la tete
 
 
 
 
 
+#--------------------------------------------------FIGURE DETECTION
 
-
-
+def detection(mask, l, phrase, nb, x):
+    """Here we ask the sum of the list(we insert element in list
+    from the box). if the mean > + 50000 there is movement in there"""
+    try:
+        #doing the sum of elements of the list
+        liste = sum([j for i in mask for j in i])
+        #we add the sum of all element
+        l.append(liste)
+        #if the current list of detection is > at the mean of all passation
+        #a refaire
+        if liste > sum(l)/len(l) + nb:
+            #we return the point detected
+            return phrase
+    except:
+        pass
 
 
 
