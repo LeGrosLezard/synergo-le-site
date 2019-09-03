@@ -1,7 +1,13 @@
 # synergo-le-site
 
 
+ok faire le github pro et les vidéo 
 
+refaire les crop visage (les cheveux sté pour ca)
+
+faire les zones par contre par exemple quand on ferme un oeil ca dit que y'a la main sur le visage du coup faut faire un truk pour ca
+
+prendre le coin sup droit et faut inversé sur l'ecran c inversé
 
 faire la suite des mains
 
