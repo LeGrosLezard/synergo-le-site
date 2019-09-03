@@ -57,10 +57,10 @@ def contour(frame, contours, surface, frame_contour):
 
             x, y, w, h = cv2.boundingRect(c)
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
-            localisation = bras_mouvement(cv2.contourArea(c), frame, x, y)
+            taille_area = bras_mouvement(cv2.contourArea(c), frame, x, y)
 
             
-            return x, y, w, h, localisation
+            return x, y, w, h, taille_area
 
     return None, None, None, None, False
 
@@ -116,8 +116,9 @@ def most_pixel(c, frame1):
 
  
 def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
-              x_mov, y_mov, w_mov, h_mov, localisation,
-              DIRECTION_VERTICALE, DIRECTION_HORIZONTALE, HAND):
+              x_mov, y_mov, w_mov, h_mov, taille_area,
+              DIRECTION_VERTICALE, DIRECTION_HORIZONTALE, HAND,
+              hand_detection):
 
     #On recoit si c'est un grand mouvement ou un petit
     # -> CONTOUR()
@@ -125,9 +126,9 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
     if c > 5:
 
         skinMask = cv2.inRange(frame, np.array([b], dtype = "uint8"), np.array([a], dtype = "uint8"))
-
+        
         #PETIT MOUVEMENT
-        if localisation is True:
+        if taille_area is True:
 
             frame_detector = skinMask[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
 
@@ -137,17 +138,11 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
                 cv2.putText(frame_movement, str("tete" + "" + str(proba) + " %"),
                             (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
-                #hand_movement(HAND, y_mov, h_mov, "tete")
+                hand_movement(HAND, y_mov, h_mov, "tete")
             
 
             else:
                 counter_Wpx = 0
-
-
-                print(x+w, y+h)
-
-
-                
 
                 #On verifie que l'interieur de la détection est une zone de peau.
                 detector_skin = skinMask[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
@@ -158,33 +153,90 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
                         if detector_skin[i, j] == 255:
                             counter_Wpx+=1
     
-                
+                """MATTE
+
+                mouvement bas GAUCHE
+                255 403
+                main bas GAUCHE
+                255 306  <- ICIIIIIIIIIIIII
+                main milieu gauche
+                255 461
+                main milieu droite
+                255 303 <- ICIIIIIIIIIIIIIII
+                main MILIEU gauche
+
+                """
+
                 #NON MAIN
                 if counter_Wpx == 0:
-                    cv2.putText(frame_movement, str("non main" + "" + "100%"),
+                    cv2.putText(frame_movement, str("non main"),
                             (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
-                #MAIN ?
+                #MAIN
                 elif counter_Wpx > 0:
+
+
+
+
+
                     #BAS
                     if y_mov+h_mov > int(round(600*80/100)):
-                        hand_movement(HAND, y_mov, h_mov, "bas")
-                        cv2.putText(frame_movement, str("bas" + "" + "100%"),
-                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
-  
+
+                        if hand_detection is True:
+                            print(DIRECTION_HORIZONTALE[-1], x_mov)
+                            m = False
+    
+                            #DROITE
+                            if x_mov < x+w/2:
+                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, "bas gauche")
+                            #GAUCHE
+                            elif x_mov > x+w/2:
+                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, "bas droite")
+
+
+
+
+
+
+
+      
                     #MILIEU
                     elif y_mov+h_mov > int(round(600*50/100)) and y_mov+h_mov < int(round(600*80/100)):
-                        hand_movement(HAND, y_mov, h_mov, "milieu")
-                        cv2.putText(frame_movement, str("milieu" + "" + "100%"),
-                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+                        if hand_detection is True:
+                            print(DIRECTION_HORIZONTALE[-1], x_mov)
+                            m = False
+
+                            #DROITE
+                            if x_mov < x+w/2:
+                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, "milieu gauche")
+                            #GAUCHE
+                            elif x_mov > x+w/2:
+                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, "milieu droite")
+
+                   
+
+
+
+
 
 
                         
                     #HAUT
                     elif y_mov+h_mov < int(round(600*50/100)):
-                        hand_movement(HAND, y_mov, h_mov, "haut")
-                        cv2.putText(frame_movement, str("haut" + "" + "100%"),
-                            (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+                        if hand_detection is True:
+                            print(DIRECTION_HORIZONTALE[-1], x_mov)
+                            m = False
+                        
+                            #DROITE
+                            if x_mov < x+w/2:
+                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, "haut gauche")
+                            #GAUCHE
+                            elif x_mov > x+w/2:
+                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, "haut droite")
+
+                            
 
 
 
@@ -192,64 +244,74 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
 
 
 
-
-
-
+        
 
         #GRAND MOUVEMENT
-        elif localisation is False:
-            proba = 90
-
+        elif taille_area is False:
 
             #ZONE TETE
-            if x - 20 < x_mov and int(round(y+h*2)) > y_mov+h_mov:
-                cv2.putText(frame_movement, str("TETE " + "" + str(proba) + " %"),
+            
+            if x - 30 < x_mov and int(round(y+h+45)) > y_mov+h_mov:
+                cv2.putText(frame_movement, str("TETE"),
                             (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
 
                 mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
                                     DIRECTION_HORIZONTALE, x_mov, "tete")
+
 
             #AUTRE ZONE
             else:
             
                 #BAS
                 if y_mov+h_mov > int(round(600*80/100)):
-                    
-                    cv2.putText(frame_movement, str("mouvement bas " + "" + str(proba) + " %"),
-                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+                    #DROITE
+                    if x_mov < x+w/2:
+                        m = mouvement_direction(frame_movement, DIRECTION_VERTICALE, y_mov, h_mov,
+                                                DIRECTION_HORIZONTALE, x_mov, "bas gauche")
+                    #GAUCHE
+                    elif x_mov > x+w/2:
+                        
+                        m = mouvement_direction(frame_movement,DIRECTION_VERTICALE, y_mov, h_mov,
+                                                DIRECTION_HORIZONTALE, x_mov, "bas droite")
 
-                    mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
-                                            DIRECTION_HORIZONTALE, x_mov, "bas")
 
 
                 #MILLIEU
                 elif y_mov+h_mov > int(round(600*50/100)) and y_mov+h_mov < int(round(600*80/100)):
-                    
-                    cv2.putText(frame_movement, str("mouvement milieu" + "" + str(proba) + " %"),
-                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+                    #DROITE
+                    if x_mov < x+w/2:
+                        m = mouvement_direction(frame_movement,DIRECTION_VERTICALE, y_mov, h_mov,
+                                            DIRECTION_HORIZONTALE, x_mov, "milieu gauche")
 
-                    mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
-                                        DIRECTION_HORIZONTALE, x_mov, "milieu")
-                    
+                    #GAUCHE
+                    elif x_mov > x+w/2:
+                        m = mouvement_direction(frame_movement,DIRECTION_VERTICALE, y_mov, h_mov,
+                                            DIRECTION_HORIZONTALE, x_mov, "milieu droite")
+
+
+
 
                 #HAUT
                 elif y_mov+h_mov < int(round(600*50/100)):
+                    #DROITE
+                    if x_mov < x+w/2:
+                        m = mouvement_direction(frame_movement, DIRECTION_VERTICALE, y_mov, h_mov,
+                                            DIRECTION_HORIZONTALE, x_mov, "haut gauche")
 
-                    cv2.putText(frame_movement, str("mouvement haut" + "" + str(proba) + " %"),
-                                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
-
-                    mouvement_direction(DIRECTION_VERTICALE, y_mov, h_mov,
-                                        DIRECTION_HORIZONTALE, x_mov, "haut")
-
-
-
-        return skinMask
-
-
-#LE BUT C DE DIRE GRAND MOUVEMENT ALORS TROUVE MAIN DONC GRAND ACTIVE PETIT
+                    #GAUCHE
+                    elif x_mov > x+w/2:
+                        m = mouvement_direction(frame_movement, DIRECTION_VERTICALE, y_mov, h_mov,
+                                            DIRECTION_HORIZONTALE, x_mov, "haut droite")
 
 
-def hand_movement(HAND, y_mov, h_mov, zone):
+   
+        return skinMask, m
+
+
+
+
+
+def hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, zone):
     
     try:
         #print(HAND[-1], zone)
@@ -257,12 +319,15 @@ def hand_movement(HAND, y_mov, h_mov, zone):
     except:
         pass
 
+    cv2.putText(frame_movement, str("main " + str(zone)),
+                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
     HAND.append(y_mov+h_mov)
 
 
 
 
-def mouvement_direction(DIRECTION_VERTICALE, y, h,
+def mouvement_direction(frame_movement, DIRECTION_VERTICALE, y, h,
                         DIRECTION_HORIZONTALE, x, zone):
 
 
@@ -273,12 +338,19 @@ def mouvement_direction(DIRECTION_VERTICALE, y, h,
         #print("")
     except:
         pass
+
     
+    cv2.putText(frame_movement, str("mouvement" + " " + str(zone)),
+                (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+
     DIRECTION_VERTICALE.append(y+h)
     DIRECTION_HORIZONTALE.append(x)
 
 
-    #LE BUT EST DE SUIVRE LA MAIN
+    return True
+
+    
 
 
 
