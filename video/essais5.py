@@ -9,13 +9,30 @@ from collections import defaultdict
 from essais6 import *
 
 
+
+DIRECTION_VERTICALE = []
+DIRECTION_HORIZONTALE = []
+MOUVEMENT = []
+
+SUBSTRACTOR9 = cv2.createBackgroundSubtractorMOG2(history=100,
+                                                varThreshold=50,
+                                                detectShadows=True)
+
+l9 = []
+ll9 = [[], [], [], []]
+
+
+
+
+
+
 cap=cv2.VideoCapture("VIDEO.mp4")
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
 counter = 0
 kernel_blur=43
 seuil=10
-surface=3000
+surface=1000
 
 
 
@@ -28,6 +45,7 @@ while True:
 
     gray=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+    
     originale, kernel_dilate = original_traitement(cap, kernel_blur)
     contours, frame_contour = to_mask(frame_movement, gray, originale, kernel_blur, seuil, kernel_dilate)
     x_mov, y_mov, w_mov, h_mov, localisation = contour(frame_movement, contours, surface, frame_contour)
@@ -43,19 +61,17 @@ while True:
 
         if counter > 5:
             skinMask = skin_mask(frame, frame1, frame_movement, UPPER, LOWER, counter, x, y, w, h,
-                                 x_mov, y_mov, w_mov, h_mov, localisation)
-            
-            cv2.imshow("frame1", skinMask)
+                                 x_mov, y_mov, w_mov, h_mov, localisation,
+                                 DIRECTION_VERTICALE, DIRECTION_HORIZONTALE)
+
     except:
         pass
 
 
 
-
-
-    #le but c de définir ou est la main mtn
-
-
+    #ICI les zones de la tete
+    #LE BUT c de:
+    #- voir ou la main va, si pres de la tete verifier angle du cadre
 
 
     originale = gray
