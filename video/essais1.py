@@ -1,113 +1,51 @@
+import os
+import sys
+import time
 import numpy as np
 import cv2
-import time
 from PIL import Image
 import operator
 from collections import defaultdict
-
-#Nous détectons la tete.
-#par la tete nous pourrons construire nos régions.
-#Nous pouvons aussi récupérer la couleur de sa figure.
-
-#A quoi servent nos régions ?
-#Les régions vont servir à localiser les grands mouvements.
-
-#Les grands mouvements ?
-#Les grands mouvements sont les mouvements de bras
-#par ces grands mouvements nous pourront détecter les mains.
+from essais6 import *
 
 
-def detection_faces(frame, faceCascade, gray):
+cap=cv2.VideoCapture("VIDEO2.mp4")
+faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
+
+counter = 0
+kernel_blur=43
+seuil=10
+surface=3000
+
+
+
+
+while True:
     
-    faces = faceCascade.detectMultiScale(
-        gray,
-        scaleFactor=1.3,
-        minNeighbors=1,
-        minSize=(60, 100),
-        flags=cv2.CASCADE_SCALE_IMAGE
-    )
+    ret, frame =cap.read()
+    frame = cv2.resize(frame, (800, 600))
+    frame_movement = cv2.resize(frame, (800, 600))
 
-    if faces == ():
-        faces = [(0,0,0,0)]
+    gray=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    for x, y, w, h in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 0), 2)
-        detect_color(x, y, w, h, frame)
-        
-        return faces
+    originale, kernel_dilate = original_traitement(cap, kernel_blur)
+    contours, frame_contour = to_mask(frame_movement, gray, originale, kernel_blur, seuil, kernel_dilate)
+    x_mov, y_mov, w_mov, h_mov = contour(frame_movement, contours, surface, frame_contour)
 
-    return 0, 0, 0, 0
-
-
-def detect_color(x, y, w, h, frame):
-    if x != 0 and y != 0 and w != 0:
-        frame = frame[y+10:y+h-10, x+30:x+w-35]
-
-        dico = {}
-        img = Image.fromarray(frame)
-        for value in img.getdata():
-            if value in dico.keys():
-                dico[value] += 1
-            else:
-                dico[value] = 1
-                
-        sorted_x = sorted(dico.items(), key=operator.itemgetter(1), reverse=True)
-        print(sorted_x)
-        
-        cv2.imshow("ddd", frame)
-
-        """Ne pas le faire de suite, le faire 5 fois"""
-
-    return True
-
-def region():
-    pass
-
-def aire_contour(aire, frame, x, y, w, h, face):
-    proba = 0
-
-    if aire > 30000:
-        cv2.putText(frame, str("Grand Mouvement "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
-
-    else:
-        cv2.putText(frame, str("Petit Mouvement "  + "" + str(proba) + " %"), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
-
-
-
-def search_contour(frame_contour, frame, contours, faceCascade, gray):
-
-    surface=3000
+    print(x_mov, y_mov, w_mov, h_mov)
 
     
-    for c in contours:
-        if cv2.contourArea(c) < 100000:
+    try:
+        frame1, x, y, w, h = face_detector(faceCascade, gray, frame)
 
-            cv2.drawContours(frame_contour, [c], 0, (0, 255, 0), 5)
-            if cv2.contourArea(c) < surface:
-                continue
-            faces = detection_faces(frame, faceCascade, gray)
-            x, y, w, h = cv2.boundingRect(c)
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
-            
-            aire_contour(cv2.contourArea(c), frame, x, y, w, h, faces)
+        if counter == 5:
+            UPPER, LOWER = most_pixel(counter, frame1)
 
-
-
-
-#UN GRAND MOUVEMENT:
-            #peut etre deux mains reunis
-            #peut etre une mouvement de bras.
-
-            #si un grand mouvement se coupe en deux
-                #x grand == x petit
-                #y+h grand == y+h petit --> Main
-
-
-
-#UN PETIT MOUVEMENT
-            #peut etre la gueule
-            #peut etre la chemise
-            #peut etre les mains.
+        if counter > 5:
+            skinMask = skin_mask(frame, frame1, UPPER, LOWER, counter, x, y, w, h)
+            cv2.imshow("frame1", skinMask)
+    except:
+        pass
 
 
 
@@ -118,26 +56,18 @@ def search_contour(frame_contour, frame, contours, faceCascade, gray):
 
 
 
+    originale = gray
+    cv2.imshow("frame", frame_movement)
+    counter+=1
+        
+
+
+    key=cv2.waitKey(1)&0xFF
+    if key==ord('q'):
+        break
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+cap.release()
+cv2.destroyAllWindows()
