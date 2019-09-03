@@ -11,10 +11,7 @@ from essais6 import *
 
 
 DIRECTION_VERTICALE = []
-DIRECTION_HORIZONTALE = []
-
 HAND = []
-
 MOUVEMENT = []
 
 SUBSTRACTOR9 = cv2.createBackgroundSubtractorMOG2(history=100,
@@ -29,7 +26,7 @@ ll9 = [[], [], [], []]
 
 
 
-cap=cv2.VideoCapture("VIDEO.mp4")
+cap=cv2.VideoCapture("VIDEO2.mp4")
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
 
@@ -70,13 +67,13 @@ while True:
             skinMask, hand_detection = skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
                                                  counter, x, y, w, h,
                                                  x_mov, y_mov, w_mov, h_mov, taille_area,
-                                                 DIRECTION_VERTICALE, DIRECTION_HORIZONTALE,
-                                                 HAND, hand_detection)
+                                                 DIRECTION_VERTICALE, HAND,
+                                                 hand_detection)
 
  
     except:
         pass
-    
+
     #A LA FIN DU MOUVEMENT
     #SI C UNE MAIN DANS LE MEME CADRANT ALORS C LA MAIN
     #EN SUIVANT UNE LOGIQUE DE X
