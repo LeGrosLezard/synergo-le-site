@@ -62,14 +62,14 @@ faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 counter = 0
 kernel_blur=13
 seuil=10
-surface=1000
+surface=500
 
 hand_detection = False
 
 
 while True:
 
-    
+    oki_detection = False
     ret, frame =cap.read()
     frame = cv2.resize(frame, (800, 600))
     frame_movement = cv2.resize(frame, (800, 600))
@@ -121,11 +121,16 @@ while True:
 
 
         if counter > 5:
-            skinMask, hand_detection = skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
-                                                 counter, x, y, w, h,
-                                                 x_mov, y_mov, w_mov, h_mov, taille_area,
-                                                 DIRECTION_VERTICALE, HAND,
-                                                 hand_detection)
+            skinMask, hand_detection, y_mov, h_mov, x_mov, w_mov =\
+                      skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
+                      counter, x, y, w, h,
+                      x_mov, y_mov, w_mov, h_mov, taille_area,
+                      DIRECTION_VERTICALE, HAND,
+                      hand_detection)
+
+            if y_mov != None:
+                #print(y_mov, h_mov, x_mov, w_mov)
+                oki_detection = True
     except:
         pass
 
@@ -136,7 +141,7 @@ while True:
 
         zones_area(frame_movement,
               ll1, ll2, ll3, ll4, ll5, ll6, ll7, ll8,
-              ll9, ll10, ll11, ll12, ll13, ll14, ll15)
+              ll9, ll10, ll11, ll12, ll13, ll14, ll15, oki_detection)
 
 
 
@@ -155,7 +160,7 @@ while True:
         
 
 
-    key=cv2.waitKey(1)&0xFF
+    key=cv2.waitKey(150)&0xFF
     if key==ord('q'):
         break
 
