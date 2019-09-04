@@ -48,9 +48,6 @@ ll13 = [[], [], [], []]
 ll14 = [[], [], [], []]
 ll15 = [[], [], [], []]
 
-
-    
-
 LOWER = []
 UPPER = []
 
@@ -129,7 +126,6 @@ while True:
                                                  x_mov, y_mov, w_mov, h_mov, taille_area,
                                                  DIRECTION_VERTICALE, HAND,
                                                  hand_detection)
-
     except:
         pass
 
@@ -141,6 +137,8 @@ while True:
         zones_area(frame_movement,
               ll1, ll2, ll3, ll4, ll5, ll6, ll7, ll8,
               ll9, ll10, ll11, ll12, ll13, ll14, ll15)
+
+
 
 
 
