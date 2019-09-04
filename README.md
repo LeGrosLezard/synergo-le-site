@@ -1,7 +1,7 @@
 # synergo-le-site
 
 
-ok faire le github pro et les vidéo 
+bon finir ca le mettre sur le site et continuer le github pro
 
 refaire les crop visage (les cheveux sté pour ca)
 
