@@ -60,7 +60,6 @@ def contour(frame, contours, surface, frame_contour):
                 continue
 
             x, y, w, h = cv2.boundingRect(c)
-            #cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
             taille_area = bras_mouvement(cv2.contourArea(c), frame, x, y)
 
             
@@ -131,18 +130,18 @@ def detector_W_px(skinMask, y_mov, h_mov, x_mov, w_mov, frame):
 
 
 
-def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
+def skin_mask(frame, frame1, frame_movement,
+              a, b, c, #a for upper px, b for lower px
+              x, y, w, h,
               x_mov, y_mov, w_mov, h_mov, taille_area,
               DIRECTION_VERTICALE, HAND, COIN_GAUCHE, COIN_DROIT):
 
 
     ok_detection = False
 
-
-    
     if c > 5:
         skinMask = cv2.inRange(frame, np.array([b], dtype = "uint8"), np.array([a], dtype = "uint8"))
-        
+ 
         #PETIT MOUVEMENT
         if taille_area is True:
 
@@ -150,7 +149,7 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
 
             #VISAGE
             if x + 20 < x_mov and y+h-20 > y_mov+h_mov and x+w-20 > x_mov+w_mov and y + 20 > y_mov:
-                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "main", skinMask, COIN_DROIT, COIN_GAUCHE)
+                m = hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "main", skinMask, COIN_DROIT, COIN_GAUCHE)
 
                 
                 
@@ -174,10 +173,10 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
                         if DIRECTION_VERTICALE[-1] - x_mov < 250:
                             #droite
                             if x_mov < x+w/2:
-                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "bas gauche", skinMask, COIN_DROIT, COIN_GAUCHE)
+                                m = hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "bas gauche", skinMask, COIN_DROIT, COIN_GAUCHE, COIN_DROIT1, COIN_GAUCHE)
                             #gauche
                             elif x_mov > x+w/2:
-                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "bas droite", skinMask, COIN_DROIT, COIN_GAUCHE)
+                                m = hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "bas droite", skinMask, COIN_DROIT, COIN_GAUCHE)
 
                                 
                                 
@@ -189,10 +188,10 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
         
                             #droite
                             if x_mov < x+w/2:
-                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "milieu gauche", skinMask, COIN_DROIT, COIN_GAUCHE)
+                                m = hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "milieu gauche", skinMask, COIN_DROIT, COIN_GAUCHE)
                             #gauche
                             elif x_mov > x+w/2:
-                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "milieu droite", skinMask, COIN_DROIT, COIN_GAUCHE)
+                                m = hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "milieu droite", skinMask, COIN_DROIT, COIN_GAUCHE)
                          
 
 
@@ -205,10 +204,10 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
                             
                             #droite
                             if x_mov < x+w/2:
-                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "haut gauche", skinMask, COIN_DROIT, COIN_GAUCHE)
+                                m = hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "haut gauche", skinMask, COIN_DROIT, COIN_GAUCHE)
                             #gauche
                             elif x_mov > x+w/2:
-                                hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "haut droite", skinMask, COIN_DROIT, COIN_GAUCHE)
+                                m = hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, "haut droite", skinMask, COIN_DROIT, COIN_GAUCHE)
 
                             
 
@@ -282,7 +281,8 @@ def skin_mask(frame, frame1, frame_movement, a, b, c, x, y, w, h,
 
 
 
-def hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, zone, skinMask, COIN_DROIT, COIN_GAUCHE):
+def hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, zone, skinMask,
+                  COIN_DROIT, COIN_GAUCHE):
     
 
     crop = skinMask[y_mov:y_mov+h_mov, x_mov:x_mov+w_mov]
@@ -291,19 +291,23 @@ def hand_movement(frame_movement, HAND, x_mov, y_mov, h_mov, w_mov, zone, skinMa
         for j in range(crop.shape[1]):
             if crop[i, j] == 255:
                 c += 1
-    
+
     if c > 0:
-        print(COIN_GAUCHE[-1], COIN_DROIT[-1], x_mov, y_mov+h_mov)
-        cv2.rectangle(frame_movement, (x_mov, y_mov), (x_mov+w_mov, y_mov+h_mov), (0, 0, 255), 2)
-        cv2.putText(frame_movement, str("main"),
-                (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+        
+ 
+        if x_mov > COIN_GAUCHE[-1] and y_mov+h_mov < COIN_DROIT[-1]:
+            
+            cv2.rectangle(frame_movement, (x_mov, y_mov), (x_mov+w_mov, y_mov+h_mov), (0, 0, 255), 2)
+            cv2.putText(frame_movement, str("ICIIIIIIIIIIIIIIIIIIIIIIIIIIII"),
+                        (x_mov, y_mov), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(255,255,255),1,cv2.LINE_AA)
+
+
+        return True
 
 
 
-
-
-
-def mouvement_direction(frame_movement, skinMask, DIRECTION_VERTICALE, y, h, x, w, zone, COIN_DROIT, COIN_GAUCHE):
+def mouvement_direction(frame_movement, skinMask, DIRECTION_VERTICALE,
+                        y, h, x, w, zone, COIN_DROIT, COIN_GAUCHE):
 
 
     cv2.rectangle(frame_movement, (x, y), (x+w, y+h), (0, 0, 255), 2)
@@ -312,8 +316,9 @@ def mouvement_direction(frame_movement, skinMask, DIRECTION_VERTICALE, y, h, x, 
 
     COIN_GAUCHE.append(x)
     COIN_DROIT.append(y+h)
+    
     DIRECTION_VERTICALE.append(y+h)
-    return ""
+    return False
 
 
 
@@ -335,63 +340,113 @@ def init_zones(x, y, w, h, frame_area,
 
 
 
-    initialisation_zone(ll1, y, y + h + 10, x - w - 30, x - 60)
+    initialisation_zone(ll1,
+                        y,
+                        y + h + 10,
+                        x - w - 30, x - 60)
     #droite
 
-    initialisation_zone(ll2, y, y + h + 10, x + w + 60, x + w * 2 + 30)
+    initialisation_zone(ll2, y,
+                        y + h + 10,
+                        x + w + 60,
+                        x + w * 2 + 30)
     #gauche
 
 
-    initialisation_zone(ll3, y - int(round(150 * 100 / h)), y - int(round(80 * 100 / h)),
-                        x + int(round(w/3)), x + int(round(w/3)) * 2)
+    initialisation_zone(ll3,
+                        y - int(round(150 * 100 / h)),
+                        y - int(round(80 * 100 / h)),
+                        x + int(round(w/3)),
+                        x + int(round(w/3)) * 2)
     #milieu
-
-
-    initialisation_zone(ll4, y - int(round(110 * 100 / h)), y - int(round(50 * 100 / h)),
-                        x - 20, x + 30)
+    initialisation_zone(ll4,
+                        y - int(round(110 * 100 / h)),
+                        y - int(round(50 * 100 / h)),
+                        x - 20,
+                        x + 30)
     #patte droite
 
-    initialisation_zone(ll5, y - int(round(110 * 100 / h)), y - int(round(50 * 100 / h)),
-                        x + w - 20, x + w + 30)
-    
+    initialisation_zone(ll5,
+                        y - int(round(110 * 100 / h)),
+                        y - int(round(50 * 100 / h)),
+                        x + w - 20,
+                        x + w + 30)
     #patte gauche
 
 
-
-    initialisation_zone(ll6, y + h - 50, y + h, x + int(round(w/3)), x + int(round(w/3)) * 2)
+    initialisation_zone(ll6,
+                        y + h - 50,
+                        y + h,
+                        x + int(round(w/3)),
+                        x + int(round(w/3)) * 2)
     #bouche
 
-    initialisation_zone(ll7, y + h + 10, y + h + 45, x + int(round(w/3)), x + int(round(w/3)) * 2)
+    initialisation_zone(ll7,
+                        y + h + 10,
+                        y + h + 45,
+                        x + int(round(w/3)),
+                        x + int(round(w/3)) * 2)
     #menton
 
 
-    initialisation_zone(ll8, y + h + 120,y + h + 180, x, x + w)
+    initialisation_zone(ll8,
+                        y + h + 120,
+                        y + h + 180,
+                        x,
+                        x + w)
     #buste 
 
 
-    initialisation_zone(ll9, y + h + 20, y + h + 60, x - 50, x + 30)
+    initialisation_zone(ll9,
+                        y + h + 20,
+                        y + h + 60,
+                        x - 50,
+                        x + 30)
     #épaul droite
 
 
-    initialisation_zone(ll10, y + h + 20, y + h + 60, x + w - 30, x + w + 30)
+    initialisation_zone(ll10,
+                        y + h + 20,
+                        y + h + 60,
+                        x + w - 30,
+                        x + w + 30)
     #épaul gauche
 
 
-    initialisation_zone(ll11, y - int(round(30 * 100 / h)),
-                        y - int(round(-40 * 100 / h)), x + 30, x + w - 30)
+    initialisation_zone(ll11,
+                        y - int(round(30 * 100 / h)),
+                        y - int(round(-40 * 100 / h)),
+                        x + 30,
+                        x + w - 30)
     #front
 
-    initialisation_zone(ll12, y - 20,y + 40, x - 40, x)
+    initialisation_zone(ll12,
+                        y - 20,
+                        y + 40,
+                        x - 40,
+                        x)
     #tempe droite
 
-    initialisation_zone(ll13, y - 20, y + 40, x + w, x + w + 40)
+    initialisation_zone(ll13,
+                        y - 20,
+                        y + 40,
+                        x + w,
+                        x + w + 40)
     #tempe gauche
 
-    initialisation_zone(ll14, y + 70, y + 110, x - 40, x)
+    initialisation_zone(ll14,
+                        y + 70,
+                        y + 110,
+                        x - 40,
+                        x)
     #oreille droite
 
 
-    initialisation_zone(ll15, y + 70, y + 110, x + w, x + w + 40)
+    initialisation_zone(ll15,
+                        y + 70,
+                        y + 110,
+                        x + w,
+                        x + w + 40)
     #oreille gauche
 
 
@@ -418,22 +473,26 @@ def zones_area_build(liste, gray):
 
 #----------------------------------------------------------------------MEME FONCTION 2
 def into_crop(crop):
+    c = 0
     for i in range(crop.shape[0]):
         for j in range(crop.shape[1]):
             if crop[i, j][0] ==  0 and\
                crop[i, j][1] == 0 and\
                crop[i, j][2] == 255:
-                return True
-    return None
+                c += 1
+    if c > 100:
+        return True
+    else:
+        return None
 
 
 def detection_movement(crop1, crop2, crop3, crop4,
                        crop5, crop6, crop7, crop8,
                        crop9, crop10, crop11, crop12,
-                       crop13, crop14, crop15, oki_detection):
+                       crop13, crop14, crop15, ok_detection):
 
-    droite = into_crop(crop2)
-    milieu = into_crop(crop1)
+    milieu = into_crop(crop2)
+    droite = into_crop(crop1)
     gauche = into_crop(crop3)
     patte_droite = into_crop(crop4)
     patte_gauche = into_crop(crop5)
@@ -443,10 +502,10 @@ def detection_movement(crop1, crop2, crop3, crop4,
     epaul_droite = into_crop(crop9)
     epaul_gauchee = into_crop(crop10)
     front = into_crop(crop11)
-    tempe_droite = into_crop(crop12)
-    tempe_gauche = into_crop(crop13)
-    oreille_droite = into_crop(crop14)
-    oreille_gauche = into_crop(crop15)
+    oreille_droite = into_crop(crop12)
+    oreille_gauche = into_crop(crop13)
+    tempe_droite = into_crop(crop14)
+    tempe_gauche = into_crop(crop15)
 
     dico = {"droite":droite, "milieu":milieu, "gauche":gauche,
             "patte_droite":patte_droite, "bouche":bouche,
@@ -456,7 +515,7 @@ def detection_movement(crop1, crop2, crop3, crop4,
             "tempe_droite":tempe_droite, "tempe_gauche":tempe_gauche,
              "oreille_droite":oreille_droite, "oreille_gauche":oreille_gauche}
 
-    if oki_detection is True:
+    if ok_detection is True:
         for cle, valeur in dico.items():
             if valeur is True:
                 print(cle, valeur)
@@ -465,7 +524,7 @@ def detection_movement(crop1, crop2, crop3, crop4,
     
 
 def zones_area(gray, ll1, ll2, ll3, ll4, ll5, ll6, ll7, ll8, ll9,
-               ll10, ll11, ll12, ll13, ll14, ll15, oki_detection):
+               ll10, ll11, ll12, ll13, ll14, ll15, ok_detection):
     
 
     crop1 = zones_area_build(ll1, gray)
@@ -499,11 +558,10 @@ def zones_area(gray, ll1, ll2, ll3, ll4, ll5, ll6, ll7, ll8, ll9,
     crop15 = zones_area_build(ll15, gray)
 
     
-
     detection_movement(crop1, crop2, crop3, crop4,
                         crop5, crop6, crop7, crop8,
                         crop9, crop10, crop11, crop12,
-                        crop13, crop14, crop15, oki_detection)
+                        crop13, crop14, crop15, ok_detection)
 
 
         
