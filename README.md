@@ -1,7 +1,7 @@
 # synergo-le-site
 
 
-bon finir ca le mettre sur le site et continuer le github pro
+bon finir ca le mettre sur le site et continuer le github pro oh ca va etre tres long... 
 
 refaire les crop visage (les cheveux sté pour ca)
 
