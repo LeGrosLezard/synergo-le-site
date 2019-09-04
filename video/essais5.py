@@ -10,10 +10,11 @@ from essais6 import *
 
 
 
-DIRECTION_VERTICALE = []
+COIN_GAUCHE = []
+COIN_DROIT = []
 HAND = []
 MOUVEMENT = [0]
-
+DIRECTION_VERTICALE = []
 
 l = []
 l1 = []
@@ -55,21 +56,20 @@ UPPER = []
 
 
 
-cap=cv2.VideoCapture("VIDEO.mp4")
+cap=cv2.VideoCapture("yo.mp4")
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 
 
 counter = 0
-kernel_blur=13
+kernel_blur=15
 seuil=10
 surface=500
 
-hand_detection = False
 
 
 while True:
 
-    oki_detection = False
+
     ret, frame =cap.read()
     frame = cv2.resize(frame, (800, 600))
     frame_movement = cv2.resize(frame, (800, 600))
@@ -78,18 +78,19 @@ while True:
 
     gray=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-
+    frame1, x, y, w, h = face_detector(faceCascade, gray, frame)
     originale, kernel_dilate = original_traitement(cap, kernel_blur)
-    contours, frame_contour = to_mask(frame_movement, gray, originale, kernel_blur, seuil, kernel_dilate)
+    contours, frame_contour = to_mask(frame_movement, gray, originale, kernel_blur, seuil, kernel_dilate, x, y, w, h)
     x_mov, y_mov, w_mov, h_mov, taille_area = contour(frame_movement, contours, surface, frame_contour)
 
     
     
-    
     try:
-        frame1, x, y, w, h = face_detector(faceCascade, gray, frame)
-
-
+        
+        
+        cv2.rectangle(frame_movement, (x + 20, y + 20), (x+w-20, y+h-20), (255), 3)
+        
+        
         if MOUVEMENT[-1] > x + 5 or MOUVEMENT[-1] < x - 5:
             ll = [[], [], [], []]
             ll1 = [[], [], [], []]
@@ -121,27 +122,24 @@ while True:
 
 
         if counter > 5:
-            skinMask, hand_detection, y_mov, h_mov, x_mov, w_mov =\
+            skinMask, y_mov, h_mov, x_mov, w_mov =\
                       skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
-                      counter, x, y, w, h,
-                      x_mov, y_mov, w_mov, h_mov, taille_area,
-                      DIRECTION_VERTICALE, HAND,
-                      hand_detection)
-
-            if y_mov != None:
-                #print(y_mov, h_mov, x_mov, w_mov)
-                oki_detection = True
+                                counter, x, y, w, h,
+                                x_mov, y_mov, w_mov, h_mov, taille_area,
+                                DIRECTION_VERTICALE, HAND, COIN_GAUCHE, COIN_DROIT)
+        
     except:
         pass
 
 
 
 
-    if len(ll1[0]) >= 2:
-
-        zones_area(frame_movement,
-              ll1, ll2, ll3, ll4, ll5, ll6, ll7, ll8,
-              ll9, ll10, ll11, ll12, ll13, ll14, ll15, oki_detection)
+##
+##    if len(ll1[0]) >= 2:
+##
+##        zones_area(frame_movement,
+##              ll1, ll2, ll3, ll4, ll5, ll6, ll7, ll8,
+##              ll9, ll10, ll11, ll12, ll13, ll14, ll15, oki_detection)
 
 
 
@@ -160,7 +158,7 @@ while True:
         
 
 
-    key=cv2.waitKey(150)&0xFF
+    key=cv2.waitKey(200)&0xFF
     if key==ord('q'):
         break
 
