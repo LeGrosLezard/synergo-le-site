@@ -12,9 +12,13 @@ from essais6 import *
 
 COIN_GAUCHE = []
 COIN_DROIT = []
+
+
 HAND = []
 MOUVEMENT = [0]
 DIRECTION_VERTICALE = []
+COIN = []
+
 
 l = []
 l1 = []
@@ -68,7 +72,7 @@ surface=500
 
 
 while True:
-
+    ok_detection = False
 
     ret, frame =cap.read()
     frame = cv2.resize(frame, (800, 600))
@@ -122,24 +126,34 @@ while True:
 
 
         if counter > 5:
-            skinMask, y_mov, h_mov, x_mov, w_mov =\
+            skinMask, ok_detection, y_mov, h_mov, x_mov, w_mov =\
                       skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
                                 counter, x, y, w, h,
                                 x_mov, y_mov, w_mov, h_mov, taille_area,
-                                DIRECTION_VERTICALE, HAND, COIN_GAUCHE, COIN_DROIT)
-        
+                                DIRECTION_VERTICALE, HAND, COIN_GAUCHE,
+                                COIN_DROIT)
+
+    
+        if counter > 5:
+            skinMask, ok_detection, y_mov, h_mov, x_mov, w_mov =\
+                      skin_mask(frame, frame1, frame_movement, UPPER, LOWER,
+                                counter, x, y, w, h,
+                                x_mov, y_mov, w_mov, h_mov, taille_area,
+                                DIRECTION_VERTICALE, HAND, COIN_GAUCHE,
+                                COIN_DROIT)
+    
+
     except:
         pass
 
 
 
+    
+    if len(ll1[0]) >= 2:
 
-##
-##    if len(ll1[0]) >= 2:
-##
-##        zones_area(frame_movement,
-##              ll1, ll2, ll3, ll4, ll5, ll6, ll7, ll8,
-##              ll9, ll10, ll11, ll12, ll13, ll14, ll15, oki_detection)
+        zones_area(frame_movement,
+              ll1, ll2, ll3, ll4, ll5, ll6, ll7, ll8,
+              ll9, ll10, ll11, ll12, ll13, ll14, ll15, ok_detection)
 
 
 
@@ -158,7 +172,7 @@ while True:
         
 
 
-    key=cv2.waitKey(200)&0xFF
+    key=cv2.waitKey(1)&0xFF
     if key==ord('q'):
         break
 
