@@ -34,3 +34,6 @@ https://synergo.herokuapp.com/
 
 
 # deux modes: le mec prend la personne avec son téléphone portable (axés aide a la personne) et le mode video
+
+
+détecter la main sur le front, le nez la bouche et le menton
