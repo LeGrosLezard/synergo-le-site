@@ -1,5 +1,7 @@
 # synergo-le-site
 
+bon premier projet test professionnel du coup synergo que si j'ai le temps
+
 
 BON, en vrai c'était un peu trop dur et un peu fait chier vers debut hier
 
