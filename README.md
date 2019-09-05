@@ -1,17 +1,19 @@
 # synergo-le-site
 
 
-bon finir ca le mettre sur le site et continuer le github pro oh ca va etre tres long... 
+BON, en vrai c'était un peu trop dur et un peu fait chier vers debut hier
 
-refaire les crop visage (les cheveux sté pour ca)
+faut voir moins dur.... ok ca marche c sur,
 
-faire les zones par contre par exemple quand on ferme un oeil ca dit que y'a la main sur le visage du coup faut faire un truk pour ca
+le truk n'aura pas servi a rien, on va pouvoir dire si le mec bouge la main gauche ou droite
 
-prendre le coin sup droit et faut inversé sur l'ecran c inversé
+les yeux ca va etre bcp trop dur...
 
-faire la suite des mains
+émotions ca va le faire 
 
-faire les mouvements asendant et les video hyper zoomées
+faut néttoyer le pc et faire avec tf
+
+ptin sté horrible
 
 
 
